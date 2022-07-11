@@ -1,5 +1,6 @@
 package com.jovannikolic.myapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.view.View
 import com.jovannikolic.myapplication.databinding.ActivityLoginBinding
+
 
 class ActivityLogin : AppCompatActivity() {
 
@@ -104,6 +106,13 @@ class ActivityLogin : AppCompatActivity() {
         }
         binding.emailtext.addTextChangedListener(generalTextWatcher)
         binding.passwordtext.addTextChangedListener(generalTextWatcher)
+
+        //  Login button - opens new activity
+        binding.loginbutton.setOnClickListener{
+            val intent = Intent(this, WelcomeActivity::class.java)
+            intent.putExtra("username", binding.emailtext.text.toString())
+            startActivity(intent)
+        }
 
 
 
