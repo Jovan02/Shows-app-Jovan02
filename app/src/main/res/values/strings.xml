@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="login">Login</string>
+    <string name="in_order_to_continue_please_log_in">In order to continue please log in.</string>
+    <string name="email"><font fgcolor='#FFFFFF'>   Email</font></string>
+    <string name="password"><font fgcolor='#FFFFFF'>   Password</font></string>
+    <string name="loginbtn">Login</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="welcome">Welcome, </string>
 </resources>
