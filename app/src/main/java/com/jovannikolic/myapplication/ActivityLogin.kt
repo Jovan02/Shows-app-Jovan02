@@ -109,7 +109,7 @@ class ActivityLogin : AppCompatActivity() {
 
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
-            val intent = Intent(this, WelcomeActivity::class.java)
+            val intent = Intent(this, ActivityWelcome::class.java)
             intent.putExtra("username", binding.emailtext.text.toString())
             startActivity(intent)
         }
