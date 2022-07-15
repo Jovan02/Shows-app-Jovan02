@@ -9,6 +9,6 @@
     <string name="Password">Password</string>
     <string name="welcome">Welcome, </string>
     <string name="shows">Shows</string>
-    <string name="show_hide_shows">Show/Hide Shows</string>
+    <string name="show_shows">Show Shows</string>
     <string name="your_shows_are_not_showing_get_it">Your shows are not showing. Get it?</string>
 </resources>

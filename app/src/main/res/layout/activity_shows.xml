@@ -21,7 +21,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/showhidebutton"
+        android:id="@+id/showbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/showstitle"
@@ -29,7 +29,7 @@
         android:layout_marginTop="64dp"
         android:layout_marginStart="23dp"
         android:layout_marginEnd="23dp"
-        android:text="@string/show_hide_shows"
+        android:text="@string/show_shows"
         android:textSize="16sp"
         android:textAllCaps="false"
         android:backgroundTint="#52368C"
