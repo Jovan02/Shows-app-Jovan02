@@ -20,6 +20,20 @@
         android:textColor="@color/black"
         />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/showhidebutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/showstitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="64dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="23dp"
+        android:text="@string/show_hide_shows"
+        android:textAllCaps="false"
+        app:boxBackgroundColor="@null"
+        android:background="@drawable/login_button"
+        />
 
 
 
