@@ -30,9 +30,36 @@
         android:layout_marginStart="23dp"
         android:layout_marginEnd="23dp"
         android:text="@string/show_hide_shows"
+        android:textSize="16sp"
         android:textAllCaps="false"
-        app:boxBackgroundColor="@null"
+        android:backgroundTint="#52368C"
         android:background="@drawable/login_button"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/white"
+        />
+
+    <ImageView
+        android:id="@+id/emptystateimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_shows_empty_state"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/emptystateimage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/your_shows_are_not_showing_get_it"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="26dp"
+        android:textSize="17sp"
+        android:fontFamily="@font/roboto_regular"
         />
 
 
