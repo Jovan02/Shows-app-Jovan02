@@ -9,6 +9,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.view.View
+import com.google.android.material.textfield.TextInputLayout
 import com.jovannikolic.myapplication.databinding.ActivityLoginBinding
 
 
@@ -26,46 +27,9 @@ class ActivityLogin : AppCompatActivity() {
 
         var pressed = true
 
-        //  Floating Email label
-        binding.emailtext.setOnFocusChangeListener { _, focused ->
-            if(!binding.emailtext.text.toString().equals("") || focused){
-                binding.emaillabel.setVisibility(View.VISIBLE)
-                binding.emailtext.hint = " "
-            }else if(binding.emailtext.text.toString().equals("") || focused){
-                binding.emaillabel.setVisibility(View.INVISIBLE)
-                binding.emailtext.hint = "Email"
-            }
-        }
+        val editEmail : TextInputLayout = findViewById(R.id.emailtext)
 
-        //  Show/Hide button
-        binding.visiblebutton.setOnClickListener {
-            if (pressed){
-                binding.visiblebutton.setBackgroundResource(R.drawable.invisible_button)
-                binding.passwordtext.transformationMethod = PasswordTransformationMethod.getInstance()
-                pressed = false
-            }else{
-                binding.visiblebutton.setBackgroundResource(R.drawable.visible_button)
-                binding.passwordtext.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                pressed = true
-            }
-        }
-
-        //  Floating Password label and Show/Hide button
-        binding.passwordtext.setOnFocusChangeListener { _, focused ->
-
-            if(!binding.passwordtext.text.toString().equals("") || focused){
-                binding.visiblebutton.setVisibility(View.VISIBLE)
-                binding.passwordlabel.setVisibility(View.VISIBLE)
-                binding.passwordtext.hint = " "
-            }else if(binding.passwordtext.text.toString().equals("") || focused){
-                binding.visiblebutton.setVisibility(View.GONE)
-                binding.passwordlabel.setVisibility(View.INVISIBLE)
-                binding.passwordtext.hint = "Password"
-            }
-        }
-
-
-        //  Login button - active if required conditions are fulfilled
+        val editPassword : TextInputLayout = findViewById(R.id.passwordtext)
         val generalTextWatcher = object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
@@ -76,7 +40,7 @@ class ActivityLogin : AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(binding.passwordtext.text.toString().length > 6 && binding.emailtext.text.toString().isNotEmpty() && validEmail().equals("")){
+                if(editPassword.editText?.text.toString().length > 6 && editEmail.editText?.text.toString().isNotEmpty() && validEmail().equals("")){
                     binding.loginbutton.isEnabled = true
                     binding.loginbutton.isClickable = true
                     binding.loginbutton.setBackgroundResource(R.drawable.login_button)
@@ -102,15 +66,39 @@ class ActivityLogin : AppCompatActivity() {
                     binding.passworderror.text = null
                 }
 
+                if(!editPassword.editText?.text.toString().equals("")){
+                    binding.visiblebutton.setVisibility(View.VISIBLE)
+                }else if(editPassword.editText?.text.toString().equals("")){
+                    binding.visiblebutton.setVisibility(View.GONE)
+                }
+
             }
         }
-        binding.emailtext.addTextChangedListener(generalTextWatcher)
-        binding.passwordtext.addTextChangedListener(generalTextWatcher)
+        editEmail.editText?.addTextChangedListener(generalTextWatcher)
+        editPassword.editText?.addTextChangedListener(generalTextWatcher)
+
+        //  Show/Hide button - needs little fix
+        binding.visiblebutton.setOnClickListener {
+            if (pressed){
+                binding.visiblebutton.setBackgroundResource(R.drawable.invisible_button)
+                editPassword.editText?.transformationMethod = PasswordTransformationMethod.getInstance()
+                pressed = false
+            }else{
+                binding.visiblebutton.setBackgroundResource(R.drawable.visible_button)
+                editPassword.editText?.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                pressed = true
+            }
+        }
+
+
+
+
+
 
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
             val intent = Intent(this, ActivityWelcome::class.java)
-            intent.putExtra("username", binding.emailtext.text.toString())
+            intent.putExtra("username", editEmail.editText?.text.toString())
             startActivity(intent)
         }
 
@@ -120,7 +108,9 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun validEmail(): String {
 
-        val emailText = binding.emailtext.text.toString()
+        val editEmail : TextInputLayout = findViewById(R.id.emailtext)
+
+        val emailText = editEmail.editText?.text.toString()
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
             return "Invalid Email Address"
@@ -130,7 +120,9 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun validPassword(): String {
 
-        val passText = binding.passwordtext.text.toString()
+        val editPassword : TextInputLayout = findViewById(R.id.passwordtext)
+
+        val passText = editPassword.editText?.text.toString()
 
         if(passText.length < 7) {
             return "Password must be at least 7 characters long."
