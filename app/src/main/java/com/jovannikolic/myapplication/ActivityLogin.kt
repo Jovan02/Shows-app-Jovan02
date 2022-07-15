@@ -94,14 +94,14 @@ class ActivityLogin : AppCompatActivity() {
 
 
 
-
+/*
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
             val intent = Intent(this, ActivityWelcome::class.java)
             intent.putExtra("username", editEmail.editText?.text.toString())
             startActivity(intent)
         }
-
+*/
 
 
     }
