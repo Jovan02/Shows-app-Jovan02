@@ -21,10 +21,6 @@ class ActivityShowDetails : AppCompatActivity() {
 
         clickReviewButton()
 
-
-
-
-
     }
 
     private fun showBottomSheet(){

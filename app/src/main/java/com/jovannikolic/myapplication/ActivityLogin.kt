@@ -1,5 +1,6 @@
 package com.jovannikolic.myapplication
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,8 +22,6 @@ class ActivityLogin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-
-
         setContentView(binding.root)
 
         val generalTextWatcher = object : TextWatcher {
@@ -34,25 +33,24 @@ class ActivityLogin : AppCompatActivity() {
 
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(validPassword().equals("") && binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail().equals("")){
+                if(validPassword() && binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()){
                     binding.loginbutton.isEnabled = true
                     binding.loginbutton.isClickable = true
-                    binding.loginbutton.setBackgroundResource(R.drawable.login_button)
                 }else{
                     binding.loginbutton.isEnabled = false
                     binding.loginbutton.isClickable = false
-                    binding.loginbutton.setBackgroundResource(R.drawable.login_button_not_clickable)
                 }
 
-                if(!validEmail().equals("")){
-                    binding.emailerror.text = validEmail()
+                if(!validEmail()){
+                    binding.emailerror.text = "Invalid Email Address"
                 }else{
                     binding.emailerror.text = null
                 }
 
-                if(!validPassword().equals("")){
-                    binding.passworderror.text = validPassword()
+                if(!validPassword()){
+                    binding.passworderror.text = "Password must be at least 6 characters long."
                 }else{
                     binding.passworderror.text = null
                 }
@@ -62,8 +60,6 @@ class ActivityLogin : AppCompatActivity() {
         binding.emailtext.editText?.addTextChangedListener(generalTextWatcher)
         binding.passwordtext.editText?.addTextChangedListener(generalTextWatcher)
 
-
-
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
             val intent = Intent(this, ActivityShows::class.java)
@@ -71,32 +67,27 @@ class ActivityLogin : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
     }
 
-    private fun validEmail(): String {
-
+    private fun validEmail(): Boolean {
 
         val emailText = binding.emailtext.editText?.text.toString()
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
-            return "Invalid Email Address"
+            return false
         }
-        return ""
+        return true
     }
 
-    private fun validPassword(): String {
+    private fun validPassword(): Boolean {
 
         val passText = binding.passwordtext.editText?.text.toString()
 
         if(passText.length < 6) {
-            return "Password must be at least 6 characters long."
+            return false
         }
 
-        return ""
+        return true
     }
-
-
 
 }

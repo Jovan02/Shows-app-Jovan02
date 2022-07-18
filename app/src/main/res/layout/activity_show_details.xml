@@ -30,6 +30,7 @@
         android:fontFamily="@font/roboto_bold"
         android:textSize="36sp"
         android:textColor="@color/black"
+        android:textFontWeight="700"
         />
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -61,7 +62,7 @@
         android:fontFamily="@font/roboto_regular"
         android:textColor="@color/black"
         android:textSize="17sp"
-
+        android:textFontWeight="400"
         />
 
     <TextView
@@ -76,6 +77,7 @@
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/black"
         android:textSize="24sp"
+        android:textFontWeight="700"
         />
 
     <TextView
@@ -89,6 +91,7 @@
         android:layout_marginEnd="134dp"
         android:text="@string/no_reviews_yet"
         android:textSize="17sp"
+        android:textFontWeight="400"
         />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -107,6 +110,7 @@
         android:background="@drawable/login_button"
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/white"
+        android:textFontWeight="700"
         />
 
 

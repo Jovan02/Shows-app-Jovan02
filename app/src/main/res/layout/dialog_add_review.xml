@@ -21,6 +21,7 @@
             android:textSize="24sp"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/black"
+            android:textFontWeight="700"
             />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -67,6 +68,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:textColor="@color/black"
+            android:textFontWeight="400"
             />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -77,13 +79,14 @@
             android:layout_marginBottom="25dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/write_a_review"
+            android:text="@string/submit"
             android:textSize="17sp"
             android:textAllCaps="false"
             android:backgroundTint="#52368C"
             android:background="@drawable/login_button"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/white"
+            android:textFontWeight="700"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -62,6 +62,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_regular"
             android:inputType="textPassword"
+            android:textFontWeight="400"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -109,6 +110,7 @@
         android:textSize="34sp"
         android:textColor="@color/white"
         android:fontFamily="@font/roboto_bold"
+        android:textFontWeight="700"
         />
 
     <TextView
@@ -123,6 +125,7 @@
         android:textSize="17sp"
         android:textColor="@color/white"
         android:fontFamily="@font/roboto_regular"
+        android:textFontWeight="400"
         />
 
 
@@ -136,6 +139,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="1dp"
         android:textColor="#c73e1d"
+        android:textFontWeight="400"
         />
 
     <TextView
@@ -171,6 +175,7 @@
         android:clickable="false"
         android:focusable="true"
         app:boxBackgroundColor="@null"
+        android:textFontWeight="400"
         />
 
 
