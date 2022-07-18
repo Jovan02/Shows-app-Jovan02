@@ -25,11 +25,6 @@ class ActivityLogin : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        var pressed = true
-
-        val editEmail : TextInputLayout = findViewById(R.id.emailtext)
-
-        val editPassword : TextInputLayout = findViewById(R.id.passwordtext)
         val generalTextWatcher = object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
@@ -40,7 +35,7 @@ class ActivityLogin : AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(editPassword.editText?.text.toString().length > 6 && editEmail.editText?.text.toString().isNotEmpty() && validEmail().equals("")){
+                if(validPassword().equals("") && binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail().equals("")){
                     binding.loginbutton.isEnabled = true
                     binding.loginbutton.isClickable = true
                     binding.loginbutton.setBackgroundResource(R.drawable.login_button)
@@ -51,54 +46,28 @@ class ActivityLogin : AppCompatActivity() {
                 }
 
                 if(!validEmail().equals("")){
-                    //binding.emailtext.setError(validEmail())
                     binding.emailerror.text = validEmail()
                 }else{
-                    //binding.emailtext.setError(null)
                     binding.emailerror.text = null
                 }
 
                 if(!validPassword().equals("")){
-                    //binding.passwordtext.setError(validPassword())
                     binding.passworderror.text = validPassword()
                 }else{
-                    //binding.passwordtext.setError(null)
                     binding.passworderror.text = null
                 }
 
-                if(!editPassword.editText?.text.toString().equals("")){
-                    binding.visiblebutton.setVisibility(View.VISIBLE)
-                }else if(editPassword.editText?.text.toString().equals("")){
-                    binding.visiblebutton.setVisibility(View.GONE)
-                }
-
             }
         }
-        editEmail.editText?.addTextChangedListener(generalTextWatcher)
-        editPassword.editText?.addTextChangedListener(generalTextWatcher)
-
-        //  Show/Hide button - needs little fix
-        binding.visiblebutton.setOnClickListener {
-            if (pressed){
-                binding.visiblebutton.setBackgroundResource(R.drawable.invisible_button)
-                editPassword.editText?.transformationMethod = PasswordTransformationMethod.getInstance()
-                pressed = false
-            }else{
-                binding.visiblebutton.setBackgroundResource(R.drawable.visible_button)
-                editPassword.editText?.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                pressed = true
-            }
-        }
-
-
-
+        binding.emailtext.editText?.addTextChangedListener(generalTextWatcher)
+        binding.passwordtext.editText?.addTextChangedListener(generalTextWatcher)
 
 
 
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
             val intent = Intent(this, ActivityShows::class.java)
-            intent.putExtra("username", editEmail.editText?.text.toString())
+            intent.putExtra("username", binding.emailtext.editText?.text.toString())
             startActivity(intent)
         }
 
@@ -108,9 +77,8 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun validEmail(): String {
 
-        val editEmail : TextInputLayout = findViewById(R.id.emailtext)
 
-        val emailText = editEmail.editText?.text.toString()
+        val emailText = binding.emailtext.editText?.text.toString()
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
             return "Invalid Email Address"
@@ -120,12 +88,10 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun validPassword(): String {
 
-        val editPassword : TextInputLayout = findViewById(R.id.passwordtext)
+        val passText = binding.passwordtext.editText?.text.toString()
 
-        val passText = editPassword.editText?.text.toString()
-
-        if(passText.length < 7) {
-            return "Password must be at least 7 characters long."
+        if(passText.length < 6) {
+            return "Password must be at least 6 characters long."
         }
 
         return ""
