@@ -24,7 +24,7 @@
         android:id="@+id/showbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/showstitle"
+        app:layout_constraintTop_toBottomOf="@id/emptystatetext"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="64dp"
         android:layout_marginStart="23dp"
@@ -47,9 +47,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/ic_shows_empty_state"
+        android:visibility="visible"
         />
 
     <TextView
+        android:id="@+id/emptystatetext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/emptystateimage"
@@ -60,6 +62,18 @@
         android:layout_marginTop="26dp"
         android:textSize="17sp"
         android:fontFamily="@font/roboto_regular"
+        android:visibility="visible"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/showsrecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/showbutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="125dp"
+        tools:listitem="@layout/view_show_item"
         />
 
 
