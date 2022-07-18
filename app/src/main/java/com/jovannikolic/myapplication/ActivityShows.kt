@@ -65,4 +65,8 @@ class ActivityShows : AppCompatActivity() {
         binding.showsrecycler.adapter = adapter
     }
 
+    private fun addReviewBottomSheet(){
+
+    }
+
 }
