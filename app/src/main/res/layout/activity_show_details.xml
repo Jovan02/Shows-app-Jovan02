@@ -92,7 +92,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/showbutton"
+        android:id="@+id/reviewbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
