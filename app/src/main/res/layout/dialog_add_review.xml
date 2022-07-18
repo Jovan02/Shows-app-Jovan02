@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:layout_marginStart="24sp"
-            android:text="Write a Review"
+            android:text="@string/write_a_review"
             android:textSize="24sp"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/black"
@@ -60,9 +60,6 @@
         android:hint="@string/comment"
         android:textColorHint="#52368C"
         app:hintTextColor="#52368C"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ratingbar"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -70,6 +67,23 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:textColor="@color/black"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/showbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/write_a_review"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#52368C"
+            android:background="@drawable/login_button"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/white"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
