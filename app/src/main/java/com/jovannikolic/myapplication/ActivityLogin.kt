@@ -21,8 +21,6 @@ class ActivityLogin : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var pressed = true
-
         //  Login button - active if required conditions are fulfilled
         val generalTextWatcher = object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
