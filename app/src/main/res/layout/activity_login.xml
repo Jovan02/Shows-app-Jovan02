@@ -162,10 +162,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/login_button_not_clickable"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
+        android:background="@drawable/custom_button"
         android:textSize="17sp"
         android:fontFamily="@font/roboto_bold"
         android:textColor="#52368C"
@@ -174,7 +174,6 @@
         android:enabled="false"
         android:clickable="false"
         android:focusable="true"
-        app:boxBackgroundColor="@null"
         android:textFontWeight="400"
         />
 

@@ -1,16 +1,15 @@
 package com.jovannikolic.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
-import android.view.View
-import com.google.android.material.textfield.TextInputLayout
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import com.jovannikolic.myapplication.databinding.ActivityLoginBinding
 
 
@@ -60,6 +59,9 @@ class ActivityLogin : AppCompatActivity() {
         binding.emailtext.editText?.addTextChangedListener(generalTextWatcher)
         binding.passwordtext.editText?.addTextChangedListener(generalTextWatcher)
 
+
+
+
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
             val intent = Intent(this, ActivityShows::class.java)
@@ -89,5 +91,15 @@ class ActivityLogin : AppCompatActivity() {
 
         return true
     }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = this!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(this!!.currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
+
 
 }
