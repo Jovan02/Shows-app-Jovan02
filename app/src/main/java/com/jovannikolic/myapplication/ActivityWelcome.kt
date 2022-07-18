@@ -13,26 +13,13 @@ class ActivityWelcome : AppCompatActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         val email: String? = intent.extras?.getString("username")
 
-        val username: String? = email?.let { createUsername(it) }
+        val tokens = email?.split("@")
+        val username = tokens?.get(0)
 
         binding.welcometext.setText("Welcome, ".plus(username))
 
-
-    }
-
-    private fun createUsername(string: String): String {
-        var username = ""
-        for (i in string.indices){
-            if(string[i] == '@'){
-                break
-            }else{
-                username += string[i]
-            }
-        }
-        return username
     }
 
 }

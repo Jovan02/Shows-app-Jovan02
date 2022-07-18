@@ -41,10 +41,8 @@
         android:text="@string/welcome"
         android:fontFamily="@font/roboto_regular"
         android:textSize="17sp"
+        android:textFontWeight="700"
         />
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
