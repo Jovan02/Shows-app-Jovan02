@@ -1,5 +1,6 @@
 package com.jovannikolic.myapplication
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,6 +33,7 @@ class ActivityLogin : AppCompatActivity() {
 
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(validPassword().equals("") && binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail().equals("")){
                     binding.loginbutton.isEnabled = true
@@ -43,16 +45,16 @@ class ActivityLogin : AppCompatActivity() {
                     binding.loginbutton.setBackgroundResource(R.drawable.login_button_not_clickable)
                 }
 
-                if(!validEmail().equals("")){
+                if(!validEmail()){
                     //binding.emailtext.setError(validEmail())
-                    binding.emailerror.text = validEmail()
+                    binding.emailerror.text = "Invalid Email Address"
                 }else{
                     //binding.emailtext.setError(null)
                     binding.emailerror.text = null
                 }
 
-                if(!validPassword().equals("")){
-                    binding.passworderror.text = validPassword()
+                if(!validPassword()){
+                    binding.passworderror.text = "Password must be at least 7 characters long."
                 }else{
                     binding.passworderror.text = null
                 }
@@ -71,25 +73,25 @@ class ActivityLogin : AppCompatActivity() {
 
     }
 
-    private fun validEmail(): String {
+    private fun validEmail(): Boolean {
 
         val emailText = binding.emailtext.editText?.text.toString()
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
-            return "Invalid Email Address"
+            return false
         }
-        return ""
+        return true
     }
 
-    private fun validPassword(): String {
+    private fun validPassword(): Boolean {
 
         val passText = binding.passwordtext.editText?.text.toString()
 
         if(passText.length < 7) {
-            return "Password must be at least 7 characters long."
+            return false
         }
 
-        return ""
+        return true
     }
 
 

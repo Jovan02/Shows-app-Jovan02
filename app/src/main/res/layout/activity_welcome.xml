@@ -44,5 +44,4 @@
         android:textFontWeight="700"
         />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
