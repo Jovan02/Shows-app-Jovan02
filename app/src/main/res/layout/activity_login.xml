@@ -7,6 +7,65 @@
     android:background="@color/purple_500"
     tools:context=".ActivityLogin">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailtext"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeWidthFocused="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeColor="@color/white"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="25dp"
+        android:hint="@string/email"
+        android:textColorHint="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pleaselogin"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/white"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordtext"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeWidthFocused="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeColor="@color/white"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:hint="@string/password"
+        android:textColorHint="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailtext"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:inputType="textPassword"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
     <ImageView
         android:id="@+id/topleft"
         android:layout_width="wrap_content"
@@ -64,23 +123,7 @@
         android:fontFamily="@font/roboto_regular"
         />
 
-    <EditText
-        android:id="@+id/emailtext"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/pleaselogin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="25dp"
-        android:paddingEnd="40dp"
-        android:fontFamily="@font/roboto_regular"
-        android:hint="@string/email"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:background="@drawable/custom_text"
-        />
+
 
     <TextView
         android:id="@+id/emailerror"
@@ -91,44 +134,6 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="1dp"
         android:textColor="#c73e1d"
-
-        />
-
-    <TextView
-        android:id="@+id/emaillabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/emailtext"
-        app:layout_constraintStart_toStartOf="@id/emailtext"
-        android:layout_marginTop="-10dp"
-        android:layout_marginStart="16dp"
-        android:background="@color/purple_500"
-        android:text="@string/Email"
-        android:textSize="15sp"
-        android:textColor="@color/white"
-        android:paddingEnd="4dp"
-        android:paddingStart="4dp"
-        android:visibility="invisible"
-        />
-
-    <EditText
-        android:id="@+id/passwordtext"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/emailtext"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="25dp"
-        android:paddingEnd="40dp"
-        android:inputType="textPassword"
-        android:hint="@string/password"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:fontFamily="@font/roboto_regular"
-        android:background="@drawable/custom_text"
-
         />
 
     <TextView
@@ -143,24 +148,8 @@
 
         />
 
-    <TextView
-        android:id="@+id/passwordlabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/passwordtext"
-        app:layout_constraintStart_toStartOf="@id/passwordtext"
-        android:layout_marginTop="-10dp"
-        android:layout_marginStart="16dp"
-        android:background="@color/purple_500"
-        android:text="@string/Password"
-        android:textSize="15sp"
-        android:textColor="@color/white"
-        android:paddingEnd="4dp"
-        android:paddingStart="4dp"
-        android:visibility="invisible"
-        />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginbutton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -178,7 +167,9 @@
         android:textAllCaps="false"
         android:enabled="false"
         android:clickable="false"
-        android:focusable="true" />
+        android:focusable="true"
+        app:boxBackgroundColor="@null"
+        />
 
     <ImageButton
         android:id="@+id/visiblebutton"
@@ -188,11 +179,13 @@
         app:layout_constraintEnd_toEndOf="@id/passwordtext"
         app:layout_constraintBottom_toBottomOf="@id/passwordtext"
         android:background="@drawable/invisible"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="18dp"
         android:layout_marginStart="306dp"
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="10dp"
         android:visibility="gone"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         />
 
 
