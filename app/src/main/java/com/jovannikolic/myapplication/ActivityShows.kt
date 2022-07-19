@@ -5,11 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jovannikolic.myapplication.databinding.ActivityShowsBinding
-import layout.Show
+import models.Show
 
 class ActivityShows : AppCompatActivity() {
 

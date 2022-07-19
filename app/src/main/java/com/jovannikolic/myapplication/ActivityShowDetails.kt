@@ -1,5 +1,6 @@
 package com.jovannikolic.myapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -21,6 +22,7 @@ class ActivityShowDetails : AppCompatActivity() {
 
         clickReviewButton()
 
+        backButton()
     }
 
     private fun showBottomSheet(){
@@ -28,6 +30,10 @@ class ActivityShowDetails : AppCompatActivity() {
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
         dialog.setContentView(bottomSheetBinding.root)
+
+        bottomSheetBinding.xbutton.setOnClickListener {
+            dialog.hide()
+        }
 
         dialog.show()
     }
@@ -42,6 +48,13 @@ class ActivityShowDetails : AppCompatActivity() {
         binding.maintitle.text = intent.extras?.getString("title")
         binding.showimg.setImageResource(intent.getIntExtra("imageResource", 0))
         binding.showtext.text = intent.extras?.getString("description")
+    }
+
+    private fun backButton(){
+        binding.backbutton.setOnClickListener {
+            val intent = Intent(this, ActivityShows:: class.java)
+            startActivity(intent)
+        }
     }
 
 }

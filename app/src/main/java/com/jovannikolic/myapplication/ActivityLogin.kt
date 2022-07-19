@@ -3,6 +3,7 @@ package com.jovannikolic.myapplication
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -37,9 +38,11 @@ class ActivityLogin : AppCompatActivity() {
                 if(validPassword() && binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()){
                     binding.loginbutton.isEnabled = true
                     binding.loginbutton.isClickable = true
+                    binding.loginbutton.setTextColor(Color.parseColor("#52368C"))
                 }else{
                     binding.loginbutton.isEnabled = false
                     binding.loginbutton.isClickable = false
+                    binding.loginbutton.setTextColor(Color.parseColor("#FFFFFF"))
                 }
 
                 if(!validEmail()){
@@ -95,7 +98,7 @@ class ActivityLogin : AppCompatActivity() {
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
             val imm = this!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(this!!.currentFocus!!.windowToken, 0)
+            imm.hideSoftInputFromWindow(this.currentFocus!!.windowToken, 0)
         }
         return super.dispatchTouchEvent(ev)
     }
