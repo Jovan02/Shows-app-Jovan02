@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jovannikolic.myapplication.databinding.ViewShowItemBinding
-import layout.Show
-import javax.security.auth.callback.Callback
+import models.Show
 
 class ShowsAdapter (
     private var items: List<Show>,
