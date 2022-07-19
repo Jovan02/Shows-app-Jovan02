@@ -155,7 +155,7 @@
         />
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/loginbutton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -168,12 +168,13 @@
         android:background="@drawable/custom_button"
         android:textSize="17sp"
         android:fontFamily="@font/roboto_bold"
-        android:textColor="#52368C"
-        android:text="@string/loginbtn"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         android:enabled="false"
         android:clickable="false"
         android:focusable="true"
+        app:backgroundTint="@null"
+        android:text="@string/loginbtn"
         android:textFontWeight="400"
         />
 
