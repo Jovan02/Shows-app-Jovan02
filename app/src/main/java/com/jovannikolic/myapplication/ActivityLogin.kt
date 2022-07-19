@@ -46,7 +46,7 @@ class ActivityLogin : AppCompatActivity() {
                 binding.passworderror.text = null
             }else{
                 isPasswordValid = false
-                binding.passworderror.text = "Password must be at least 7 characters long."
+                binding.passworderror.text = "Password must be at least 6 characters long."
             }
             checkLoginButtonState(isEmailValid, isPasswordValid)
         }
@@ -74,7 +74,7 @@ class ActivityLogin : AppCompatActivity() {
 
         val passText = binding.passwordtext.editText?.text.toString()
 
-        if(passText.length < 7) {
+        if(passText.length < 6) {
             return false
         }
 
