@@ -10,57 +10,46 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import com.jovannikolic.myapplication.databinding.ActivityLoginBinding
 
 class ActivityLogin : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //  Login button - active if required conditions are fulfilled
-        val generalTextWatcher = object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
+        var isEmailValid = false
+        var isPasswordValid = false
 
+        //  Email TextWatcher
+        binding.emailtext.editText?.addTextChangedListener {
+            if(binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()){
+                isEmailValid = true
+                binding.emailerror.text = null
+            }else{
+                isEmailValid = false
+                binding.emailerror.text = "Invalid Email Address"
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            @SuppressLint("SetTextI18n")
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(validPassword().equals("") && binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail().equals("")){
-                    binding.loginbutton.isEnabled = true
-                    binding.loginbutton.isClickable = true
-                    binding.loginbutton.setBackgroundResource(R.drawable.login_button)
-                }else{
-                    binding.loginbutton.isEnabled = false
-                    binding.loginbutton.isClickable = false
-                    binding.loginbutton.setBackgroundResource(R.drawable.login_button_not_clickable)
-                }
-
-                if(!validEmail()){
-                    //binding.emailtext.setError(validEmail())
-                    binding.emailerror.text = "Invalid Email Address"
-                }else{
-                    //binding.emailtext.setError(null)
-                    binding.emailerror.text = null
-                }
-
-                if(!validPassword()){
-                    binding.passworderror.text = "Password must be at least 7 characters long."
-                }else{
-                    binding.passworderror.text = null
-                }
-
-            }
+            checkLoginButtonState(isEmailValid, isPasswordValid)
         }
-        binding.emailtext.editText?.addTextChangedListener(generalTextWatcher)
-        binding.passwordtext.editText?.addTextChangedListener(generalTextWatcher)
+
+
+        //  Password TextWatcher
+        binding.passwordtext.editText?.addTextChangedListener {
+            if(validPassword()){
+                isPasswordValid = true
+                binding.passworderror.text = null
+            }else{
+                isPasswordValid = false
+                binding.passworderror.text = "Password must be at least 7 characters long."
+            }
+            checkLoginButtonState(isEmailValid, isPasswordValid)
+        }
 
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
@@ -90,6 +79,10 @@ class ActivityLogin : AppCompatActivity() {
         }
 
         return true
+    }
+
+    private fun checkLoginButtonState(email : Boolean, password : Boolean){
+        binding.loginbutton.isEnabled = email && password
     }
 
 

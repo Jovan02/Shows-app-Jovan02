@@ -16,7 +16,7 @@ class ActivityWelcome : AppCompatActivity() {
         val email: String? = intent.extras?.getString("username")
 
         val tokens = email?.split("@")
-        val username = tokens?.get(0)
+        val username = tokens?.getOrNull(0).orEmpty()
 
         binding.welcometext.setText("Welcome, ".plus(username))
 
