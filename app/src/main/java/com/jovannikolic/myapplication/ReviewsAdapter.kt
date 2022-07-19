@@ -22,12 +22,18 @@ class ReviewsAdapter (
 
     override fun getItemCount() = items.count()
 
+    fun addReview(review: Review){
+        items = items + review
+        notifyItemInserted(items.lastIndex)
+    }
+
+
     inner class ReviewViewHolder(private val binding: ViewReviewItemBinding): RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Review){
-            item.author = binding.authorcomment.text.toString()
-            item.comment = binding.ratingcomment.text.toString()
-            item.ratingNum = binding.ratingnumber.text.toString().toInt()
+            binding.authorcomment.text = item.author
+            binding.ratingcomment.text = item.comment
+            binding.ratingnumber.text = item.ratingNum.toString()
             binding.ratingcard.setOnClickListener{
                 onItemClickCallback(item)
             }
