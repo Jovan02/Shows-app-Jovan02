@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -109,12 +109,13 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/textreviews"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="  REVIEWS,  AVERAGE"
+                android:text="@string/reviews_average"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="24dp"
                 android:fontFamily="@font/roboto_regular"
                 android:textFontWeight="400"
                 android:textSize="14sp"
+                android:visibility="invisible"
                 />
 
             <RatingBar
@@ -126,28 +127,44 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="26dp"
+                android:backgroundTint="#9586AE"
+                android:progressTint="#52368C"
+                android:isIndicator="true"
+                android:visibility="invisible"
                 />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/showsrecycler"
+                android:id="@+id/reviewsrecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/averageratingbar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="43dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="27dp"
                 tools:listitem="@layout/view_review_item"
+                android:visibility="gone"
                 />
 
 
-
-
             <TextView
+                android:id="@+id/first"
                 android:layout_width="match_parent"
                 android:layout_height="126dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/noreviews"
+                />
+
+            <TextView
+                android:id="@+id/second"
+                android:layout_width="wrap_content"
+                android:layout_height="126dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reviewsrecycler"
+                android:visibility="gone"
                 />
 
 
@@ -170,25 +187,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reviewbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="bottom"
-            android:text="@string/write_a_review"
-            android:textSize="17sp"
-            android:textAllCaps="false"
-            android:backgroundTint="#52368C"
             android:background="@drawable/login_button"
+            android:backgroundTint="#52368C"
             android:fontFamily="@font/roboto_bold"
+            android:text="@string/write_a_review"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textFontWeight="700"
-            />
+            android:textSize="17sp" />
     </LinearLayout>
 
 

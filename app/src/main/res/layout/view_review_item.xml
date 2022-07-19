@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="25dp"
+    android:layout_marginEnd="25dp"
     android:padding="8dp"
     android:clipToPadding="false">
 
@@ -22,9 +24,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/profile_placeholder"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="25dp"
-                    />
+                    android:layout_marginTop="16dp"/>
+                    <!--android:layout_marginStart="25dp"-->
+
 
                 <TextView
                     android:id="@+id/authorcomment"
@@ -32,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="32dp"
-                    tools:text="Amogussu pogersi"
+                    tools:text="The man"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="#52368C"
                     android:textSize="15sp"
@@ -43,9 +45,9 @@
                     android:id="@+id/ratingnumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
-                    tools:text="3"
+                    tools:text="3.0"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="#52368C"
                     android:textFontWeight="500"
