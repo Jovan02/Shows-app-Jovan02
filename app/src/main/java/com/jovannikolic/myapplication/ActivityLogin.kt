@@ -2,6 +2,7 @@ package com.jovannikolic.myapplication
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -83,6 +84,11 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun checkLoginButtonState(email : Boolean, password : Boolean){
         binding.loginbutton.isEnabled = email && password
+        if(email && password) {
+            binding.loginbutton.setTextColor(Color.parseColor("#52368C"))
+        }else{
+            binding.loginbutton.setTextColor(Color.parseColor("#FFFFFF"))
+        }
     }
 
 

@@ -169,7 +169,7 @@
         android:textSize="17sp"
         android:fontFamily="@font/roboto_bold"
         android:textFontWeight="700"
-        android:textColor="#52368C"
+        android:textColor="#FFFFFF"
         android:text="@string/loginbtn"
         android:textAllCaps="false"
         android:enabled="false"
