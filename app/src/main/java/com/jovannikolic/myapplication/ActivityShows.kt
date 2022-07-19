@@ -46,20 +46,28 @@ class ActivityShows : AppCompatActivity() {
             binding.emptystatetext.setVisibility(View.INVISIBLE)
             binding.showbutton.setVisibility(View.GONE)
 
-            initShowsRecycler()
+            val email = intent.extras?.getString("username").toString()
+            val tokens = email?.split("@")
+            var username = tokens?.getOrNull(0).orEmpty()
+
+            initShowsRecycler(username)
         }
+
+
 
 
     }
 
-    private fun initShowsRecycler(){
+
+
+    private fun initShowsRecycler(user: String){
 
         adapter = ShowsAdapter(shows){ show ->
-            //Toast.makeText(this, show.name, Toast.LENGTH_SHORT).show()
             val intent = Intent(this, ActivityShowDetails:: class.java)
             intent.putExtra("title", show.name)
             intent.putExtra("imageResource", show.imageResourceId)
             intent.putExtra("description", show.description)
+            intent.putExtra("author", user)
 
             startActivity(intent)
         }
@@ -67,10 +75,6 @@ class ActivityShows : AppCompatActivity() {
         binding.showsrecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.showsrecycler.adapter = adapter
-    }
-
-    private fun addReviewBottomSheet(){
-
     }
 
 }
