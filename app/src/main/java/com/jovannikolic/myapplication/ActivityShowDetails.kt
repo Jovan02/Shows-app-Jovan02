@@ -2,6 +2,8 @@ package com.jovannikolic.myapplication
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
@@ -31,11 +33,19 @@ class ActivityShowDetails : AppCompatActivity() {
         binding = ActivityShowDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val actionBar = supportActionBar
+
+        val colorDrawable = ColorDrawable(Color.parseColor("#ffffff"))
+
+        actionBar?.setBackgroundDrawable(colorDrawable)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.title = intent.extras?.get("title").toString()
+
         getData()
 
         clickReviewButton()
 
-        backButton()
+        //backButton()
     }
 
     @SuppressLint("SetTextI18n")
@@ -103,14 +113,14 @@ class ActivityShowDetails : AppCompatActivity() {
         binding.showimg.setImageResource(intent.getIntExtra("imageResource", 0))
         binding.showtext.text = intent.extras?.getString("description")
     }
-
+/*
     private fun backButton(){
         binding.backbutton.setOnClickListener {
             val intent = Intent(this, ActivityShows:: class.java)
             startActivity(intent)
         }
     }
-
+*/
     private fun initReviewsRecycler(){
 
         adapter = ReviewsAdapter(reviews){ review ->
@@ -128,9 +138,12 @@ class ActivityShowDetails : AppCompatActivity() {
 
     }
 
-
     private fun addReviewToList(author: String, comment: String, ratingNum: Float){
         adapter.addReview(Review(0, author, comment, ratingNum))
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }
