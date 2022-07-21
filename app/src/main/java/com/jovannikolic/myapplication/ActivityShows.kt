@@ -15,7 +15,6 @@ class ActivityShows : AppCompatActivity() {
         fun buildIntent(activity: Activity): Intent {
             return Intent(activity, ActivityShows:: class.java)
         }
-
     }
 
     private val shows = listOf(
@@ -26,8 +25,6 @@ class ActivityShows : AppCompatActivity() {
         Show(4, "Witcher", "The Witcher is a Polish-American fantasy drama television series created by Lauren Schmidt Hissrich, based on the book series of the same name by Polish writer Andrzej Sapkowski. Set on a fictional, medieval-inspired landmass known as \"the Continent\", The Witcher explores the legend of Geralt of Rivia and Princess Ciri, who are linked to each other by destiny.", R.drawable.witcher),
         Show(5, "Game of Thrones", "Game of Thrones is an American fantasy drama television series created by David Benioff and D. B. Weiss. Set on the fictional continents of Westeros and Essos, Game of Thrones has a large ensemble cast and follows several story arcs throughout the course of the show. The first major arc concerns the Iron Throne of the Seven Kingdoms of Westeros through a web of political conflicts among the noble families either vying to claim the throne or fighting for independence from whoever sits on it. ", R.drawable.game_of_thrones),
     )
-
-
 
     private lateinit var binding: ActivityShowsBinding
 
