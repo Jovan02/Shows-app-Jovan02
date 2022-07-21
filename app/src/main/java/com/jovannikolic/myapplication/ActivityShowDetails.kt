@@ -1,8 +1,6 @@
 package com.jovannikolic.myapplication
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -88,7 +86,7 @@ class ActivityShowDetails : AppCompatActivity() {
 
             var averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
 
-            binding.averageratingtext.text = "$numOfReviews REVIEWS, $averageReviews AVERAGE"
+            binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageReviews.toString())
 
             binding.averageratingbar.rating = averageReviews.toFloat()
 
