@@ -39,8 +39,6 @@ class ActivityShows : AppCompatActivity() {
         binding = ActivityShowsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         binding.showbutton.setOnClickListener{
             binding.emptystateimage.setVisibility(View.INVISIBLE)
             binding.emptystatetext.setVisibility(View.INVISIBLE)
@@ -53,12 +51,7 @@ class ActivityShows : AppCompatActivity() {
             initShowsRecycler(username)
         }
 
-
-
-
     }
-
-
 
     private fun initShowsRecycler(user: String){
 
