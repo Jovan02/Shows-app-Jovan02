@@ -70,7 +70,7 @@ class ActivityShowDetails : AppCompatActivity() {
                     binding.averageratingtext.isVisible = true
                     binding.averageratingbar.isVisible = true
                     binding.reviewsrecycler.isVisible = true
-                    binding.noreviews.isVisible = false
+                    binding.noReviews.isVisible = false
                     firstInit = false
                 }
                 addReviewToList(author, comment, rating)
