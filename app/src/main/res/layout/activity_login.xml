@@ -157,7 +157,7 @@
         />
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginbutton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
