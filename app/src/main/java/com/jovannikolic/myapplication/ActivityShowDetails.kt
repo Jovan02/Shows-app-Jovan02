@@ -70,8 +70,6 @@ class ActivityShowDetails : AppCompatActivity() {
                     binding.averageratingtext.isVisible = true
                     binding.averageratingbar.isVisible = true
                     binding.reviewsrecycler.isVisible = true
-                    binding.second.isVisible = true
-                    binding.first.isVisible = false
                     binding.noreviews.isVisible = false
                     firstInit = false
                 }
