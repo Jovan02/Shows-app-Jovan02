@@ -31,11 +31,12 @@ class ReviewsAdapter (
     inner class ReviewViewHolder(private val binding: ViewReviewItemBinding): RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Review){
-            binding.authorcomment.text = item.author
-            binding.ratingcomment.text = item.comment
-            binding.ratingnumber.text = item.ratingNum.toString()
-            binding.ratingcard.setOnClickListener{
-                onItemClickCallback(item)
+            binding.apply{
+                ratingcomment.text = item.comment
+                ratingnumber.text = item.ratingNum.toString()
+                ratingcard.setOnClickListener{
+                    onItemClickCallback(item)
+                }
             }
         }
     }
