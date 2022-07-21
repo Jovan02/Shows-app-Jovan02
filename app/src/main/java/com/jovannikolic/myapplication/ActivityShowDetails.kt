@@ -58,7 +58,7 @@ class ActivityShowDetails : AppCompatActivity() {
             dialog.hide()
         }
 
-        bottomSheetBinding.submitbutton.setOnClickListener{
+        bottomSheetBinding.submitButton.setOnClickListener{
 
             val rat : Float = bottomSheetBinding.ratingbar.rating
             val comm : String = bottomSheetBinding.comment.editText?.text.toString()
