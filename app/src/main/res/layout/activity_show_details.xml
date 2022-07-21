@@ -136,7 +136,6 @@
                 android:visibility="gone"
                 />
 
-
             <TextView
                 android:id="@+id/first"
                 android:layout_width="match_parent"
@@ -156,10 +155,7 @@
                 android:visibility="gone"
                 />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </ScrollView>
 
@@ -195,7 +191,5 @@
             android:textFontWeight="700"
             android:textSize="17sp" />
     </LinearLayout>
-
-
 
 </RelativeLayout>
