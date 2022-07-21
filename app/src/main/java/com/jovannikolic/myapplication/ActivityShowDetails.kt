@@ -60,11 +60,11 @@ class ActivityShowDetails : AppCompatActivity() {
 
         bottomSheetBinding.submitButton.setOnClickListener{
 
-            val rat : Float = bottomSheetBinding.ratingbar.rating
-            val comm : String = bottomSheetBinding.comment.editText?.text.toString()
-            val auth : String = intent.extras?.getString("author").toString()
+            val rating : Float = bottomSheetBinding.ratingbar.rating
+            val comment : String = bottomSheetBinding.comment.editText?.text.toString()
+            val author : String = intent.extras?.getString("author").toString()
 
-            if(rat > 0){
+            if(rating > 0){
                 if(firstInit){
                     initReviewsRecycler()
                     binding.averageratingtext.isVisible = true
@@ -75,14 +75,14 @@ class ActivityShowDetails : AppCompatActivity() {
                     binding.noreviews.isVisible = false
                     firstInit = false
                 }
-                addReviewToList(auth, comm, rat)
+                addReviewToList(author, comment, rating)
                 dialog.hide()
             }else{
                 dialog.hide()
             }
 
             var numOfReviews = adapter.itemCount
-            sumOfReviews += rat
+            sumOfReviews += rating
 
             val df = DecimalFormat("#.##")
 
