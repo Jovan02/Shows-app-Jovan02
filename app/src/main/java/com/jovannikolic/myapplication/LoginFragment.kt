@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -26,7 +27,38 @@ class LoginFragment : Fragment() {
     }
 
     private fun initListeners() {
+        var isEmailValid = false
+        var isPasswordValid = false
 
+        //  Email TextWatcher
+        binding.emailtext.editText?.addTextChangedListener {
+            if(binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()){
+                isEmailValid = true
+                binding.emailerror.text = null
+            }else{
+                isEmailValid = false
+                binding.emailerror.text = "Invalid Email Address"
+            }
+            checkLoginButtonState(isEmailValid, isPasswordValid)
+        }
+
+
+        //  Password TextWatcher
+        binding.passwordtext.editText?.addTextChangedListener {
+            if(validPassword()){
+                isPasswordValid = true
+                binding.passworderror.text = null
+            }else{
+                isPasswordValid = false
+                binding.passworderror.text = "Password must be at least 6 characters long."
+            }
+            checkLoginButtonState(isEmailValid, isPasswordValid)
+        }
+
+        //  Login button - opens new activity
+        binding.loginbutton.setOnClickListener{
+
+        }
     }
 
     override fun onDestroyView() {
