@@ -41,6 +41,8 @@ class ActivityShowDetails : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.title = intent.extras?.get("title").toString()
 
+        adapter = ReviewsAdapter(reviews){ review -> }
+
         getData()
 
         clickReviewButton()
@@ -107,10 +109,6 @@ class ActivityShowDetails : AppCompatActivity() {
     }
 
     private fun initReviewsRecycler(){
-
-        adapter = ReviewsAdapter(reviews){ review ->
-
-        }
 
         binding.reviewsrecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
