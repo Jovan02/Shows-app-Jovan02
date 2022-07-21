@@ -14,9 +14,12 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityShowDetails"
-            android:theme="@style/Theme.MaterialComponents.DayNight"
+            android:name=".MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".ActivityShowDetails"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.DayNight" />
         <activity
             android:name=".ActivityShows"
             android:exported="false" />
@@ -25,6 +28,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
