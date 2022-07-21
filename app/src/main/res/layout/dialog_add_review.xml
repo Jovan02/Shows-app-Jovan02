@@ -70,7 +70,7 @@
             android:textFontWeight="400"
             />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/submitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,10 +82,11 @@
             android:textSize="17sp"
             android:textAllCaps="false"
             android:backgroundTint="#52368C"
-            android:background="@drawable/login_button"
+            android:background="@drawable/custom_button"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/white"
             android:textFontWeight="700"
+            app:backgroundTint="@null"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
