@@ -45,7 +45,6 @@ class ActivityShowDetails : AppCompatActivity() {
 
         clickReviewButton()
 
-        //backButton()
     }
 
     @SuppressLint("SetTextI18n")
@@ -54,8 +53,6 @@ class ActivityShowDetails : AppCompatActivity() {
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
         dialog.setContentView(bottomSheetBinding.root)
-
-
 
         bottomSheetBinding.xbutton.setOnClickListener {
             dialog.hide()
@@ -77,8 +74,6 @@ class ActivityShowDetails : AppCompatActivity() {
                     binding.first.isVisible = false
                     binding.noreviews.isVisible = false
                     firstInit = false
-
-
                 }
                 addReviewToList(auth, comm, rat)
                 dialog.hide()
@@ -97,7 +92,6 @@ class ActivityShowDetails : AppCompatActivity() {
 
             binding.averageratingbar.rating = averageReviews.toFloat()
 
-
         }
         dialog.show()
     }
@@ -113,14 +107,7 @@ class ActivityShowDetails : AppCompatActivity() {
         binding.showimg.setImageResource(intent.getIntExtra("imageResource", 0))
         binding.showtext.text = intent.extras?.getString("description")
     }
-/*
-    private fun backButton(){
-        binding.backbutton.setOnClickListener {
-            val intent = Intent(this, ActivityShows:: class.java)
-            startActivity(intent)
-        }
-    }
-*/
+
     private fun initReviewsRecycler(){
 
         adapter = ReviewsAdapter(reviews){ review ->
@@ -134,7 +121,6 @@ class ActivityShowDetails : AppCompatActivity() {
         binding.reviewsrecycler.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
-
 
     }
 
