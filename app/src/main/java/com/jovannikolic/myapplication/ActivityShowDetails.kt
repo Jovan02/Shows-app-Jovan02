@@ -35,7 +35,7 @@ class ActivityShowDetails : AppCompatActivity() {
 
         val actionBar = supportActionBar
 
-        val colorDrawable = ColorDrawable(Color.parseColor("#ffffff"))
+        val colorDrawable = ColorDrawable(getColor(R.color.white))
 
         actionBar?.setBackgroundDrawable(colorDrawable)
         actionBar?.setDisplayHomeAsUpEnabled(true)
