@@ -125,7 +125,7 @@ class ActivityShowDetails : AppCompatActivity() {
     }
 
     private fun addReviewToList(author: String, comment: String, ratingNum: Float){
-        adapter.addReview(Review(0, author, comment, ratingNum))
+        adapter.addReview(Review(author, comment, ratingNum))
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
