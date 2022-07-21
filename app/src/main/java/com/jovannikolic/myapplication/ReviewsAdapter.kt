@@ -32,6 +32,7 @@ class ReviewsAdapter (
 
         fun bind(item: Review){
             binding.apply{
+                authorcomment.text = item.author
                 ratingcomment.text = item.comment
                 ratingnumber.text = item.ratingNum.toString()
                 ratingcard.setOnClickListener{
