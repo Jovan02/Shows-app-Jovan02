@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import com.jovannikolic.myapplication.databinding.ActivityLoginBinding
 
-
 class ActivityLogin : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
@@ -22,7 +21,6 @@ class ActivityLogin : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -53,7 +51,6 @@ class ActivityLogin : AppCompatActivity() {
             }
             checkLoginButtonState(isEmailValid, isPasswordValid)
         }
-
 
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener{
@@ -101,7 +98,5 @@ class ActivityLogin : AppCompatActivity() {
         }
         return super.dispatchTouchEvent(ev)
     }
-
-
 
 }
