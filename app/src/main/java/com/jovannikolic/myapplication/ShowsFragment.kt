@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
 import models.Show
@@ -26,6 +28,8 @@ class ShowsFragment : Fragment() {
 
     private lateinit var adapter : ShowsAdapter
 
+    private val args by navArgs<ShowsFragmentArgs>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         return binding.root
@@ -42,20 +46,24 @@ class ShowsFragment : Fragment() {
             binding.emptystatetext.setVisibility(View.INVISIBLE)
             binding.showbutton.setVisibility(View.GONE)
 
-            // TODO : get email from LoginFragment and call initShowsRecycler(username)
+            val email = args.username
 
+            val tokens = email?.split("@")
 
+            val username = tokens.getOrNull(0).toString()
+
+            initShowsRecycler(username)
         }
     }
 
     private fun initShowsRecycler(user: String){
 
         adapter = ShowsAdapter(shows){ show ->
-            // TODO: send title, imageResource, description, author to next fragment
+            val direction = ShowsFragmentDirections.toShowDetailsFragment(user, show)
+            findNavController().navigate(direction)
         }
 
-        // requireContext() must check
-        binding.showsrecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.showsrecycler.layoutManager = LinearLayoutManager(context , LinearLayoutManager.VERTICAL, false)
 
         binding.showsrecycler.adapter = adapter
     }
