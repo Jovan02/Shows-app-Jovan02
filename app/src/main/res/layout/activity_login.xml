@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:boxStrokeWidth="1dp"
-        app:boxStrokeColor="@color/white"
+        app:boxStrokeColor="@color/white_outline_text_input"
         android:layout_marginStart="25dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="25dp"
@@ -43,18 +43,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:boxStrokeWidth="1dp"
-        app:boxStrokeColor="@color/white"
+        app:boxStrokeColor="@color/white_outline_text_input"
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="25dp"
         android:hint="@string/password"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white"
         android:textColorHint="@color/white"
         app:hintTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emailtext"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/white"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -63,6 +63,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_regular"
             android:inputType="textPassword"
+
             android:textFontWeight="400"
             />
 
@@ -111,7 +112,7 @@
         android:textSize="34sp"
         android:textColor="@color/white"
         android:fontFamily="@font/roboto_bold"
-        android:textFontWeight="900"
+        android:textFontWeight="700"
         />
 
     <TextView
@@ -140,6 +141,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="1dp"
         android:textColor="#c73e1d"
+        android:textFontWeight="400"
         />
 
     <TextView
@@ -155,26 +157,27 @@
         />
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginbutton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/login_button"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
+        android:background="@drawable/custom_button"
         android:textSize="17sp"
         android:fontFamily="@font/roboto_bold"
-        android:textFontWeight="700"
         android:textColor="#FFFFFF"
         android:text="@string/loginbtn"
         android:textAllCaps="false"
         android:enabled="false"
         android:clickable="false"
         android:focusable="true"
+        app:backgroundTint="@null"
+        android:textFontWeight="400"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

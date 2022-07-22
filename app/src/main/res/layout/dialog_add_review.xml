@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="24sp"
+            android:text="@string/write_a_review"
+            android:textSize="24sp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/black"
+            android:textFontWeight="700"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/xbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_x_button"
+            android:backgroundTint="@color/white"
+            android:layout_marginStart="157dp"
+            />
+
+    </LinearLayout>
+
+    <RatingBar
+        android:id="@+id/ratingbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24sp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#9586AE"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:progressTint="#52368C"
+        android:stepSize="1" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/comment"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeWidthFocused="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeColor="@color/purple_outline_text_input"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="25dp"
+        android:hint="@string/comment"
+        android:textColorHint="#52368C"
+        app:hintTextColor="#52368C"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/submit"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#52368C"
+            android:background="@drawable/custom_button"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/white"
+            android:textFontWeight="700"
+            app:backgroundTint="@null"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+
+
+</LinearLayout>
