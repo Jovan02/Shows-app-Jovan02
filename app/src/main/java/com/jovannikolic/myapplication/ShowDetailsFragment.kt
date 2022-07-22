@@ -1,14 +1,13 @@
 package com.jovannikolic.myapplication
 
-import android.R
 import android.annotation.SuppressLint
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,12 +47,15 @@ class ShowDetailsFragment : Fragment() {
 
         getData()
 
-        clickReviewButton()
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
 
+        clickReviewButton()
     }
 
     private fun initListeners() {
-
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -114,6 +116,7 @@ class ShowDetailsFragment : Fragment() {
         binding.showimg.setImageResource(show.imageResourceId)
         binding.maintitle.text = show.name
         binding.showtext.text = show.description
+        binding.toolbar.title = show.name
     }
 
     private fun initReviewsRecycler(){
