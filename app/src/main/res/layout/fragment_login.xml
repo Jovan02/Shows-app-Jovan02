@@ -75,7 +75,7 @@
         android:id="@+id/topleft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/top_left_illustration"
+        android:src="@drawable/ic_top_left_illustration"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
@@ -84,7 +84,7 @@
         android:id="@+id/topright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/top_right_illustration"
+        android:src="@drawable/ic_top_right_illustration"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
@@ -93,7 +93,7 @@
         android:id="@+id/logohorisontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo_horizontal_white"
+        android:src="@drawable/ic_logo_horizontal_white"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="181dp"
         app:layout_constraintStart_toStartOf="parent"
