@@ -1,14 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShowsFragment">
+    tools:context=".ActivityShows">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/showstitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shows"
+        android:layout_marginTop="64dp"
+        android:layout_marginStart="23dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="36sp"
+        android:textColor="@color/black"
+        android:textFontWeight="700"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/showbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/emptystatetext"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="64dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="23dp"
+        android:text="@string/show_shows"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:backgroundTint="#52368C"
+        android:background="@drawable/custom_button"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/white"
+        app:backgroundTint="@null"
+        />
+
+    <ImageView
+        android:id="@+id/emptystateimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_shows_empty_state"
+        android:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/emptystatetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/emptystateimage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/your_shows_are_not_showing_get_it"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="26dp"
+        android:textSize="17sp"
+        android:fontFamily="@font/roboto_regular"
+        android:visibility="visible"
+        android:textFontWeight="400"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/showsrecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_constraintTop_toBottomOf="@id/showbutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="125dp"
+        tools:listitem="@layout/view_show_item"
+        />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

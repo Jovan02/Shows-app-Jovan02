@@ -1,7 +1,5 @@
 package com.jovannikolic.myapplication
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,27 +42,20 @@ class ShowsFragment : Fragment() {
             binding.emptystatetext.setVisibility(View.INVISIBLE)
             binding.showbutton.setVisibility(View.GONE)
 
-            val email = intent.extras?.getString("username").toString()
-            val tokens = email?.split("@")
-            var username = tokens?.getOrNull(0).orEmpty()
+            // TODO : get email from LoginFragment and call initShowsRecycler(username)
 
-            initShowsRecycler(username)
+
         }
     }
 
     private fun initShowsRecycler(user: String){
 
         adapter = ShowsAdapter(shows){ show ->
-            val intent = Intent(this, ActivityShowDetails:: class.java)
-            intent.putExtra("title", show.name)
-            intent.putExtra("imageResource", show.imageResourceId)
-            intent.putExtra("description", show.description)
-            intent.putExtra("author", user)
-
-            startActivity(intent)
+            // TODO: send title, imageResource, description, author to next fragment
         }
 
-        binding.showsrecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        // requireContext() must check
+        binding.showsrecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.showsrecycler.adapter = adapter
     }
