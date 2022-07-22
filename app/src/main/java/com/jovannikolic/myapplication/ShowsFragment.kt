@@ -54,6 +54,10 @@ class ShowsFragment : Fragment() {
 
             initShowsRecycler(username)
         }
+
+        binding.logoutButton.setOnClickListener{
+            findNavController().popBackStack()
+        }
     }
 
     private fun initShowsRecycler(user: String){
