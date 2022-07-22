@@ -58,7 +58,7 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "StringFormatInvalid")
     private fun showBottomSheet(){
         val dialog = context?.let { BottomSheetDialog(it) }
 
@@ -97,7 +97,7 @@ class ShowDetailsFragment : Fragment() {
 
             var averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
 
-            binding.averageratingtext.text = "$numOfReviews REVIEWS, $averageReviews AVERAGE"
+            binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageReviews.toString())
 
             binding.averageratingbar.rating = averageReviews.toFloat()
 
