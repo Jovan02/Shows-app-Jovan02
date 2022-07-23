@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -17,8 +17,6 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!
-
-    private val args by navArgs<ShowsFragmentArgs>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -60,8 +58,9 @@ class LoginFragment : Fragment() {
 
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener {
-            val direction = LoginFragmentDirections.toShowFragment(binding.emailtext.editText?.text.toString())
-            findNavController().navigate(direction)
+            val email = binding.emailtext.editText?.text.toString()
+            val bundle = bundleOf("email" to email)
+            findNavController().navigate(R.id.toShowNav, bundle)
         }
     }
 
