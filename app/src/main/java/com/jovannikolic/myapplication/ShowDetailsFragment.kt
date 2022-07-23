@@ -48,7 +48,7 @@ class ShowDetailsFragment : Fragment() {
 
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
 
-        binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.toolbarTitle);
+        binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.toolbarTitle)
 
         clickReviewButton()
     }
