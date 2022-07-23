@@ -49,6 +49,8 @@ class ShowDetailsFragment : Fragment() {
 
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
 
+        binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.toolbarTitle);
+
         clickReviewButton()
     }
 
@@ -114,9 +116,8 @@ class ShowDetailsFragment : Fragment() {
     private fun getData(){
         val show = args.show
         binding.showimg.setImageResource(show.imageResourceId)
-        binding.maintitle.text = show.name
+        binding.collapsingToolbar.title = show.name
         binding.showtext.text = show.description
-        binding.toolbar.title = show.name
     }
 
     private fun initReviewsRecycler(){
