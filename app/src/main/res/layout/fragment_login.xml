@@ -64,13 +64,10 @@
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_regular"
             android:inputType="textPassword"
-
             android:textFontWeight="400"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-
 
     <ImageView
         android:id="@+id/topleft"
@@ -156,7 +153,6 @@
         android:textColor="#c73e1d"
 
         />
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginbutton"
