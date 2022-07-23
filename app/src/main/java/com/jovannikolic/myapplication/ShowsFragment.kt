@@ -58,8 +58,6 @@ class ShowsFragment : Fragment() {
 
     private lateinit var adapter: ShowsAdapter
 
-    private val args by navArgs<ShowsFragmentArgs>()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         return binding.root
@@ -76,11 +74,11 @@ class ShowsFragment : Fragment() {
             binding.emptystatetext.setVisibility(View.INVISIBLE)
             binding.showbutton.setVisibility(View.GONE)
 
-            val email = args.username
+            val email = arguments?.getString("email")
 
             val tokens = email?.split("@")
 
-            val username = tokens.getOrNull(0).toString()
+            val username = tokens?.getOrNull(0).toString()
 
             initShowsRecycler(username)
         }
