@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -35,10 +36,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,14 +51,14 @@
                 android:id="@+id/showimg"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="29dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:src="@drawable/prison_break"
                 android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageView"
                 />
 
@@ -65,25 +66,23 @@
                 android:id="@+id/showtext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/showimg"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textFontWeight="400"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/showimg"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />
 
             <TextView
                 android:id="@+id/textreviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/showtext"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="29dp"
                 android:layout_marginStart="24dp"
                 android:text="@string/reviews"
@@ -91,72 +90,74 @@
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textFontWeight="700"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/showtext"
                 />
 
             <TextView
                 android:id="@+id/noReviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/textreviews"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="40dp"
                 android:layout_marginStart="134dp"
                 android:layout_marginEnd="134dp"
                 android:text="@string/no_reviews_yet"
                 android:textSize="17sp"
                 android:textFontWeight="400"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textreviews"
                 />
 
             <TextView
                 android:id="@+id/averageratingtext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/textreviews"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="@string/reviews_average"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="24dp"
+                android:text="@string/reviews_average"
                 android:fontFamily="@font/roboto_regular"
                 android:textFontWeight="400"
                 android:textSize="14sp"
                 android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textreviews"
                 />
 
             <RatingBar
                 android:id="@+id/averageratingbar"
-                style = "?android:attr/ratingBarStyleIndicator"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/averageratingtext"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="26dp"
                 android:backgroundTint="#9586AE"
                 android:progressTint="#52368C"
                 android:isIndicator="true"
                 android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/averageratingtext"
                 />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/reviewsrecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/averageratingbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginTop="27dp"
-                tools:listitem="@layout/view_review_item"
                 android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/averageratingbar"
+                tools:listitem="@layout/view_review_item"
                 />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="126dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/reviewsrecycler"
                 />
 
@@ -167,6 +168,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="95dp"
@@ -194,8 +196,8 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textFontWeight="700"
-            app:backgroundTint="@null"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            app:backgroundTint="@null"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

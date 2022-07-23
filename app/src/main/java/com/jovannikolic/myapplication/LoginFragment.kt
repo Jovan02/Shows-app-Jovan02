@@ -36,23 +36,22 @@ class LoginFragment : Fragment() {
 
         //  Email TextWatcher
         binding.emailtext.editText?.addTextChangedListener {
-            if(binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()){
+            if (binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()) {
                 isEmailValid = true
                 binding.emailerror.text = null
-            }else{
+            } else {
                 isEmailValid = false
                 binding.emailerror.text = "Invalid Email Address"
             }
             checkLoginButtonState(isEmailValid, isPasswordValid)
         }
 
-
         //  Password TextWatcher
         binding.passwordtext.editText?.addTextChangedListener {
-            if(validPassword()){
+            if (validPassword()) {
                 isPasswordValid = true
                 binding.passworderror.text = null
-            }else{
+            } else {
                 isPasswordValid = false
                 binding.passworderror.text = "Password must be at least 6 characters long."
             }
@@ -60,7 +59,7 @@ class LoginFragment : Fragment() {
         }
 
         //  Login button - opens new activity
-        binding.loginbutton.setOnClickListener{
+        binding.loginbutton.setOnClickListener {
             val direction = LoginFragmentDirections.toShowFragment(binding.emailtext.editText?.text.toString())
             findNavController().navigate(direction)
         }
@@ -75,7 +74,7 @@ class LoginFragment : Fragment() {
 
         val emailText = binding.emailtext.editText?.text.toString()
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             return false
         }
         return true
@@ -85,18 +84,18 @@ class LoginFragment : Fragment() {
 
         val passText = binding.passwordtext.editText?.text.toString()
 
-        if(passText.length < 6) {
+        if (passText.length < 6) {
             return false
         }
 
         return true
     }
 
-    private fun checkLoginButtonState(email : Boolean, password : Boolean){
+    private fun checkLoginButtonState(email: Boolean, password: Boolean) {
         binding.loginbutton.isEnabled = email && password
-        if(email && password) {
+        if (email && password) {
             binding.loginbutton.setTextColor(Color.parseColor("#52368C"))
-        }else{
+        } else {
             binding.loginbutton.setTextColor(Color.parseColor("#FFFFFF"))
         }
     }

@@ -17,7 +17,6 @@ import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
 import models.Review
 import java.text.DecimalFormat
 
-
 class ShowDetailsFragment : Fragment() {
 
     private var _binding: FragmentShowDetailsBinding? = null
@@ -43,7 +42,7 @@ class ShowDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-        adapter = ReviewsAdapter(reviews){ review -> }
+        adapter = ReviewsAdapter(reviews) { review -> }
 
         getData()
 
@@ -61,7 +60,7 @@ class ShowDetailsFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n", "StringFormatInvalid")
-    private fun showBottomSheet(){
+    private fun showBottomSheet() {
         val dialog = context?.let { BottomSheetDialog(it) }
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
@@ -71,14 +70,14 @@ class ShowDetailsFragment : Fragment() {
             dialog?.hide()
         }
 
-        bottomSheetBinding.submitButton.setOnClickListener{
+        bottomSheetBinding.submitButton.setOnClickListener {
 
-            val rating : Float = bottomSheetBinding.ratingbar.rating
-            val comment : String = bottomSheetBinding.comment.editText?.text.toString()
+            val rating: Float = bottomSheetBinding.ratingbar.rating
+            val comment: String = bottomSheetBinding.comment.editText?.text.toString()
             val author = args.username
 
-            if(rating > 0){
-                if(firstInit){
+            if (rating > 0) {
+                if (firstInit) {
                     initReviewsRecycler()
                     binding.averageratingtext.isVisible = true
                     binding.averageratingbar.isVisible = true
@@ -88,7 +87,7 @@ class ShowDetailsFragment : Fragment() {
                 }
                 addReviewToList(author, comment, rating)
                 dialog?.hide()
-            }else{
+            } else {
                 dialog?.hide()
             }
 
@@ -107,20 +106,20 @@ class ShowDetailsFragment : Fragment() {
         dialog?.show()
     }
 
-    private fun clickReviewButton(){
-        binding.reviewbutton.setOnClickListener{
+    private fun clickReviewButton() {
+        binding.reviewbutton.setOnClickListener {
             showBottomSheet()
         }
     }
 
-    private fun getData(){
+    private fun getData() {
         val show = args.show
         binding.showimg.setImageResource(show.imageResourceId)
         binding.collapsingToolbar.title = show.name
         binding.showtext.text = show.description
     }
 
-    private fun initReviewsRecycler(){
+    private fun initReviewsRecycler() {
 
         binding.reviewsrecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -132,7 +131,7 @@ class ShowDetailsFragment : Fragment() {
 
     }
 
-    private fun addReviewToList(author: String, comment: String, ratingNum: Float){
+    private fun addReviewToList(author: String, comment: String, ratingNum: Float) {
         adapter.addReview(Review(author, comment, ratingNum))
     }
 
