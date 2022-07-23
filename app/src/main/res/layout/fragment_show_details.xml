@@ -56,7 +56,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                tools:text="Lorem ipsum doloret sempri cum alpha bius adolphus datus beptin dagobus thi bluat venici kaiser tum bei potus gambus"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/black"
                 android:textSize="17sp"
