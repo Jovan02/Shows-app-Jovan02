@@ -79,6 +79,22 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/passwordtext"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                android:text="@string/remember_me"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_regular"
+                android:textFontWeight="400"
+                android:buttonTint="@color/white"
+                android:checked="false"
+                />
+
             <ImageView
                 android:id="@+id/topleft"
                 android:layout_width="wrap_content"
@@ -152,7 +168,7 @@
 
             <TextView
                 android:id="@+id/passworderror"
-                android:layout_width="300dp"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="1dp"
