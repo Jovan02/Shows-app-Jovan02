@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/profile_placeholder"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:padding="1dp"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        app:strokeColor="#52368C"
+        app:strokeWidth="2dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        tools:text="ruler_of_assignments@gmail.com"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/changePictureButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/change_profile_photo"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:background="@drawable/custom_button_white"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="#52368C"
+            android:textFontWeight="700"
+            app:backgroundTint="@null"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/logout"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#52368C"
+            android:background="@drawable/custom_button"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/white"
+            android:textFontWeight="700"
+            app:backgroundTint="@null"
+            />
+
+</LinearLayout>
