@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
 import models.Show
 
@@ -83,9 +84,10 @@ class ShowsFragment : Fragment() {
             initShowsRecycler(username)
         }
 
-        binding.logoutButton.setOnClickListener {
-            findNavController().popBackStack()
+        binding.profileButton.setOnClickListener{
+            showBottomSheet()
         }
+
     }
 
     private fun initShowsRecycler(user: String) {
@@ -104,5 +106,26 @@ class ShowsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun showBottomSheet() {
+        val dialog = context?.let { BottomSheetDialog(it) }
+
+        val bottomSheetBinding = DialogProfileBinding.inflate(layoutInflater)
+        dialog?.setContentView(bottomSheetBinding.root)
+
+
+        bottomSheetBinding.profileEmail.text = arguments?.getString("email")
+
+        bottomSheetBinding.changePictureButton.setOnClickListener{
+            // TODO: Open camera and take a picture
+        }
+
+        bottomSheetBinding.logoutButton.setOnClickListener {
+            dialog?.hide()
+            findNavController().popBackStack()
+        }
+        dialog?.show()
+    }
+
 
 }
