@@ -1,5 +1,7 @@
 package com.jovannikolic.myapplication
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -121,8 +123,17 @@ class ShowsFragment : Fragment() {
         }
 
         bottomSheetBinding.logoutButton.setOnClickListener {
-            dialog?.hide()
-            findNavController().popBackStack()
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Confirm logout")
+            builder.setMessage("Are you sure you want to logout?")
+            builder.setPositiveButton("Yes", DialogInterface.OnClickListener{_, _ ->
+                dialog?.hide()
+                findNavController().popBackStack()
+            })
+            builder.setNegativeButton("No", DialogInterface.OnClickListener{_, _ ->
+            })
+            var alert = builder.create()
+            alert.show()
         }
         dialog?.show()
     }
