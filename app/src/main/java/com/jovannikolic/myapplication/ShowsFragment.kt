@@ -1,7 +1,9 @@
 package com.jovannikolic.myapplication
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -61,6 +63,14 @@ class ShowsFragment : Fragment() {
 
     private lateinit var adapter: ShowsAdapter
 
+    private lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         return binding.root
@@ -77,7 +87,7 @@ class ShowsFragment : Fragment() {
             binding.emptystatetext.setVisibility(View.INVISIBLE)
             binding.showbutton.setVisibility(View.GONE)
 
-            val email = arguments?.getString("email")
+            val email = sharedPreferences.getString("email", "non_existing@email.com")
 
             val tokens = email?.split("@")
 
@@ -132,7 +142,7 @@ class ShowsFragment : Fragment() {
             })
             builder.setNegativeButton("No", DialogInterface.OnClickListener{_, _ ->
             })
-            var alert = builder.create()
+            val alert = builder.create()
             alert.show()
         }
         dialog?.show()
