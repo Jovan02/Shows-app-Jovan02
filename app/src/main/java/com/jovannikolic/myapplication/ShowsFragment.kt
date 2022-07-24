@@ -83,9 +83,9 @@ class ShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(sharedPreferences.getBoolean("remember", false)) System.exit(0)
+                if (sharedPreferences.getBoolean("remember", false)) System.exit(0)
                 else findNavController().popBackStack()
             }
         })
@@ -106,7 +106,7 @@ class ShowsFragment : Fragment() {
             initShowsRecycler(username)
         }
 
-        binding.profileButton.setOnClickListener{
+        binding.profileButton.setOnClickListener {
             showBottomSheet()
         }
 
@@ -138,7 +138,7 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding.profileEmail.text = arguments?.getString("email")
 
-        bottomSheetBinding.changePictureButton.setOnClickListener{
+        bottomSheetBinding.changePictureButton.setOnClickListener {
             // TODO: Open camera and take a picture
         }
 
@@ -146,18 +146,18 @@ class ShowsFragment : Fragment() {
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Confirm logout")
             builder.setMessage("Are you sure you want to logout?")
-            builder.setPositiveButton("Yes", DialogInterface.OnClickListener{_, _ ->
+            builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
                 dialog?.hide()
-                if(!sharedPreferences.getBoolean("remember", false)){
+                if (!sharedPreferences.getBoolean("remember", false)) {
                     findNavController().popBackStack()
-                }else {
+                } else {
                     sharedPreferences.edit {
                         putBoolean("remember", false)
                     }
                     startActivity(Intent(context, MainActivity::class.java))
                 }
             })
-            builder.setNegativeButton("No", DialogInterface.OnClickListener{_, _ -> })
+            builder.setNegativeButton("No", DialogInterface.OnClickListener { _, _ -> })
             val alert = builder.create()
             alert.show()
         }

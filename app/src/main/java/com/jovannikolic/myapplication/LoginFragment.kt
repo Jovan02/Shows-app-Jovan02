@@ -38,7 +38,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 System.exit(0)
             }
@@ -77,7 +77,7 @@ class LoginFragment : Fragment() {
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener {
             val email = binding.emailtext.editText?.text.toString()
-            sharedPreferences.edit{
+            sharedPreferences.edit {
                 putString("email", email)
             }
             findNavController().navigate(R.id.toShowNav)

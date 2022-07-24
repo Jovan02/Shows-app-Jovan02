@@ -20,16 +20,13 @@ class MainActivity : AppCompatActivity() {
 
         sharedPreferences = this.getSharedPreferences("LoginData", Context.MODE_PRIVATE)
 
-
         val myNavHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val inflater = myNavHostFragment.navController.navInflater
         val graph: NavGraph
 
-        if(sharedPreferences.getBoolean("remember", false)){
+        if (sharedPreferences.getBoolean("remember", false)) {
             graph = inflater.inflate(R.navigation.show_nav)
-        }
-        else{
-
+        } else {
             graph = inflater.inflate(R.navigation.main)
         }
 
@@ -38,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
     }
-
 
 
 }
