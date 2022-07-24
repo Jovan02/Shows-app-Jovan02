@@ -3,12 +3,14 @@ package com.jovannikolic.myapplication
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -138,7 +140,14 @@ class ShowsFragment : Fragment() {
             builder.setMessage("Are you sure you want to logout?")
             builder.setPositiveButton("Yes", DialogInterface.OnClickListener{_, _ ->
                 dialog?.hide()
-                findNavController().popBackStack()
+                if(!sharedPreferences.getBoolean("remember", false)){
+                    findNavController().popBackStack()
+                }else {
+                    sharedPreferences.edit {
+                        putBoolean("remember", false)
+                    }
+                    startActivity(Intent(context, MainActivity::class.java))
+                }
             })
             builder.setNegativeButton("No", DialogInterface.OnClickListener{_, _ ->
             })
