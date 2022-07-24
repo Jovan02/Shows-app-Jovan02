@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.edit
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -81,6 +82,13 @@ class ShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(sharedPreferences.getBoolean("remember", false)) System.exit(0)
+                else findNavController().popBackStack()
+            }
+        })
     }
 
     private fun initListeners() {
@@ -149,8 +157,7 @@ class ShowsFragment : Fragment() {
                     startActivity(Intent(context, MainActivity::class.java))
                 }
             })
-            builder.setNegativeButton("No", DialogInterface.OnClickListener{_, _ ->
-            })
+            builder.setNegativeButton("No", DialogInterface.OnClickListener{_, _ -> })
             val alert = builder.create()
             alert.show()
         }
