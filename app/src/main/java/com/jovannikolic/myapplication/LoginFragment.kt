@@ -1,5 +1,7 @@
 package com.jovannikolic.myapplication
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
@@ -7,7 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
@@ -17,6 +19,14 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!
+
+    private lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -59,9 +69,18 @@ class LoginFragment : Fragment() {
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener {
             val email = binding.emailtext.editText?.text.toString()
-            val bundle = bundleOf("email" to email)
-            findNavController().navigate(R.id.toShowNav, bundle)
+            sharedPreferences.edit{
+                putString("email", email)
+            }
+            findNavController().navigate(R.id.toShowNav)
         }
+
+        binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
+            sharedPreferences.edit {
+                putBoolean("remember", isChecked)
+            }
+        }
+
     }
 
     override fun onDestroyView() {
