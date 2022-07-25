@@ -127,7 +127,7 @@ class ShowsFragment : Fragment() {
         dialog?.setContentView(bottomSheetBinding.root)
 
 
-        bottomSheetBinding.profileEmail.text = arguments?.getString("email")
+        bottomSheetBinding.profileEmail.text = sharedPreferences.getString("email", "non_existing@email.com")
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             // TODO: Open camera and take a picture
