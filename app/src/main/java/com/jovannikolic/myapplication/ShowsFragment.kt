@@ -3,15 +3,13 @@ package com.jovannikolic.myapplication
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.edit
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -82,13 +80,6 @@ class ShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (sharedPreferences.getBoolean("remember", false)) System.exit(0)
-                else findNavController().popBackStack()
-            }
-        })
     }
 
     private fun initListeners() {
@@ -147,14 +138,14 @@ class ShowsFragment : Fragment() {
             builder.setTitle("Confirm logout")
             builder.setMessage("Are you sure you want to logout?")
             builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
-                dialog?.hide()
+                dialog?.dismiss()
                 if (!sharedPreferences.getBoolean("remember", false)) {
                     findNavController().popBackStack()
                 } else {
                     sharedPreferences.edit {
                         putBoolean("remember", false)
                     }
-                    startActivity(Intent(context, MainActivity::class.java))
+                    findNavController().navigate(R.id.actionLogout)
                 }
             })
             builder.setNegativeButton("No", DialogInterface.OnClickListener { _, _ -> })
@@ -163,6 +154,4 @@ class ShowsFragment : Fragment() {
         }
         dialog?.show()
     }
-
-
 }
