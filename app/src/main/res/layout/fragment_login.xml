@@ -1,183 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#52368C"
-    tools:context=".ActivityLogin">
+    android:background="#52368C">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailtext"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeWidthFocused="2dp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxStrokeWidth="1dp"
-        app:boxStrokeColor="@color/white_outline_text_input"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="25dp"
-        android:hint="@string/email"
-        android:textColorHint="@color/white"
-        app:hintTextColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pleaselogin"
-        >
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:textColor="@color/white"
-            android:textFontWeight="400"
-            />
+            tools:context=".LoginFragment">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailtext"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="25dp"
+                android:hint="@string/email"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white_outline_text_input"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:hintTextColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pleaselogin"
+                >
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordtext"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeWidthFocused="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxStrokeWidth="1dp"
-        app:boxStrokeColor="@color/white_outline_text_input"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:hint="@string/password"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/white"
-        android:textColorHint="@color/white"
-        app:hintTextColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailtext"
-        >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/white"
+                    android:textFontWeight="400"
+                    android:inputType="text"
+                    />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_regular"
-            android:inputType="textPassword"
+            </com.google.android.material.textfield.TextInputLayout>
 
-            android:textFontWeight="400"
-            />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordtext"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="25dp"
+                android:hint="@string/password"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white_outline_text_input"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:hintTextColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailtext"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/white"
+                >
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/roboto_regular"
+                    android:inputType="textPassword"
+                    android:textFontWeight="400"
+                    />
 
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <ImageView
+                android:id="@+id/topleft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_top_left_illustration"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-    <ImageView
-        android:id="@+id/topleft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_top_left_illustration"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+            <ImageView
+                android:id="@+id/topright"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_top_right_illustration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-    <ImageView
-        android:id="@+id/topright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_top_right_illustration"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+            <ImageView
+                android:id="@+id/logohorisontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="181dp"
+                android:layout_marginStart="56dp"
+                android:src="@drawable/ic_logo_horizontal_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-    <ImageView
-        android:id="@+id/logohorisontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_logo_horizontal_white"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="181dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="56dp"
-        />
+            <TextView
+                android:id="@+id/logintext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="373dp"
+                android:layout_marginStart="24sp"
+                android:text="@string/login"
+                android:textSize="34sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textFontWeight="700"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-    <TextView
-        android:id="@+id/logintext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="373dp"
-        android:layout_marginStart="24sp"
-        android:text="@string/login"
-        android:textSize="34sp"
-        android:textColor="@color/white"
-        android:fontFamily="@font/roboto_bold"
-        android:textFontWeight="700"
-        />
+            <TextView
+                android:id="@+id/pleaselogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/in_order_to_continue_please_log_in"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_regular"
+                android:textFontWeight="400"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logintext"
+                />
 
-    <TextView
-        android:id="@+id/pleaselogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/logintext"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/in_order_to_continue_please_log_in"
-        android:textSize="17sp"
-        android:textColor="@color/white"
-        android:fontFamily="@font/roboto_regular"
-        android:textFontWeight="400"
-        />
+            <TextView
+                android:id="@+id/emailerror"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="1dp"
+                android:textColor="#c73e1d"
+                android:textFontWeight="400"
+                app:layout_constraintStart_toStartOf="@id/emailtext"
+                app:layout_constraintTop_toBottomOf="@id/emailtext"
+                />
 
+            <TextView
+                android:id="@+id/passworderror"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="1dp"
+                android:textColor="#c73e1d"
+                app:layout_constraintStart_toStartOf="@id/passwordtext"
+                app:layout_constraintTop_toBottomOf="@id/passwordtext"
+                />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginbutton"
+                app:layout_constraintTop_toBottomOf="@+id/passwordtext"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="156dp"
+                android:layout_marginBottom="36dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/custom_button"
+                android:textSize="17sp"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="#FFFFFF"
+                android:text="@string/loginbtn"
+                android:textAllCaps="false"
+                android:enabled="false"
+                android:clickable="false"
+                android:focusable="true"
+                android:layout_gravity="bottom"
+                android:textFontWeight="400"
+                app:backgroundTint="@null"
+                />
 
-    <TextView
-        android:id="@+id/emailerror"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/emailtext"
-        app:layout_constraintStart_toStartOf="@id/emailtext"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="1dp"
-        android:textColor="#c73e1d"
-        android:textFontWeight="400"
-        />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/passworderror"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/passwordtext"
-        app:layout_constraintStart_toStartOf="@id/passwordtext"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="1dp"
-        android:textColor="#c73e1d"
+    </ScrollView>
 
-        />
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginbutton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/custom_button"
-        android:textSize="17sp"
-        android:fontFamily="@font/roboto_bold"
-        android:textColor="#FFFFFF"
-        android:text="@string/loginbtn"
-        android:textAllCaps="false"
-        android:enabled="false"
-        android:clickable="false"
-        android:focusable="true"
-        app:backgroundTint="@null"
-        android:textFontWeight="400"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

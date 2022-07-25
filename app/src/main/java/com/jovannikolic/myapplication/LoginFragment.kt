@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -17,8 +17,6 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!
-
-    private val args by navArgs<ShowsFragmentArgs>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -36,23 +34,22 @@ class LoginFragment : Fragment() {
 
         //  Email TextWatcher
         binding.emailtext.editText?.addTextChangedListener {
-            if(binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()){
+            if (binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()) {
                 isEmailValid = true
                 binding.emailerror.text = null
-            }else{
+            } else {
                 isEmailValid = false
                 binding.emailerror.text = "Invalid Email Address"
             }
             checkLoginButtonState(isEmailValid, isPasswordValid)
         }
 
-
         //  Password TextWatcher
         binding.passwordtext.editText?.addTextChangedListener {
-            if(validPassword()){
+            if (validPassword()) {
                 isPasswordValid = true
                 binding.passworderror.text = null
-            }else{
+            } else {
                 isPasswordValid = false
                 binding.passworderror.text = "Password must be at least 6 characters long."
             }
@@ -60,9 +57,10 @@ class LoginFragment : Fragment() {
         }
 
         //  Login button - opens new activity
-        binding.loginbutton.setOnClickListener{
-            val direction = LoginFragmentDirections.toShowFragment(binding.emailtext.editText?.text.toString())
-            findNavController().navigate(direction)
+        binding.loginbutton.setOnClickListener {
+            val email = binding.emailtext.editText?.text.toString()
+            val bundle = bundleOf("email" to email)
+            findNavController().navigate(R.id.toShowNav, bundle)
         }
     }
 
@@ -75,7 +73,7 @@ class LoginFragment : Fragment() {
 
         val emailText = binding.emailtext.editText?.text.toString()
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             return false
         }
         return true
@@ -85,18 +83,18 @@ class LoginFragment : Fragment() {
 
         val passText = binding.passwordtext.editText?.text.toString()
 
-        if(passText.length < 6) {
+        if (passText.length < 6) {
             return false
         }
 
         return true
     }
 
-    private fun checkLoginButtonState(email : Boolean, password : Boolean){
+    private fun checkLoginButtonState(email: Boolean, password: Boolean) {
         binding.loginbutton.isEnabled = email && password
-        if(email && password) {
+        if (email && password) {
             binding.loginbutton.setTextColor(Color.parseColor("#52368C"))
-        }else{
+        } else {
             binding.loginbutton.setTextColor(Color.parseColor("#FFFFFF"))
         }
     }

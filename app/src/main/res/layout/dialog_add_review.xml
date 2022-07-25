@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -27,9 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:layout_marginStart="157dp"
             android:src="@drawable/ic_x_button"
             android:backgroundTint="@color/white"
-            android:layout_marginStart="157dp"
             />
 
     </LinearLayout>
@@ -44,21 +45,21 @@
         android:isIndicator="false"
         android:numStars="5"
         android:progressTint="#52368C"
-        android:stepSize="1" />
+        android:stepSize="1"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/comment"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeWidthFocused="2dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxStrokeWidth="1dp"
-        app:boxStrokeColor="@color/purple_outline_text_input"
         android:layout_marginStart="25dp"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="25dp"
         android:hint="@string/comment"
         android:textColorHint="#52368C"
+        app:boxStrokeColor="@color/purple_outline_text_input"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="2dp"
         app:hintTextColor="#52368C"
         >
 
@@ -90,12 +91,5 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-
-
 
 </LinearLayout>
