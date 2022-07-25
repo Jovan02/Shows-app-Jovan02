@@ -1,51 +1,55 @@
 package com.jovannikolic.myapplication
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Patterns
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import com.jovannikolic.myapplication.databinding.ActivityLoginBinding
+import androidx.navigation.fragment.findNavController
+import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 
-class ActivityLogin : AppCompatActivity() {
+class LoginFragment : Fragment() {
 
-    lateinit var binding: ActivityLoginBinding
+    private var _binding: FragmentLoginBinding? = null
 
-    @SuppressLint("SetTextI18n")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    private val binding get() = _binding!!
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initListeners()
+    }
+
+    private fun initListeners() {
         var isEmailValid = false
         var isPasswordValid = false
 
         //  Email TextWatcher
         binding.emailtext.editText?.addTextChangedListener {
-            if(binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()){
+            if (binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()) {
                 isEmailValid = true
                 binding.emailerror.text = null
-            }else{
+            } else {
                 isEmailValid = false
                 binding.emailerror.text = "Invalid Email Address"
             }
             checkLoginButtonState(isEmailValid, isPasswordValid)
         }
 
-
         //  Password TextWatcher
         binding.passwordtext.editText?.addTextChangedListener {
-            if(validPassword()){
+            if (validPassword()) {
                 isPasswordValid = true
                 binding.passworderror.text = null
-            }else{
+            } else {
                 isPasswordValid = false
                 binding.passworderror.text = "Password must be at least 6 characters long."
             }
@@ -53,19 +57,23 @@ class ActivityLogin : AppCompatActivity() {
         }
 
         //  Login button - opens new activity
-        binding.loginbutton.setOnClickListener{
-            val intent = Intent(this, ActivityShows::class.java)
-            intent.putExtra("username", binding.emailtext.editText?.text.toString())
-            startActivity(intent)
+        binding.loginbutton.setOnClickListener {
+            val email = binding.emailtext.editText?.text.toString()
+            val bundle = bundleOf("email" to email)
+            findNavController().navigate(R.id.toShowNav, bundle)
         }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun validEmail(): Boolean {
 
         val emailText = binding.emailtext.editText?.text.toString()
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             return false
         }
         return true
@@ -75,28 +83,20 @@ class ActivityLogin : AppCompatActivity() {
 
         val passText = binding.passwordtext.editText?.text.toString()
 
-        if(passText.length < 6) {
+        if (passText.length < 6) {
             return false
         }
 
         return true
     }
 
-    private fun checkLoginButtonState(email : Boolean, password : Boolean){
+    private fun checkLoginButtonState(email: Boolean, password: Boolean) {
         binding.loginbutton.isEnabled = email && password
-        if(email && password) {
+        if (email && password) {
             binding.loginbutton.setTextColor(Color.parseColor("#52368C"))
-        }else{
+        } else {
             binding.loginbutton.setTextColor(Color.parseColor("#FFFFFF"))
         }
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = this!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(this.currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
     }
 
 }
