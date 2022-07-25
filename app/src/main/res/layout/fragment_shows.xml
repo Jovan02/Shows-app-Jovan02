@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".ShowsFragment">
 
-    <com.google.android.material.button.MaterialButton
+    <ImageButton
         android:id="@+id/logoutButton"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="22dp"
-        android:background="@drawable/ic_logout_vector"
+        android:src="@drawable/ic_logout_vector"
+        android:background="@null"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
