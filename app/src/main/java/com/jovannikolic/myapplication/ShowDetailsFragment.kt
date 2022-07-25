@@ -90,12 +90,12 @@ class ShowDetailsFragment : Fragment() {
                 dialog?.hide()
             }
 
-            var numOfReviews = adapter.itemCount
+            val numOfReviews = adapter.itemCount
             sumOfReviews += rating
 
             val df = DecimalFormat("#.##")
 
-            var averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
+            val averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
 
             binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageReviews.toString())
 
