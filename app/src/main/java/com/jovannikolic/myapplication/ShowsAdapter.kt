@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jovannikolic.myapplication.databinding.ViewShowItemBinding
 import models.Show
 
-class ShowsAdapter(
+class ShowsAdapter (
     private var items: List<Show>,
     private val onItemClickCallback: (Show) -> Unit
-) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
+): RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
         val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context))
@@ -22,13 +22,13 @@ class ShowsAdapter(
 
     override fun getItemCount() = items.count()
 
-    inner class ShowViewHolder(private val binding: ViewShowItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ShowViewHolder(private val binding: ViewShowItemBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: Show) {
+        fun bind(item: Show){
             binding.showname.text = item.name
             binding.showdescription.text = item.description
             binding.showImage.setImageResource(item.imageResourceId)
-            binding.cardcontainer.setOnClickListener {
+            binding.cardcontainer.setOnClickListener{
                 onItemClickCallback(item)
             }
         }
