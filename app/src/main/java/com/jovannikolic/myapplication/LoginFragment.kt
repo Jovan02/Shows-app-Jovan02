@@ -5,13 +5,13 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 
@@ -37,13 +37,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                System.exit(0)
-            }
-        })
-
     }
 
     private fun initListeners() {
@@ -80,7 +73,27 @@ class LoginFragment : Fragment() {
             sharedPreferences.edit {
                 putString("email", email)
             }
-            findNavController().navigate(R.id.toShowNav)
+
+            val navOptions: NavOptions
+
+            if(sharedPreferences.getBoolean("remember", false)){
+                navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.loginFragment, true)
+                    .setEnterAnim(R.anim.enter_right_to_left)
+                    .setExitAnim(R.anim.exit_right_to_left)
+                    .setPopEnterAnim(R.anim.enter_left_to_right)
+                    .setPopExitAnim(R.anim.exit_left_to_right)
+                    .build()
+            }else{
+                navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.loginFragment, false)
+                    .setEnterAnim(R.anim.enter_right_to_left)
+                    .setExitAnim(R.anim.exit_right_to_left)
+                    .setPopEnterAnim(R.anim.enter_left_to_right)
+                    .setPopExitAnim(R.anim.exit_left_to_right)
+                    .build()
+            }
+            findNavController().navigate(R.id.toShowNav, null, navOptions)
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
