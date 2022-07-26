@@ -102,6 +102,10 @@ class LoginFragment : Fragment() {
             }
         }
 
+        binding.registerButton.setOnClickListener{
+            findNavController().navigate(R.id.toRegisterFragment)
+        }
+
     }
 
     override fun onDestroyView() {
