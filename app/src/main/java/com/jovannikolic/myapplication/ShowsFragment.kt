@@ -1,13 +1,19 @@
 package com.jovannikolic.myapplication
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
+import files.FileUtil
 import models.Show
 
 class ShowsFragment : Fragment() {
@@ -131,6 +138,8 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             // TODO: Open camera and take a picture
+            checkIfPermissionNeeded()
+            dialog?.dismiss()
         }
 
         bottomSheetBinding.logoutButton.setOnClickListener {
@@ -152,6 +161,55 @@ class ShowsFragment : Fragment() {
             val alert = builder.create()
             alert.show()
         }
+        changePicture(bottomSheetBinding)
         dialog?.show()
     }
+
+    private fun checkIfPermissionNeeded() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            activateCamera()
+        } else {
+            requestPermission()
+        }
+    }
+
+    private fun requestPermission() {
+        requestPermissionsLauncher.launch(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+    }
+
+    private val requestPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+        var permissionGiven = false
+        results.forEach{
+            if(it.value){
+                permissionGiven = true
+            }else{
+                permissionGiven = false
+                return@forEach
+            }
+        }
+        if(permissionGiven){
+            activateCamera()
+        }
+    }
+
+    private fun activateCamera(){
+        val file = FileUtil.createImageFile(requireContext())
+        val uri = FileProvider.getUriForFile(requireContext(), "com.jovannikolic.myapplication.fileProvider", file!!)
+        sharedPreferences.edit{
+            putString("image", file.absolutePath)
+        }
+        getCameraImage.launch(uri)
+    }
+
+
+    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()){ _ ->
+
+    }
+
+    private fun changePicture(bottomSheetBinding: DialogProfileBinding) {
+        val path = sharedPreferences.getString("image", "test")
+        bottomSheetBinding.profilePhoto.setImageBitmap(BitmapFactory.decodeFile(path))
+    }
+
 }
