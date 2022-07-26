@@ -174,5 +174,6 @@ class ShowsFragment : Fragment() {
     private fun changePicture(bottomSheetBinding: DialogProfileBinding) {
         val path = sharedPreferences.getString("image", "test")
         bottomSheetBinding.profilePhoto.setImageBitmap(BitmapFactory.decodeFile(path))
+        binding.profileButton.setImageBitmap(BitmapFactory.decodeFile(path))
     }
 }
