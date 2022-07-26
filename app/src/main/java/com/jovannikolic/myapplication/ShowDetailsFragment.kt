@@ -89,9 +89,12 @@ class ShowDetailsFragment : Fragment() {
 
                 viewModel.createReview(author, comment, rating)
 
+                var reviewToBeAdded : Review = Review("author", "comment", 3.0f)
+
                 viewModel.reviewLiveData.observe(viewLifecycleOwner) { review ->
-                    addReviewToList(review)
+                    reviewToBeAdded = review
                 }
+                    addReviewToList(reviewToBeAdded)
 
                 dialog?.hide()
             } else {
