@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -29,12 +30,12 @@ class ShowDetailsFragment : Fragment() {
 
     private val reviews = emptyList<Review>()
 
-    var sumOfReviews = 0.0
+    private val viewModel by viewModels<ShowDetailsViewModel>()
+
     var firstInit = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -85,23 +86,28 @@ class ShowDetailsFragment : Fragment() {
                     binding.noReviews.isVisible = false
                     firstInit = false
                 }
-                addReviewToList(author, comment, rating)
+
+                viewModel.createReview(author, comment, rating)
+
+                viewModel.reviewLiveData.observe(viewLifecycleOwner) { review ->
+                    addReviewToList(review)
+                }
+
                 dialog?.hide()
             } else {
                 dialog?.hide()
             }
 
-            var numOfReviews = adapter.itemCount
-            sumOfReviews += rating
+            val numOfReviews = adapter.itemCount
 
-            val df = DecimalFormat("#.##")
+            viewModel.calculateRating(numOfReviews, rating)
 
-            var averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
-
-            binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageReviews.toString())
-
-            binding.averageratingbar.rating = averageReviews.toFloat()
-
+            viewModel.averageReviewsLiveData.observe(viewLifecycleOwner) { averageRating ->
+                val df = DecimalFormat("#.##")
+                val averageRatingRounded = df.format(averageRating)
+                binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageRatingRounded.toString())
+                binding.averageratingbar.rating = averageRatingRounded.toFloat()
+            }
         }
         dialog?.show()
     }
@@ -131,8 +137,8 @@ class ShowDetailsFragment : Fragment() {
 
     }
 
-    private fun addReviewToList(author: String, comment: String, ratingNum: Float) {
-        adapter.addReview(Review(author, comment, ratingNum))
+    private fun addReviewToList(review: Review) {
+        adapter.addReview(review)
     }
 
 }
