@@ -32,9 +32,8 @@ class ShowDetailsFragment : Fragment() {
     var sumOfReviews = 0.0
     var firstInit = true
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -91,12 +90,12 @@ class ShowDetailsFragment : Fragment() {
                 dialog?.hide()
             }
 
-            var numOfReviews = adapter.itemCount
+            val numOfReviews = adapter.itemCount
             sumOfReviews += rating
 
             val df = DecimalFormat("#.##")
 
-            var averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
+            val averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
 
             binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageReviews.toString())
 
