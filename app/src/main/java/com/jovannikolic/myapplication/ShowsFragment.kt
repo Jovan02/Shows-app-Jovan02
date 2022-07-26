@@ -23,7 +23,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
 import files.FileUtil
-import models.Show
 
 class ShowsFragment : Fragment() {
 
@@ -52,6 +51,8 @@ class ShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
+        binding.profileButton.setBackgroundResource(R.drawable.round_button)
+        binding.profileButton.setImageResource(R.drawable.profile_placeholder)
     }
 
     private fun initListeners() {
