@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavGraph
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.jovannikolic.myapplication.databinding.ActivityMainBinding
 
@@ -20,21 +22,6 @@ class MainActivity : AppCompatActivity() {
 
         sharedPreferences = this.getSharedPreferences("LoginData", Context.MODE_PRIVATE)
 
-        changeGraph()
-
         setContentView(binding.root)
-    }
-
-    fun changeGraph(){
-        val myNavHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val inflater = myNavHostFragment.navController.navInflater
-        val graph: NavGraph
-
-        if (sharedPreferences.getBoolean("remember", false)) {
-            graph = inflater.inflate(R.navigation.show_nav)
-        } else {
-            graph = inflater.inflate(R.navigation.main)
-        }
-        myNavHostFragment.navController.graph = graph
     }
 }
