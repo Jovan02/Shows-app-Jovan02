@@ -9,6 +9,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -16,6 +17,12 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
+import models.LoginRequest
+import models.LoginResponse
+import networking.ApiModule
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginFragment : Fragment() {
 
@@ -23,11 +30,15 @@ class LoginFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    private var successfulLogin = false
+
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+
+        ApiModule.initRetrofit(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -91,6 +102,7 @@ class LoginFragment : Fragment() {
 
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener {
+            sendDataToApi(binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
             val email = binding.emailtext.editText?.text.toString()
             sharedPreferences.edit {
                 putString("email", email)
@@ -118,7 +130,13 @@ class LoginFragment : Fragment() {
             sharedPreferences.edit{
                 putBoolean("logged", isLoggedIn)
             }
-            findNavController().navigate(R.id.toShowsFragment, null, navOptions)
+
+            if(successfulLogin){
+                findNavController().navigate(R.id.toShowsFragment, null, navOptions)
+                successfulLogin = false
+            }else{
+                Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
@@ -167,5 +185,22 @@ class LoginFragment : Fragment() {
             binding.loginbutton.setTextColor(Color.parseColor("#FFFFFF"))
         }
     }
+
+    private fun sendDataToApi(emailData: String, passwordData: String){
+        val loginRequest = LoginRequest(
+            email = emailData,
+            password = passwordData
+        )
+        ApiModule.retrofit.login(loginRequest)
+            .enqueue(object: Callback<LoginResponse> {
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    successfulLogin = response.isSuccessful
+                }
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    successfulLogin = false
+                }
+            })
+    }
+
 
 }
