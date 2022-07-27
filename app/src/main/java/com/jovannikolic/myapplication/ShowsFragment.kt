@@ -51,7 +51,6 @@ class ShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-        binding.profileButton.setBackgroundResource(R.drawable.round_button)
         binding.profileButton.setImageResource(R.drawable.profile_placeholder)
     }
 
@@ -121,6 +120,9 @@ class ShowsFragment : Fragment() {
                         putBoolean("remember", false)
                     }
                     findNavController().navigate(R.id.actionLogout)
+                }
+                sharedPreferences.edit {
+                    putBoolean("logged", false)
                 }
             })
             builder.setNegativeButton("No", DialogInterface.OnClickListener { _, _ -> })
