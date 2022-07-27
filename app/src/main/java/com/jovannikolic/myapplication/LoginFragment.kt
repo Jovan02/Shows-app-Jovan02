@@ -73,27 +73,7 @@ class LoginFragment : Fragment() {
             sharedPreferences.edit {
                 putString("email", email).apply()
             }
-
-            val navOptions: NavOptions
-
-            if(sharedPreferences.getBoolean("remember", false)){
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.loginFragment, true)
-                    .setEnterAnim(R.anim.enter_right_to_left)
-                    .setExitAnim(R.anim.exit_right_to_left)
-                    .setPopEnterAnim(R.anim.enter_left_to_right)
-                    .setPopExitAnim(R.anim.exit_left_to_right)
-                    .build()
-            }else{
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.loginFragment, false)
-                    .setEnterAnim(R.anim.enter_right_to_left)
-                    .setExitAnim(R.anim.exit_right_to_left)
-                    .setPopEnterAnim(R.anim.enter_left_to_right)
-                    .setPopExitAnim(R.anim.exit_left_to_right)
-                    .build()
-            }
-            findNavController().navigate(R.id.toShowNav, null, navOptions)
+            findNavController().navigate(R.id.toShowNav)
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
