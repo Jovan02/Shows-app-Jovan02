@@ -22,4 +22,6 @@
     <string name="remember_me">Remember me</string>
     <string name="logout">Logout</string>
     <string name="change_profile_photo">Change profile photo</string>
+    <string name="confirm_logout">Confirm logout</string>
+    <string name="confirm_logout_message">Are you sure you want to logout?</string>
 </resources>

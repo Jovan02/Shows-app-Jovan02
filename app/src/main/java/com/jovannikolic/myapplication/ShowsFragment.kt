@@ -162,8 +162,8 @@ class ShowsFragment : Fragment() {
 
     private fun onLogoutButtonPressed(dialog: BottomSheetDialog?){
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Confirm logout")
-        builder.setMessage("Are you sure you want to logout?")
+        builder.setTitle(R.string.confirm_logout)
+        builder.setMessage(R.string.confirm_logout_message)
         builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
             dialog?.dismiss()
             if (!sharedPreferences.getBoolean("remember", false)) {
