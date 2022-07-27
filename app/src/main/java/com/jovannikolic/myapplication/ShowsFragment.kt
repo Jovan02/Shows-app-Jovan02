@@ -175,7 +175,7 @@ class ShowsFragment : Fragment() {
                 findNavController().navigate(R.id.actionLogout)
             }
         })
-        builder.setNegativeButton("No", DialogInterface.OnClickListener { _, _ -> })
+        builder.setNegativeButton("No", null)
         val alert = builder.create()
         alert.show()
     }
