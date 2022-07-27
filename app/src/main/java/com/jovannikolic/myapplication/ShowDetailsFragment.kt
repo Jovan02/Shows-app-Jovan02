@@ -24,11 +24,7 @@ class ShowDetailsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    lateinit var adapter: ReviewsAdapter
-
     private val args by navArgs<ShowDetailsFragmentArgs>()
-
-    private val reviews = emptyList<Review>()
 
     private val viewModel by viewModels<ShowDetailsViewModel>()
 
@@ -42,8 +38,6 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
-
-        adapter = ReviewsAdapter(reviews) { review -> }
 
         getData()
 
@@ -87,18 +81,17 @@ class ShowDetailsFragment : Fragment() {
                     firstInit = false
                 }
 
-                viewModel.createReview(author, comment, rating)
-
-                viewModel.reviewLiveData.observe(viewLifecycleOwner) { review ->
-                    addReviewToList(review)
-                }
+                viewModel.addReviewToList(Review(author, comment, rating))
 
                 dialog?.hide()
             } else {
                 dialog?.hide()
             }
 
-            val numOfReviews = adapter.itemCount
+            var numOfReviews = 0
+            viewModel.adapterLiveData.observe(viewLifecycleOwner){ adapter ->
+                numOfReviews = adapter.itemCount
+            }
 
             viewModel.calculateRating(numOfReviews, rating)
 
@@ -129,16 +122,14 @@ class ShowDetailsFragment : Fragment() {
 
         binding.reviewsrecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        binding.reviewsrecycler.adapter = adapter
+        viewModel.adapterLiveData.observe(viewLifecycleOwner){ adapter ->
+            binding.reviewsrecycler.adapter = adapter
+        }
 
         binding.reviewsrecycler.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
 
-    }
-
-    private fun addReviewToList(review: Review) {
-        adapter.addReview(review)
     }
 
 }
