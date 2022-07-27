@@ -42,6 +42,7 @@ class LoginFragment : Fragment() {
     private fun initListeners() {
         var isEmailValid = false
         var isPasswordValid = false
+        val isLoggedIn = false
 
         //  Email TextWatcher
         binding.emailtext.editText?.addTextChangedListener {
@@ -92,6 +93,9 @@ class LoginFragment : Fragment() {
                     .setPopEnterAnim(R.anim.enter_left_to_right)
                     .setPopExitAnim(R.anim.exit_left_to_right)
                     .build()
+            }
+            sharedPreferences.edit{
+                putBoolean("logged", isLoggedIn)
             }
             findNavController().navigate(R.id.toShowNav, null, navOptions)
         }
