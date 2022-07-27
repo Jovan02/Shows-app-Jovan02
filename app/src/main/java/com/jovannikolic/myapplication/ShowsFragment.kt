@@ -108,23 +108,7 @@ class ShowsFragment : Fragment() {
         }
 
         bottomSheetBinding.logoutButton.setOnClickListener {
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle("Confirm logout")
-            builder.setMessage("Are you sure you want to logout?")
-            builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
-                dialog?.dismiss()
-                if (!sharedPreferences.getBoolean("remember", false)) {
-                    findNavController().popBackStack()
-                } else {
-                    sharedPreferences.edit {
-                        putBoolean("remember", false)
-                    }
-                    findNavController().navigate(R.id.actionLogout)
-                }
-            })
-            builder.setNegativeButton("No", DialogInterface.OnClickListener { _, _ -> })
-            val alert = builder.create()
-            alert.show()
+            onLogoutButtonPressed(dialog)
         }
         changePicture(bottomSheetBinding)
         dialog?.show()
@@ -175,4 +159,25 @@ class ShowsFragment : Fragment() {
         val path = sharedPreferences.getString("image", "test")
         bottomSheetBinding.profilePhoto.setImageBitmap(BitmapFactory.decodeFile(path))
     }
+
+    private fun onLogoutButtonPressed(dialog: BottomSheetDialog?){
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Confirm logout")
+        builder.setMessage("Are you sure you want to logout?")
+        builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
+            dialog?.dismiss()
+            if (!sharedPreferences.getBoolean("remember", false)) {
+                findNavController().popBackStack()
+            } else {
+                sharedPreferences.edit {
+                    putBoolean("remember", false)
+                }
+                findNavController().navigate(R.id.actionLogout)
+            }
+        })
+        builder.setNegativeButton("No", DialogInterface.OnClickListener { _, _ -> })
+        val alert = builder.create()
+        alert.show()
+    }
+
 }
