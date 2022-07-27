@@ -1,6 +1,8 @@
 package com.jovannikolic.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentRegisterBinding
@@ -17,6 +20,13 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
 
     private val binding get() = _binding!!
+
+    private lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
@@ -71,6 +81,9 @@ class RegisterFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
+            sharedPreferences.edit{
+                putBoolean("registered", true)
+            }
             findNavController().popBackStack()
         }
 
