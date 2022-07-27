@@ -19,9 +19,8 @@
             android:layout_height="35dp"
             android:layout_marginTop="19dp"
             android:layout_marginStart="350dp"
-            android:scaleType="centerCrop"
-            android:background="@drawable/profile_placeholder"
-            app:backgroundTint="@null"
+            android:src="@drawable/profile_placeholder"
+
             />
 
     </androidx.appcompat.widget.Toolbar>

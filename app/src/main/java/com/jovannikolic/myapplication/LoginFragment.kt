@@ -1,5 +1,6 @@
 package com.jovannikolic.myapplication
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -25,20 +26,31 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(sharedPreferences.getBoolean("registered", false)){
+            binding.logintext.text = "Registration Successful!"
+            binding.registerButton.visibility = View.GONE
+            sharedPreferences.edit{
+                putBoolean("registered", false)
+            }
+        }else{
+            binding.logintext.text = "Login"
+            binding.registerButton.visibility = View.VISIBLE
+        }
         initListeners()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initListeners() {
         var isEmailValid = false
         var isPasswordValid = false
@@ -97,7 +109,7 @@ class LoginFragment : Fragment() {
             sharedPreferences.edit{
                 putBoolean("logged", isLoggedIn)
             }
-            findNavController().navigate(R.id.toShowNav, null, navOptions)
+            findNavController().navigate(R.id.toShowsFragment, null, navOptions)
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
