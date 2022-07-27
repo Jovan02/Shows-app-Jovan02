@@ -19,10 +19,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
 import files.FileUtil
+import javax.security.auth.callback.Callback
 import models.Show
 
 class ShowsFragment : Fragment() {
@@ -34,6 +37,10 @@ class ShowsFragment : Fragment() {
     private lateinit var adapter: ShowsAdapter
 
     private lateinit var sharedPreferences: SharedPreferences
+
+    private lateinit var dialog: BottomSheetDialog
+
+    private lateinit var bottomSheetBinding: DialogProfileBinding
 
     private val viewModel by viewModels<ShowsViewModel>()
 
@@ -94,24 +101,24 @@ class ShowsFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        val dialog = context?.let { BottomSheetDialog(it) }
 
-        val bottomSheetBinding = DialogProfileBinding.inflate(layoutInflater)
-        dialog?.setContentView(bottomSheetBinding.root)
+        dialog = BottomSheetDialog(requireContext())
 
+        bottomSheetBinding = DialogProfileBinding.inflate(layoutInflater)
+        dialog.setContentView(bottomSheetBinding.root)
 
         bottomSheetBinding.profileEmail.text = sharedPreferences.getString("email", "non_existing@email.com")
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             checkIfPermissionNeeded()
-            dialog?.dismiss()
+            dialog.dismiss()
         }
 
         bottomSheetBinding.logoutButton.setOnClickListener {
             onLogoutButtonPressed(dialog)
         }
         changePicture(bottomSheetBinding)
-        dialog?.show()
+        dialog.show()
     }
 
     private fun checkIfPermissionNeeded() {
@@ -151,21 +158,25 @@ class ShowsFragment : Fragment() {
         getCameraImage.launch(uri)
     }
 
-    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()){ _ ->
-
-    }
+    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()){ }
 
     private fun changePicture(bottomSheetBinding: DialogProfileBinding) {
         val path = sharedPreferences.getString("image", "test")
-        bottomSheetBinding.profilePhoto.setImageBitmap(BitmapFactory.decodeFile(path))
+        val options = RequestOptions()
+            .centerCrop()
+            .placeholder(R.drawable.profile_placeholder)
+            .error(R.drawable.profile_placeholder)
+        Glide.with(this).load(path).apply(options).into(bottomSheetBinding.profilePhoto)
+        Glide.with(this).load(path).apply(options).into(binding.profileButton)
+
     }
 
-    private fun onLogoutButtonPressed(dialog: BottomSheetDialog?){
+    private fun onLogoutButtonPressed(dialog: BottomSheetDialog){
         val builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.confirm_logout)
         builder.setMessage(R.string.confirm_logout_message)
         builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
-            dialog?.dismiss()
+            dialog.dismiss()
             if (!sharedPreferences.getBoolean("remember", false)) {
                 findNavController().popBackStack()
             } else {
@@ -179,5 +190,4 @@ class ShowsFragment : Fragment() {
         val alert = builder.create()
         alert.show()
     }
-
 }
