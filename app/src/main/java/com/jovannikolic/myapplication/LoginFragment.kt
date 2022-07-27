@@ -71,7 +71,7 @@ class LoginFragment : Fragment() {
         binding.loginbutton.setOnClickListener {
             val email = binding.emailtext.editText?.text.toString()
             sharedPreferences.edit {
-                putString("email", email)
+                putString("email", email).apply()
             }
 
             val navOptions: NavOptions
