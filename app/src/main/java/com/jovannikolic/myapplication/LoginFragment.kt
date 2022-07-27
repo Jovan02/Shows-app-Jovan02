@@ -13,6 +13,7 @@ import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 
@@ -37,6 +38,14 @@ class LoginFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(sharedPreferences.getBoolean("remember", false)){
+            val navOptions: NavOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.loginFragment, true)
+                .build()
+            Navigation.findNavController(binding.root).navigate(R.id.toShowsFragment, null, navOptions)
+        }
+
         if(sharedPreferences.getBoolean("registered", false)){
             binding.logintext.text = "Registration Successful!"
             binding.registerButton.visibility = View.GONE
