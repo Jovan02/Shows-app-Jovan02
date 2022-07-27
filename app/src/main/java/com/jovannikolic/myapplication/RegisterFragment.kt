@@ -14,6 +14,12 @@ import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentRegisterBinding
+import models.RegisterRequest
+import models.RegisterResponse
+import networking.ApiModule
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterFragment : Fragment() {
 
@@ -26,6 +32,8 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+
+        ApiModule.initRetrofit(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,6 +92,7 @@ class RegisterFragment : Fragment() {
             sharedPreferences.edit{
                 putBoolean("registered", true)
             }
+            sendDataToApi(binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString(), binding.repeatPasswordText.editText?.text.toString())
             findNavController().popBackStack()
         }
 
@@ -119,6 +128,22 @@ class RegisterFragment : Fragment() {
         if(email && password && repeatPassword){
             binding.registerButton.setTextColor(Color.parseColor("#52369C"))
         }
+    }
+
+    private fun sendDataToApi(emailData: String, passwordData: String, repeatPasswordData: String){
+        val registerRequest = RegisterRequest(
+            email = emailData,
+            password = passwordData,
+            passwordConfirmation = repeatPasswordData
+        )
+        ApiModule.retrofit.register(registerRequest)
+            .enqueue(object: Callback<RegisterResponse> {
+                override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                }
+
+                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                }
+            })
     }
 
 }
