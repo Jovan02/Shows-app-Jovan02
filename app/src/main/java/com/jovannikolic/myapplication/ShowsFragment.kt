@@ -23,6 +23,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
 import files.FileUtil
+import java.io.File
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 
 class ShowsFragment : Fragment() {
 
@@ -42,7 +47,7 @@ class ShowsFragment : Fragment() {
         sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -178,5 +183,19 @@ class ShowsFragment : Fragment() {
         val path = sharedPreferences.getString("image", "test")
         bottomSheetBinding.profilePhoto.setImageBitmap(BitmapFactory.decodeFile(path))
         binding.profileButton.setImageBitmap(BitmapFactory.decodeFile(path))
+        uploadPhotoToApi()
+    }
+
+    private fun uploadPhotoToApi(){
+        val path = sharedPreferences.getString("image", "test")
+        val file = File(path!!)
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("image_url", file.name,
+        File(path).asRequestBody("avatar.jpg".toMediaType()))
+            .build()
+
+        val request = Request.Builder()
+            .url("")
     }
 }
