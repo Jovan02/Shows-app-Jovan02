@@ -185,9 +185,12 @@ class LoginFragment : Fragment() {
                             .build()
                     }
 
-                    response.headers()
-
-                    sharedPreferences.edit{
+                    val headers = response.headers()
+                    sharedPreferences.edit {
+                        putString("token-type", headers["token-type"]).apply()
+                        putString("access-token", headers["access-token"]).apply()
+                        putString("client", headers["client"]).apply()
+                        putString("uid", headers["uid"]).apply()
                         putBoolean("logged", isSuccessfulLogin).apply()
                     }
 
