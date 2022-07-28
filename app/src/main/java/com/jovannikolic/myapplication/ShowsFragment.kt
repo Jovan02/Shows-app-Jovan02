@@ -79,7 +79,6 @@ class ShowsFragment : Fragment() {
         binding.profileButton.setOnClickListener {
             showBottomSheet()
         }
-
     }
 
     private fun initShowsRecycler(user: String) {
