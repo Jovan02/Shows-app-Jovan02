@@ -30,8 +30,6 @@ class LoginFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private var successfulLogin = false
-
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +72,6 @@ class LoginFragment : Fragment() {
     private fun initListeners() {
         var isEmailValid = false
         var isPasswordValid = false
-        val isLoggedIn = false
 
         //  Email TextWatcher
         binding.emailtext.editText?.addTextChangedListener {
@@ -103,40 +100,7 @@ class LoginFragment : Fragment() {
         //  Login button - opens new activity
         binding.loginbutton.setOnClickListener {
             sendDataToApi(binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
-            val email = binding.emailtext.editText?.text.toString()
-            sharedPreferences.edit {
-                putString("email", email)
-            }
 
-            val navOptions: NavOptions
-
-            if(sharedPreferences.getBoolean("remember", false)){
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.loginFragment, true)
-                    .setEnterAnim(R.anim.enter_right_to_left)
-                    .setExitAnim(R.anim.exit_right_to_left)
-                    .setPopEnterAnim(R.anim.enter_left_to_right)
-                    .setPopExitAnim(R.anim.exit_left_to_right)
-                    .build()
-            }else{
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.loginFragment, false)
-                    .setEnterAnim(R.anim.enter_right_to_left)
-                    .setExitAnim(R.anim.exit_right_to_left)
-                    .setPopEnterAnim(R.anim.enter_left_to_right)
-                    .setPopExitAnim(R.anim.exit_left_to_right)
-                    .build()
-            }
-            sharedPreferences.edit{
-                putBoolean("logged", isLoggedIn)
-            }
-
-            if(successfulLogin){
-                findNavController().navigate(R.id.toShowsFragment, null, navOptions)
-                successfulLogin = false
-            }else{
-                Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
-            }
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
@@ -194,13 +158,48 @@ class LoginFragment : Fragment() {
         ApiModule.retrofit.login(loginRequest)
             .enqueue(object: Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    successfulLogin = response.isSuccessful
+                    val isSuccessfulLogin = response.isSuccessful
+
+                    val email = binding.emailtext.editText?.text.toString()
+                    sharedPreferences.edit {
+                        putString("email", email)
+                    }
+
+                    val navOptions: NavOptions
+
+                    if(sharedPreferences.getBoolean("remember", false)){
+                        navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.loginFragment, true)
+                            .setEnterAnim(R.anim.enter_right_to_left)
+                            .setExitAnim(R.anim.exit_right_to_left)
+                            .setPopEnterAnim(R.anim.enter_left_to_right)
+                            .setPopExitAnim(R.anim.exit_left_to_right)
+                            .build()
+                    }else{
+                        navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.loginFragment, false)
+                            .setEnterAnim(R.anim.enter_right_to_left)
+                            .setExitAnim(R.anim.exit_right_to_left)
+                            .setPopEnterAnim(R.anim.enter_left_to_right)
+                            .setPopExitAnim(R.anim.exit_left_to_right)
+                            .build()
+                    }
+
+                    response.headers()
+
+                    sharedPreferences.edit{
+                        putBoolean("logged", isSuccessfulLogin).apply()
+                    }
+
+                    if(isSuccessfulLogin){
+                        findNavController().navigate(R.id.toShowsFragment, null, navOptions)
+                    }else{
+                        Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    successfulLogin = false
+                    Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
                 }
             })
     }
-
-
 }
