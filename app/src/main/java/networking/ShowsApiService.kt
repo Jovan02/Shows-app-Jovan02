@@ -23,7 +23,7 @@ interface ShowsApiService {
     fun login(@Body request: LoginRequest): Call<LoginResponse>
 
     @PUT("/users")
-    fun updatePhoto(@Body request: MultipartBody.Part, create: RequestBody): Call<UpdatePhotoResponse>
+    fun updatePhoto(@Body request: UpdatePhotoRequest): Call<UpdatePhotoResponse>
 
 
 }
