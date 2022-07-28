@@ -171,11 +171,13 @@ class LoginFragment : Fragment() {
                         putString("access-token", headers["access-token"]).apply()
                         putString("client", headers["client"]).apply()
                         putString("uid", headers["uid"]).apply()
+                        putString("expiry", headers["expiry"]).apply()
                         putBoolean("logged", isSuccessfulLogin).apply()
                     }
 
                     if(isSuccessfulLogin){
-                        findNavController().navigate(R.id.toShowsFragment, null, navOptions)
+                        val destination = LoginFragmentDirections.toShowsFragment()
+                        findNavController().navigate(destination)
                     }else{
                         Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
                     }
