@@ -165,26 +165,6 @@ class LoginFragment : Fragment() {
                         putString("email", email)
                     }
 
-                    val navOptions: NavOptions
-
-                    if(sharedPreferences.getBoolean("remember", false)){
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo(R.id.loginFragment, true)
-                            .setEnterAnim(R.anim.enter_right_to_left)
-                            .setExitAnim(R.anim.exit_right_to_left)
-                            .setPopEnterAnim(R.anim.enter_left_to_right)
-                            .setPopExitAnim(R.anim.exit_left_to_right)
-                            .build()
-                    }else{
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo(R.id.loginFragment, false)
-                            .setEnterAnim(R.anim.enter_right_to_left)
-                            .setExitAnim(R.anim.exit_right_to_left)
-                            .setPopEnterAnim(R.anim.enter_left_to_right)
-                            .setPopExitAnim(R.anim.exit_left_to_right)
-                            .build()
-                    }
-
                     val headers = response.headers()
                     sharedPreferences.edit {
                         putString("token-type", headers["token-type"]).apply()
