@@ -17,7 +17,7 @@ object ApiModule {
     fun initRetrofit(context: Context){
         val okhttp = OkHttpClient.Builder()
             .addInterceptor(ChuckerInterceptor.Builder(context).build())
-            .addInterceptor(MyInterceptor())
+            .addInterceptor(MyInterceptor(context))
             .build()
 
         retrofit = Retrofit.Builder()
