@@ -183,7 +183,8 @@ class ShowsFragment : Fragment() {
                 sharedPreferences.edit {
                     putBoolean("remember", false)
                 }
-                findNavController().navigate(R.id.actionLogout)
+                val direction = ShowsFragmentDirections.actionLogout()
+                findNavController().navigate(direction)
             }
         })
         builder.setNegativeButton("No", null)
