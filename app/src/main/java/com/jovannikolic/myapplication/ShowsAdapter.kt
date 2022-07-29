@@ -44,7 +44,7 @@ class ShowsAdapter(
             Glide.with(context).load(item.image_url).apply(options).into(binding.showImage)
             binding.cardcontainer.setOnClickListener {
                 sharedPreferences.edit{
-                    putString("show-id", item.id)
+                    putString("show-id", item.id).apply()
                 }
                 onItemClickCallback(item)
             }
