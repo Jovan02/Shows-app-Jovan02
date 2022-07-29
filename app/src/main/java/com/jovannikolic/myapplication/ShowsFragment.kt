@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,14 +30,12 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
-import javax.security.auth.callback.Callback
-import models.Show
 import models.ShowsListResponse
-import models.UpdatePhotoRequest
 import models.UpdatePhotoResponse
 import models.UserDataResponse
 import networking.ApiModule
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class ShowsFragment : Fragment() {
@@ -101,7 +98,7 @@ class ShowsFragment : Fragment() {
     private fun initShowsRecycler(user: String) {
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { showList ->
-            adapter = ShowsAdapter(showList) { show ->
+            adapter = ShowsAdapter(requireContext(), showList) { show ->
                 val direction = ShowsFragmentDirections.toShowDetailsFragment(user, show)
                 findNavController().navigate(direction)
             }
@@ -210,9 +207,19 @@ class ShowsFragment : Fragment() {
     }
 
     private fun updateProfilePhoto(email: String){
-        val updatePhotoRequest = UpdatePhotoRequest(email)
-        ApiModule.retrofit.updatePhoto(updatePhotoRequest)
-            .enqueue(object: retrofit2.Callback<UpdatePhotoResponse>{
+        val path = sharedPreferences.getString("image", "test")!!
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("image_url", "avatar.jpg",
+                File(path).asRequestBody("image_url".toMediaType()))
+            .build()
+
+        val request = Request.Builder()
+            .post(requestBody)
+            .build()
+
+        ApiModule.retrofit.updatePhoto(request)
+            .enqueue(object: Callback<UpdatePhotoResponse>{
                 override fun onResponse(call: Call<UpdatePhotoResponse>, response: Response<UpdatePhotoResponse>) {
                     if(response.isSuccessful)
                         Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
@@ -225,6 +232,7 @@ class ShowsFragment : Fragment() {
                 }
 
             })
+
     }
 
     private fun getUserData(){
@@ -250,6 +258,7 @@ class ShowsFragment : Fragment() {
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
                     if(response.isSuccessful){
                         Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
+                        viewModel.setShowsList(response.body()!!.shows)
                     }
                     else
                         Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
@@ -257,7 +266,6 @@ class ShowsFragment : Fragment() {
 
                 override fun onFailure(call: Call<ShowsListResponse>, t: Throwable) {
                     Toast.makeText(requireContext(), "Call Failed OnFailure.", Toast.LENGTH_SHORT).show()
-
                 }
 
             })
