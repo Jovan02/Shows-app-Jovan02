@@ -1,5 +1,6 @@
 package networking
 
+import models.GetReviewsResponse
 import models.LoginRequest
 import models.LoginResponse
 import models.RegisterRequest
@@ -36,5 +37,8 @@ interface ShowsApiService {
 
     @GET("/shows/{id}")
     fun getShowDetails(@Path("id") id: String): Call<ShowDetailsResponse>
+
+    @GET("/shows/{show_id}/reviews")
+    fun getReviews(@Path("show_id") show_id: String): Call<GetReviewsResponse>
 
 }
