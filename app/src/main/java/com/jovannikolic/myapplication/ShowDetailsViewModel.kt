@@ -24,12 +24,16 @@ class ShowDetailsViewModel : ViewModel() {
     private val _adapterLiveData = MutableLiveData<ReviewsAdapter>()
     val adapterLiveData: LiveData<ReviewsAdapter> = _adapterLiveData
 
+    private val _numberOfReviewsLiveData = MutableLiveData<Int>()
+    val numberOfReviewsLiveData: LiveData<Int> = _numberOfReviewsLiveData
+
 
     init{
         _sumOfReviewsLiveData.value = 0.0f
         _averageReviewsLiveData.value = 0.0f
         _sumOfReviewsLiveData.value = 0.0f
         _reviewListLiveData.value = emptyList()
+        _numberOfReviewsLiveData.value = 0
     }
 
     fun calculateRating(numOfReviews: Int, rating: Float){
@@ -44,6 +48,14 @@ class ShowDetailsViewModel : ViewModel() {
 
     fun setReviewList(list: List<Review>){
         _reviewListLiveData.value = list
+    }
+
+    fun setAverageReviewsLiveData(avg: Float){
+        _averageReviewsLiveData.value = avg
+    }
+
+    fun setNumberOfReviewsLiveData(num: Int){
+        _numberOfReviewsLiveData.value = num
     }
 
 }
