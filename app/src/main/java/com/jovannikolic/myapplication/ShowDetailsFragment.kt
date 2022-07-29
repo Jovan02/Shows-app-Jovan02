@@ -98,37 +98,14 @@ class ShowDetailsFragment : Fragment() {
         }
 
         bottomSheetBinding.submitButton.setOnClickListener {
-
             val rating: Float = bottomSheetBinding.ratingbar.rating
             val comment: String = bottomSheetBinding.comment.editText?.text.toString()
-            val author = args.username
 
             if (rating > 0) {
-                if (firstInit) {
-                    binding.averageratingtext.isVisible = true
-                    binding.averageratingbar.isVisible = true
-                    binding.reviewsrecycler.isVisible = true
-                    binding.noReviews.isVisible = false
-                    firstInit = false
-                }
-
+                addReview(rating.toInt(), comment, sharedPreferences.getString("show-id", "1")!!.toInt())
                 dialog?.hide()
             } else {
                 dialog?.hide()
-            }
-
-            var numOfReviews = 0
-            viewModel.adapterLiveData.observe(viewLifecycleOwner){ adapter ->
-                numOfReviews = adapter.itemCount
-            }
-
-            viewModel.calculateRating(numOfReviews, rating)
-
-            viewModel.averageReviewsLiveData.observe(viewLifecycleOwner) { averageRating ->
-                val df = DecimalFormat("#.##")
-                val averageRatingRounded = df.format(averageRating)
-                binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageRatingRounded.toString())
-                binding.averageratingbar.rating = averageRatingRounded.toFloat()
             }
         }
         dialog?.show()
@@ -147,7 +124,12 @@ class ShowDetailsFragment : Fragment() {
                         Glide.with(requireContext()).load(response.body()!!.show.image_url).apply(options).into(binding.showimg)
                         binding.collapsingToolbar.title = response.body()!!.show.title
                         binding.showtext.text = response.body()!!.show.description
+
                         getReviews(response.body()!!.show.id)
+                        show_id = response.body()!!.show.id
+
+                        viewModel.setAverageReviewsLiveData(response.body()!!.show.average_rating)
+                        viewModel.setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
                     }
                     else
                         Toast.makeText(requireContext(), "Call getShowData Failed OnResponse.", Toast.LENGTH_SHORT).show()
@@ -170,7 +152,6 @@ class ShowDetailsFragment : Fragment() {
                         initReviewsRecycler()
                     }else
                         Toast.makeText(requireContext(), "Call getReviews Failed OnResponse.", Toast.LENGTH_SHORT).show()
-
                 }
 
                 override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
@@ -187,8 +168,9 @@ class ShowDetailsFragment : Fragment() {
                 override fun onResponse(call: Call<AddReviewResponse>, response: Response<AddReviewResponse>) {
                     if(response.isSuccessful) {
                         Toast.makeText(requireContext(), "Call addReview Successful.", Toast.LENGTH_SHORT).show()
+                        getReviews(show_id.toString())
                     }else
-                        Toast.makeText(requireContext(), "Call getReview Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Call addReview Failed OnResponse.", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<AddReviewResponse>, t: Throwable) {
@@ -202,12 +184,18 @@ class ShowDetailsFragment : Fragment() {
 
         viewModel.reviewListLiveData.observe(viewLifecycleOwner){ reviewsList ->
             adapter = ReviewsAdapter(requireContext(), reviewsList) {}
+            if(reviewsList.isEmpty()){
+                binding.averageratingtext.isVisible = false
+                binding.averageratingbar.isVisible = false
+                binding.reviewsrecycler.isVisible = false
+                binding.noReviews.isVisible = true
+            }else{
+                binding.averageratingtext.isVisible = true
+                binding.averageratingbar.isVisible = true
+                binding.reviewsrecycler.isVisible = true
+                binding.noReviews.isVisible = false
+            }
         }
-
-        binding.averageratingtext.isVisible = true
-        binding.averageratingbar.isVisible = true
-        binding.reviewsrecycler.isVisible = true
-        binding.noReviews.isVisible = false
 
         binding.reviewsrecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
