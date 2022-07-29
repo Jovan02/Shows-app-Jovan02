@@ -80,6 +80,10 @@ class ShowDetailsFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.reviewbutton.setOnClickListener {
+            showBottomSheet()
+        }
     }
 
     @SuppressLint("SetTextI18n", "StringFormatInvalid")
@@ -128,12 +132,6 @@ class ShowDetailsFragment : Fragment() {
             }
         }
         dialog?.show()
-    }
-
-    private fun clickReviewButton() {
-        binding.reviewbutton.setOnClickListener {
-            showBottomSheet()
-        }
     }
 
     private fun getShowData() {
