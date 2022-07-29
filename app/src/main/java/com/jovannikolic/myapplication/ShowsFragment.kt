@@ -72,24 +72,25 @@ class ShowsFragment : Fragment() {
         getUserData()
         getShowsList()
 
+        viewModel.showsLiveData.observe(viewLifecycleOwner){ list ->
+            if(!list.isEmpty()) {
+                binding.emptystateimage.setVisibility(View.INVISIBLE)
+                binding.emptystatetext.setVisibility(View.INVISIBLE)
+
+                val email = sharedPreferences.getString("email", "non_existing@email.com")
+
+                val tokens = email?.split("@")
+
+                val username = tokens?.getOrNull(0).toString()
+
+                initShowsRecycler(username)
+            }
+        }
+
         binding.profileButton.setImageResource(R.drawable.profile_placeholder)
     }
 
     private fun initListeners() {
-        binding.showbutton.setOnClickListener {
-            binding.emptystateimage.setVisibility(View.INVISIBLE)
-            binding.emptystatetext.setVisibility(View.INVISIBLE)
-            binding.showbutton.setVisibility(View.GONE)
-
-            val email = sharedPreferences.getString("email", "non_existing@email.com")
-
-            val tokens = email?.split("@")
-
-            val username = tokens?.getOrNull(0).toString()
-
-            initShowsRecycler(username)
-        }
-
         binding.profileButton.setOnClickListener {
             showBottomSheet()
         }
