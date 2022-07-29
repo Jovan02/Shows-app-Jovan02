@@ -15,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface ShowsApiService {
 
@@ -34,6 +35,6 @@ interface ShowsApiService {
     fun showsList(): Call<ShowsListResponse>
 
     @GET("/shows/{id}")
-    fun getShowDetails(): Call<ShowDetailsResponse>
+    fun getShowDetails(@Path("id") id: String): Call<ShowDetailsResponse>
 
 }
