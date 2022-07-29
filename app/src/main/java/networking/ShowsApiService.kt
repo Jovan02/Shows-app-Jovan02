@@ -4,6 +4,7 @@ import models.LoginRequest
 import models.LoginResponse
 import models.RegisterRequest
 import models.RegisterResponse
+import models.ShowDetailsResponse
 import models.ShowsListResponse
 import models.UpdatePhotoRequest
 import models.UpdatePhotoResponse
@@ -31,5 +32,8 @@ interface ShowsApiService {
 
     @GET("/shows")
     fun showsList(): Call<ShowsListResponse>
+
+    @GET("/shows/{id}")
+    fun getShowDetails(): Call<ShowDetailsResponse>
 
 }
