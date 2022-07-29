@@ -1,10 +1,13 @@
 package com.jovannikolic.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,11 +15,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
 import models.Review
 import java.text.DecimalFormat
+import models.ShowDetailsResponse
+import networking.ApiModule
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ShowDetailsFragment : Fragment() {
 
@@ -28,7 +38,14 @@ class ShowDetailsFragment : Fragment() {
 
     private val viewModel by viewModels<ShowDetailsViewModel>()
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     var firstInit = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
@@ -39,7 +56,7 @@ class ShowDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-        getData()
+        getShowData()
 
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
 
@@ -111,11 +128,29 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    private fun getData() {
-        val show = args.show
-        binding.showimg.setImageResource(show.imageResourceId)
-        binding.collapsingToolbar.title = show.name
-        binding.showtext.text = show.description
+    private fun getShowData() {
+        ApiModule.retrofit.getShowDetails(sharedPreferences.getString("show-id", "1")!!)
+            .enqueue(object: Callback<ShowDetailsResponse>{
+                override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
+                    if(response.isSuccessful){
+                        Toast.makeText(requireContext(), "Call getShowData Successful.", Toast.LENGTH_SHORT).show()
+                        val options = RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.family_guy)
+                            .error(R.drawable.family_guy)
+                        Glide.with(requireContext()).load(response.body()!!.show.image_url).apply(options).into(binding.showimg)
+                        binding.collapsingToolbar.title = response.body()!!.show.title
+                        binding.showtext.text = response.body()!!.show.description
+                    }
+                    else
+                        Toast.makeText(requireContext(), "Call getShowData Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Call getShowData Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                }
+
+            })
     }
 
     private fun initReviewsRecycler() {
