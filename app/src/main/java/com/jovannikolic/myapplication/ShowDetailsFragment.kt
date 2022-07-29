@@ -22,6 +22,7 @@ import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
 import models.Review
 import java.text.DecimalFormat
+import models.GetReviewsResponse
 import models.ShowDetailsResponse
 import networking.ApiModule
 import retrofit2.Call
@@ -40,6 +41,8 @@ class ShowDetailsFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
+    private lateinit var adapter: ReviewsAdapter
+
     var firstInit = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,13 +59,14 @@ class ShowDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-        getShowData()
 
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
 
         binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.toolbarTitle)
 
         clickReviewButton()
+
+        getShowData()
     }
 
     private fun initListeners() {
@@ -90,15 +94,12 @@ class ShowDetailsFragment : Fragment() {
 
             if (rating > 0) {
                 if (firstInit) {
-                    initReviewsRecycler()
                     binding.averageratingtext.isVisible = true
                     binding.averageratingbar.isVisible = true
                     binding.reviewsrecycler.isVisible = true
                     binding.noReviews.isVisible = false
                     firstInit = false
                 }
-
-                viewModel.addReviewToList(Review(author, comment, rating))
 
                 dialog?.hide()
             } else {
@@ -141,6 +142,7 @@ class ShowDetailsFragment : Fragment() {
                         Glide.with(requireContext()).load(response.body()!!.show.image_url).apply(options).into(binding.showimg)
                         binding.collapsingToolbar.title = response.body()!!.show.title
                         binding.showtext.text = response.body()!!.show.description
+                        getReviews(response.body()!!.show.id)
                     }
                     else
                         Toast.makeText(requireContext(), "Call getShowData Failed OnResponse.", Toast.LENGTH_SHORT).show()
@@ -153,13 +155,40 @@ class ShowDetailsFragment : Fragment() {
             })
     }
 
+    private fun getReviews(show_id: String){
+        ApiModule.retrofit.getReviews(show_id)
+            .enqueue(object: Callback<GetReviewsResponse>{
+                override fun onResponse(call: Call<GetReviewsResponse>, response: Response<GetReviewsResponse>) {
+                    if(response.isSuccessful) {
+                        Toast.makeText(requireContext(), "Call getReviews Successful.", Toast.LENGTH_SHORT).show()
+                        viewModel.setReviewList(response.body()!!.reviews)
+                        initReviewsRecycler()
+                    }else
+                        Toast.makeText(requireContext(), "Call getReviews Failed OnResponse.", Toast.LENGTH_SHORT).show()
+
+                }
+
+                override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Call getReviews Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+    }
+
     private fun initReviewsRecycler() {
+
+        viewModel.reviewListLiveData.observe(viewLifecycleOwner){ reviewsList ->
+            adapter = ReviewsAdapter(requireContext(), reviewsList) {}
+        }
+
+        binding.averageratingtext.isVisible = true
+        binding.averageratingbar.isVisible = true
+        binding.reviewsrecycler.isVisible = true
+        binding.noReviews.isVisible = false
 
         binding.reviewsrecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        viewModel.adapterLiveData.observe(viewLifecycleOwner){ adapter ->
-            binding.reviewsrecycler.adapter = adapter
-        }
+        binding.reviewsrecycler.adapter = adapter
 
         binding.reviewsrecycler.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
