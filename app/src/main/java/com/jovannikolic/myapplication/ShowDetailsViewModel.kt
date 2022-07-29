@@ -30,7 +30,6 @@ class ShowDetailsViewModel : ViewModel() {
         _averageReviewsLiveData.value = 0.0f
         _sumOfReviewsLiveData.value = 0.0f
         _reviewListLiveData.value = emptyList()
-        _adapterLiveData.value = ReviewsAdapter(_reviewListLiveData.value!!){}
     }
 
     fun calculateRating(numOfReviews: Int, rating: Float){
@@ -41,6 +40,10 @@ class ShowDetailsViewModel : ViewModel() {
     fun addReviewToList(review: Review) {
         _adapterLiveData.value?.addReview(review)
         _reviewListLiveData.value?.plus(review)
+    }
+
+    fun setReviewList(list: List<Review>){
+        _reviewListLiveData.value = list
     }
 
 }
