@@ -8,6 +8,7 @@ import models.ShowsListResponse
 import models.UpdatePhotoRequest
 import models.UpdatePhotoResponse
 import models.UserDataResponse
+import okhttp3.Request
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,7 +24,7 @@ interface ShowsApiService {
     fun login(@Body request: LoginRequest): Call<LoginResponse>
 
     @PUT("/users")
-    fun updatePhoto(@Body request: UpdatePhotoRequest): Call<UpdatePhotoResponse>
+    fun updatePhoto(@Body request: Request): Call<UpdatePhotoResponse>
 
     @GET("/users/me")
     fun userData(): Call<UserDataResponse>
