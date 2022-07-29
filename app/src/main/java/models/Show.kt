@@ -1,42 +1,16 @@
 package models
 
-import android.os.Parcel
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
+@Serializable
+@Parcelize
 data class Show(
-    val ID: Int,
-    val name: String,
+    val id: String,
+    val average_rating: Int,
     val description: String,
-    @DrawableRes val imageResourceId: Int
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readInt()
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(ID)
-        parcel.writeString(name)
-        parcel.writeString(description)
-        parcel.writeInt(imageResourceId)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<Show> {
-        override fun createFromParcel(parcel: Parcel): Show {
-            return Show(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Show?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
-
+    val image_url: String,
+    val no_of_reviews: Int = 0,
+    val title: String
+) : Parcelable
