@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jovannikolic.myapplication.databinding.ViewShowItemBinding
 import models.Show
-import models.ShowApi
 
 class ShowsAdapter(
     private val context: Context,
