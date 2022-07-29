@@ -7,7 +7,7 @@ import models.Show
 
 class ShowsViewModel : ViewModel() {
 
-    val shows = listOf(
+    val showsHardcoded = listOf(
         Show(
             0,
             "Family Guy",
@@ -49,8 +49,11 @@ class ShowsViewModel : ViewModel() {
     private val _showsLiveData = MutableLiveData<List<Show>>()
     val showsLiveData : LiveData<List<Show>> = _showsLiveData
 
+    fun setShowsList(shows: List<Show>){
+        _showsLiveData.value = shows
+    }
 
     init {
-        _showsLiveData.value = shows
+        _showsLiveData.value = showsHardcoded
     }
 }

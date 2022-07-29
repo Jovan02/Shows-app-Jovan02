@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -32,6 +33,13 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import javax.security.auth.callback.Callback
 import models.Show
+import models.ShowsListResponse
+import models.UpdatePhotoRequest
+import models.UpdatePhotoResponse
+import models.UserDataResponse
+import networking.ApiModule
+import retrofit2.Call
+import retrofit2.Response
 
 class ShowsFragment : Fragment() {
 
@@ -63,6 +71,9 @@ class ShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+
+        getUserData()
+        getShowsList()
 
         binding.profileButton.setImageResource(R.drawable.profile_placeholder)
     }
@@ -116,6 +127,7 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             checkIfPermissionNeeded()
+            updateProfilePhoto(sharedPreferences.getString("email", "")!!)
             dialog.dismiss()
         }
 
@@ -196,4 +208,59 @@ class ShowsFragment : Fragment() {
         val alert = builder.create()
         alert.show()
     }
+
+    private fun updateProfilePhoto(email: String){
+        val updatePhotoRequest = UpdatePhotoRequest(email)
+        ApiModule.retrofit.updatePhoto(updatePhotoRequest)
+            .enqueue(object: retrofit2.Callback<UpdatePhotoResponse>{
+                override fun onResponse(call: Call<UpdatePhotoResponse>, response: Response<UpdatePhotoResponse>) {
+                    if(response.isSuccessful)
+                        Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<UpdatePhotoResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Call Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+    }
+
+    private fun getUserData(){
+        ApiModule.retrofit.userData()
+            .enqueue(object: retrofit2.Callback<UserDataResponse>{
+                override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
+                    if(response.isSuccessful)
+                        Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<UserDataResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
+                }
+
+            })
+    }
+
+    private fun getShowsList(){
+        ApiModule.retrofit.showsList()
+            .enqueue(object: retrofit2.Callback<ShowsListResponse>{
+                override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
+                    if(response.isSuccessful){
+                        Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
+                    }
+                    else
+                        Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<ShowsListResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Call Failed OnFailure.", Toast.LENGTH_SHORT).show()
+
+                }
+
+            })
+    }
+
 }
