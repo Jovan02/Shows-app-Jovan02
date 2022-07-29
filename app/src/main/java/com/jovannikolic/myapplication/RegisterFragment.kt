@@ -78,7 +78,7 @@ class RegisterFragment : Fragment() {
 
         //  Repeat Password TextWatcher
         binding.repeatPasswordText.editText?.addTextChangedListener {
-            if(validRepeatPassword()){
+            if (validRepeatPassword()) {
                 isRepeatPasswordValid = true
                 binding.passworderror.text = null
             } else {
@@ -89,10 +89,14 @@ class RegisterFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            sharedPreferences.edit{
+            sharedPreferences.edit {
                 putBoolean("registered", true)
             }
-            sendDataToApi(binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString(), binding.repeatPasswordText.editText?.text.toString())
+            sendDataToApi(
+                binding.emailtext.editText?.text.toString(),
+                binding.passwordtext.editText?.text.toString(),
+                binding.repeatPasswordText.editText?.text.toString()
+            )
             findNavController().popBackStack()
         }
 
@@ -121,23 +125,24 @@ class RegisterFragment : Fragment() {
         return true
     }
 
-    private fun validRepeatPassword(): Boolean = binding.passwordtext.editText?.text.toString() == binding.repeatPasswordText.editText?.text.toString()
+    private fun validRepeatPassword(): Boolean =
+        binding.passwordtext.editText?.text.toString() == binding.repeatPasswordText.editText?.text.toString()
 
     private fun checkRegisterButtonState(email: Boolean, password: Boolean, repeatPassword: Boolean) {
         binding.registerButton.isEnabled = email && password && repeatPassword
-        if(email && password && repeatPassword){
+        if (email && password && repeatPassword) {
             binding.registerButton.setTextColor(Color.parseColor("#52369C"))
         }
     }
 
-    private fun sendDataToApi(emailData: String, passwordData: String, repeatPasswordData: String){
+    private fun sendDataToApi(emailData: String, passwordData: String, repeatPasswordData: String) {
         val registerRequest = RegisterRequest(
             email = emailData,
             password = passwordData,
             passwordConfirmation = repeatPasswordData
         )
         ApiModule.retrofit.register(registerRequest)
-            .enqueue(object: Callback<RegisterResponse> {
+            .enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 }
 

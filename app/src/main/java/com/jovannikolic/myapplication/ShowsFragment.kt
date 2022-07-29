@@ -72,8 +72,8 @@ class ShowsFragment : Fragment() {
         getUserData()
         getShowsList()
 
-        viewModel.showsLiveData.observe(viewLifecycleOwner){ list ->
-            if(!list.isEmpty()) {
+        viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
+            if (!list.isEmpty()) {
                 binding.emptystateimage.setVisibility(View.INVISIBLE)
                 binding.emptystatetext.setVisibility(View.INVISIBLE)
 
@@ -138,7 +138,11 @@ class ShowsFragment : Fragment() {
 
     private fun checkIfPermissionNeeded() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            && ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             activateCamera()
         } else {
             requestPermission()
@@ -151,29 +155,29 @@ class ShowsFragment : Fragment() {
 
     private val requestPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
         var permissionGiven = false
-        results.forEach{
-            if(it.value){
+        results.forEach {
+            if (it.value) {
                 permissionGiven = true
-            }else{
+            } else {
                 permissionGiven = false
                 return@forEach
             }
         }
-        if(permissionGiven){
+        if (permissionGiven) {
             activateCamera()
         }
     }
 
-    private fun activateCamera(){
+    private fun activateCamera() {
         val file = FileUtil.createImageFile(requireContext())
         val uri = FileProvider.getUriForFile(requireContext(), "com.jovannikolic.myapplication.fileProvider", file!!)
-        sharedPreferences.edit{
+        sharedPreferences.edit {
             putString("image", file.absolutePath)
         }
         getCameraImage.launch(uri)
     }
 
-    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()){ }
+    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { }
 
     private fun changePicture(bottomSheetBinding: DialogProfileBinding) {
         val path = sharedPreferences.getString("image", "test")
@@ -186,7 +190,7 @@ class ShowsFragment : Fragment() {
 
     }
 
-    private fun onLogoutButtonPressed(dialog: BottomSheetDialog){
+    private fun onLogoutButtonPressed(dialog: BottomSheetDialog) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.confirm_logout)
         builder.setMessage(R.string.confirm_logout_message)
@@ -207,12 +211,14 @@ class ShowsFragment : Fragment() {
         alert.show()
     }
 
-    private fun updateProfilePhoto(email: String){
+    private fun updateProfilePhoto(email: String) {
         val path = sharedPreferences.getString("image", "test")!!
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("image_url", "avatar.jpg",
-                File(path).asRequestBody("image_url".toMediaType()))
+            .addFormDataPart(
+                "image_url", "avatar.jpg",
+                File(path).asRequestBody("image_url".toMediaType())
+            )
             .build()
 
         val request = Request.Builder()
@@ -220,9 +226,9 @@ class ShowsFragment : Fragment() {
             .build()
 
         ApiModule.retrofit.updatePhoto(request)
-            .enqueue(object: Callback<UpdatePhotoResponse>{
+            .enqueue(object : Callback<UpdatePhotoResponse> {
                 override fun onResponse(call: Call<UpdatePhotoResponse>, response: Response<UpdatePhotoResponse>) {
-                    if(response.isSuccessful)
+                    if (response.isSuccessful)
                         Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
                     else
                         Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
@@ -236,11 +242,11 @@ class ShowsFragment : Fragment() {
 
     }
 
-    private fun getUserData(){
+    private fun getUserData() {
         ApiModule.retrofit.userData()
-            .enqueue(object: retrofit2.Callback<UserDataResponse>{
+            .enqueue(object : retrofit2.Callback<UserDataResponse> {
                 override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
-                    if(response.isSuccessful)
+                    if (response.isSuccessful)
                         Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
                     else
                         Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
@@ -253,15 +259,14 @@ class ShowsFragment : Fragment() {
             })
     }
 
-    private fun getShowsList(){
+    private fun getShowsList() {
         ApiModule.retrofit.showsList()
-            .enqueue(object: retrofit2.Callback<ShowsListResponse>{
+            .enqueue(object : retrofit2.Callback<ShowsListResponse> {
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
-                    if(response.isSuccessful){
+                    if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
                         viewModel.setShowsList(response.body()!!.shows)
-                    }
-                    else
+                    } else
                         Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
                 }
 

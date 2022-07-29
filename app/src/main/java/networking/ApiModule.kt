@@ -14,7 +14,7 @@ object ApiModule {
 
     lateinit var retrofit: ShowsApiService
 
-    fun initRetrofit(context: Context){
+    fun initRetrofit(context: Context) {
         val okhttp = OkHttpClient.Builder()
             .addInterceptor(ChuckerInterceptor.Builder(context).build())
             .addInterceptor(MyInterceptor(context))

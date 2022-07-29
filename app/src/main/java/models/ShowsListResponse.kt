@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ShowsListResponse(
-   @SerialName("shows") val shows: List<Show>,
-   @SerialName("meta") val meta: Meta
+    @SerialName("shows") val shows: List<Show>,
+    @SerialName("meta") val meta: Meta
 )

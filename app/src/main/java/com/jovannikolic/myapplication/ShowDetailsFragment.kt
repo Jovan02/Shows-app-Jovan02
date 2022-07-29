@@ -66,11 +66,11 @@ class ShowDetailsFragment : Fragment() {
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
         binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.toolbarTitle)
 
-        viewModel.averageReviewsLiveData.observe(viewLifecycleOwner){ average ->
-            viewModel.numberOfReviewsLiveData.observe(viewLifecycleOwner){ number ->
+        viewModel.averageReviewsLiveData.observe(viewLifecycleOwner) { average ->
+            viewModel.numberOfReviewsLiveData.observe(viewLifecycleOwner) { number ->
                 binding.averageratingtext.text = getString(R.string.reviews_average, number.toString(), average.toString())
             }
-                binding.averageratingbar.rating = average
+            binding.averageratingbar.rating = average
         }
 
         getShowData()
@@ -113,9 +113,9 @@ class ShowDetailsFragment : Fragment() {
 
     private fun getShowData() {
         ApiModule.retrofit.getShowDetails(sharedPreferences.getString("show-id", "1")!!)
-            .enqueue(object: Callback<ShowDetailsResponse>{
+            .enqueue(object : Callback<ShowDetailsResponse> {
                 override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
-                    if(response.isSuccessful){
+                    if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Call getShowData Successful.", Toast.LENGTH_SHORT).show()
                         val options = RequestOptions()
                             .centerCrop()
@@ -130,8 +130,7 @@ class ShowDetailsFragment : Fragment() {
 
                         viewModel.setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         viewModel.setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
-                    }
-                    else
+                    } else
                         Toast.makeText(requireContext(), "Call getShowData Failed OnResponse.", Toast.LENGTH_SHORT).show()
                 }
 
@@ -142,15 +141,15 @@ class ShowDetailsFragment : Fragment() {
             })
     }
 
-    private fun getReviews(show_id: String){
+    private fun getReviews(show_id: String) {
         ApiModule.retrofit.getReviews(show_id)
-            .enqueue(object: Callback<GetReviewsResponse>{
+            .enqueue(object : Callback<GetReviewsResponse> {
                 override fun onResponse(call: Call<GetReviewsResponse>, response: Response<GetReviewsResponse>) {
-                    if(response.isSuccessful) {
+                    if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Call getReviews Successful.", Toast.LENGTH_SHORT).show()
                         viewModel.setReviewList(response.body()!!.reviews)
                         initReviewsRecycler()
-                    }else
+                    } else
                         Toast.makeText(requireContext(), "Call getReviews Failed OnResponse.", Toast.LENGTH_SHORT).show()
                 }
 
@@ -161,15 +160,15 @@ class ShowDetailsFragment : Fragment() {
             })
     }
 
-    private fun addReview(rating: Int, comment: String, show_id: Int){
+    private fun addReview(rating: Int, comment: String, show_id: Int) {
         val addReviewRequest = AddReviewRequest(rating, comment, show_id)
         ApiModule.retrofit.addReview(addReviewRequest)
-            .enqueue(object: Callback<AddReviewResponse>{
+            .enqueue(object : Callback<AddReviewResponse> {
                 override fun onResponse(call: Call<AddReviewResponse>, response: Response<AddReviewResponse>) {
-                    if(response.isSuccessful) {
+                    if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Call addReview Successful.", Toast.LENGTH_SHORT).show()
                         getReviews(show_id.toString())
-                    }else
+                    } else
                         Toast.makeText(requireContext(), "Call addReview Failed OnResponse.", Toast.LENGTH_SHORT).show()
                 }
 
@@ -182,14 +181,14 @@ class ShowDetailsFragment : Fragment() {
 
     private fun initReviewsRecycler() {
 
-        viewModel.reviewListLiveData.observe(viewLifecycleOwner){ reviewsList ->
+        viewModel.reviewListLiveData.observe(viewLifecycleOwner) { reviewsList ->
             adapter = ReviewsAdapter(requireContext(), reviewsList) {}
-            if(reviewsList.isEmpty()){
+            if (reviewsList.isEmpty()) {
                 binding.averageratingtext.isVisible = false
                 binding.averageratingbar.isVisible = false
                 binding.reviewsrecycler.isVisible = false
                 binding.noReviews.isVisible = true
-            }else{
+            } else {
                 binding.averageratingtext.isVisible = true
                 binding.averageratingbar.isVisible = true
                 binding.reviewsrecycler.isVisible = true

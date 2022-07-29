@@ -48,20 +48,20 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(sharedPreferences.getBoolean("remember", false)){
+        if (sharedPreferences.getBoolean("remember", false)) {
             val navOptions: NavOptions = NavOptions.Builder()
                 .setPopUpTo(R.id.loginFragment, true)
                 .build()
             Navigation.findNavController(binding.root).navigate(R.id.toShowsFragment, null, navOptions)
         }
 
-        if(sharedPreferences.getBoolean("registered", false)){
+        if (sharedPreferences.getBoolean("registered", false)) {
             binding.logintext.text = "Registration Successful!"
             binding.registerButton.visibility = View.GONE
-            sharedPreferences.edit{
+            sharedPreferences.edit {
                 putBoolean("registered", false)
             }
-        }else{
+        } else {
             binding.logintext.text = "Login"
             binding.registerButton.visibility = View.VISIBLE
         }
@@ -109,7 +109,7 @@ class LoginFragment : Fragment() {
             }
         }
 
-        binding.registerButton.setOnClickListener{
+        binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.toRegisterFragment)
         }
 
@@ -150,13 +150,13 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun sendDataToApi(emailData: String, passwordData: String){
+    private fun sendDataToApi(emailData: String, passwordData: String) {
         val loginRequest = LoginRequest(
             email = emailData,
             password = passwordData
         )
         ApiModule.retrofit.login(loginRequest)
-            .enqueue(object: Callback<LoginResponse> {
+            .enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     val isSuccessfulLogin = response.isSuccessful
 
@@ -175,13 +175,14 @@ class LoginFragment : Fragment() {
                         putBoolean("logged", isSuccessfulLogin).apply()
                     }
 
-                    if(isSuccessfulLogin){
+                    if (isSuccessfulLogin) {
                         val destination = LoginFragmentDirections.toShowsFragment()
                         findNavController().navigate(destination)
-                    }else{
+                    } else {
                         Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
                     }
                 }
+
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
                 }

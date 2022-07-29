@@ -5,8 +5,7 @@ import android.content.SharedPreferences
 import okhttp3.Interceptor
 import okhttp3.Response
 
-
-class MyInterceptor(context: Context): Interceptor {
+class MyInterceptor(context: Context) : Interceptor {
 
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginData", Context.MODE_PRIVATE)
 
