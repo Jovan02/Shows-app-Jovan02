@@ -22,6 +22,8 @@ import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
 import models.Review
 import java.text.DecimalFormat
+import models.AddReviewRequest
+import models.AddReviewResponse
 import models.GetReviewsResponse
 import models.ShowDetailsResponse
 import networking.ApiModule
@@ -170,6 +172,24 @@ class ShowDetailsFragment : Fragment() {
 
                 override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
                     Toast.makeText(requireContext(), "Call getReviews Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+    }
+
+    private fun addReview(rating: Int, comment: String, show_id: Int){
+        val addReviewRequest = AddReviewRequest(rating, comment, show_id)
+        ApiModule.retrofit.addReview(addReviewRequest)
+            .enqueue(object: Callback<AddReviewResponse>{
+                override fun onResponse(call: Call<AddReviewResponse>, response: Response<AddReviewResponse>) {
+                    if(response.isSuccessful) {
+                        Toast.makeText(requireContext(), "Call addReview Successful.", Toast.LENGTH_SHORT).show()
+                    }else
+                        Toast.makeText(requireContext(), "Call getReview Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<AddReviewResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Call addReview Failed OnFailure.", Toast.LENGTH_SHORT).show()
                 }
 
             })
