@@ -45,6 +45,8 @@ class ShowDetailsFragment : Fragment() {
 
     private lateinit var adapter: ReviewsAdapter
 
+    private lateinit var show_id: String
+
     var firstInit = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,12 +63,15 @@ class ShowDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-
         binding.toolbar.setNavigationIcon(R.drawable.ic_back_button)
-
         binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.toolbarTitle)
 
-        clickReviewButton()
+        viewModel.averageReviewsLiveData.observe(viewLifecycleOwner){ average ->
+            viewModel.numberOfReviewsLiveData.observe(viewLifecycleOwner){ number ->
+                binding.averageratingtext.text = getString(R.string.reviews_average, number.toString(), average.toString())
+            }
+                binding.averageratingbar.rating = average
+        }
 
         getShowData()
     }
