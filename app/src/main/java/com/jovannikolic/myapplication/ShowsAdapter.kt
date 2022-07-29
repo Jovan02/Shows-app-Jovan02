@@ -1,13 +1,17 @@
 package com.jovannikolic.myapplication
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jovannikolic.myapplication.databinding.ViewShowItemBinding
 import models.Show
+
+    private lateinit var sharedPreferences: SharedPreferences
 
 class ShowsAdapter(
     private val context: Context,
@@ -15,8 +19,10 @@ class ShowsAdapter(
     private val onItemClickCallback: (Show) -> Unit
 ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
         val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context))
+        sharedPreferences = context.getSharedPreferences("LoginData", Context.MODE_PRIVATE)
         return ShowViewHolder(binding)
     }
 
@@ -37,6 +43,9 @@ class ShowsAdapter(
                 .error(R.drawable.family_guy)
             Glide.with(context).load(item.image_url).apply(options).into(binding.showImage)
             binding.cardcontainer.setOnClickListener {
+                sharedPreferences.edit{
+                    putString("show-id", item.id)
+                }
                 onItemClickCallback(item)
             }
         }
