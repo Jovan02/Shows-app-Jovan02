@@ -1,5 +1,6 @@
 package networking
 
+import androidx.annotation.NonNull
 import models.AddReviewRequest
 import models.AddReviewResponse
 import models.GetReviewsResponse
@@ -19,6 +20,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ShowsApiService {
 
@@ -35,7 +37,7 @@ interface ShowsApiService {
     fun userData(): Call<UserDataResponse>
 
     @GET("/shows")
-    fun showsList(): Call<ShowsListResponse>
+    fun showsList(@NonNull @Query("page") page: String, @NonNull @Query("items") items: String): Call<ShowsListResponse>
 
     @GET("/shows/{id}")
     fun getShowDetails(@Path("id") id: String): Call<ShowDetailsResponse>

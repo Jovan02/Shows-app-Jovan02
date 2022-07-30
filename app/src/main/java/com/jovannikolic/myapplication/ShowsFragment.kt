@@ -70,7 +70,7 @@ class ShowsFragment : Fragment() {
         initListeners()
 
         getUserData()
-        getShowsList()
+        getShowsList(4, 20)
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
             if (!list.isEmpty()) {
@@ -259,11 +259,11 @@ class ShowsFragment : Fragment() {
             })
     }
 
-    private fun getShowsList() {
-        ApiModule.retrofit.showsList()
+    private fun getShowsList(page: Int, items: Int) {
+        ApiModule.retrofit.showsList(page.toString(), items.toString())
             .enqueue(object : retrofit2.Callback<ShowsListResponse> {
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
                         viewModel.setShowsList(response.body()!!.shows)
                     } else
