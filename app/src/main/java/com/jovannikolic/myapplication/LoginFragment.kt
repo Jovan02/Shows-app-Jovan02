@@ -70,7 +70,6 @@ class LoginFragment : Fragment() {
         var isEmailValid = false
         var isPasswordValid = false
 
-        //  Email TextWatcher
         binding.emailtext.editText?.addTextChangedListener {
             if (binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()) {
                 isEmailValid = true
@@ -82,7 +81,6 @@ class LoginFragment : Fragment() {
             checkLoginButtonState(isEmailValid, isPasswordValid)
         }
 
-        //  Password TextWatcher
         binding.passwordtext.editText?.addTextChangedListener {
             if (validPassword()) {
                 isPasswordValid = true
@@ -94,7 +92,6 @@ class LoginFragment : Fragment() {
             checkLoginButtonState(isEmailValid, isPasswordValid)
         }
 
-        //  Login button - opens new activity
         binding.loginbutton.setOnClickListener {
             sendDataToApi(binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
 
