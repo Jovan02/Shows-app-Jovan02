@@ -130,11 +130,11 @@ class ShowDetailsFragment : Fragment() {
                         viewModel.setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         viewModel.setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
                     } else
-                        Toast.makeText(requireContext(), "Call Failed.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Call Failed.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
             })
@@ -145,15 +145,14 @@ class ShowDetailsFragment : Fragment() {
             .enqueue(object : Callback<GetReviewsResponse> {
                 override fun onResponse(call: Call<GetReviewsResponse>, response: Response<GetReviewsResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(requireContext(), "Call getReviews Successful.", Toast.LENGTH_SHORT).show()
                         viewModel.setReviewList(response.body()!!.reviews)
                         initReviewsRecycler()
                     } else
-                        Toast.makeText(requireContext(), "Call getReviews Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Call getReviews Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
             })
@@ -165,14 +164,13 @@ class ShowDetailsFragment : Fragment() {
             .enqueue(object : Callback<AddReviewResponse> {
                 override fun onResponse(call: Call<AddReviewResponse>, response: Response<AddReviewResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(requireContext(), "Call addReview Successful.", Toast.LENGTH_SHORT).show()
                         getReviews(show_id.toString())
                     } else
-                        Toast.makeText(requireContext(), "Call addReview Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<AddReviewResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Call addReview Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
             })

@@ -26,4 +26,5 @@
     <string name="confirm_logout">Confirm logout</string>
     <string name="confirm_logout_message">Are you sure you want to logout?</string>
     <string name="registration_successful">Registration Successful!</string>
+    <string name="problems_try_again">There are some problems, please try again</string>
 </resources>
