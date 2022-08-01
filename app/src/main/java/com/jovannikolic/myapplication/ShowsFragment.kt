@@ -231,11 +231,11 @@ class ShowsFragment : Fragment() {
                     if (response.isSuccessful)
                         Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
                     else
-                        Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<UpdatePhotoResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Call Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
 
             })
