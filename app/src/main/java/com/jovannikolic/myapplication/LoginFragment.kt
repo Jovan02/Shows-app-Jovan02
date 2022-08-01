@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
         }
 
         if (sharedPreferences.getBoolean("registered", false)) {
-            binding.logintext.text = "Registration Successful!"
+            binding.logintext.text = getString(R.string.registration_successful)
             binding.registerButton.visibility = View.GONE
             sharedPreferences.edit {
                 putBoolean("registered", false)
