@@ -36,7 +36,6 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
 
-        ApiModule.initRetrofit(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
