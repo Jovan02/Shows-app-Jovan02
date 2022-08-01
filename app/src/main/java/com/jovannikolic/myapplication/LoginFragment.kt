@@ -51,17 +51,15 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (sharedPreferences.getBoolean("remember", false)) {
-            val navOptions: NavOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.loginFragment, true)
-                .build()
-            Navigation.findNavController(binding.root).navigate(R.id.toShowsFragment, null, navOptions)
+            val direction = LoginFragmentDirections.toShowsFragment()
+            Navigation.findNavController(binding.root).navigate(direction)
         }
 
         if (args.registered) {
             binding.logintext.text = getString(R.string.registration_successful)
             binding.registerButton.visibility = View.GONE
         } else {
-            binding.logintext.text = "Login"
+            binding.logintext.text = getString(R.string.login)
             binding.registerButton.visibility = View.VISIBLE
         }
         initListeners()
