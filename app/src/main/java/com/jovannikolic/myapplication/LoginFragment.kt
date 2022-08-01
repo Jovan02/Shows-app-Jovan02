@@ -109,7 +109,8 @@ class LoginFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            findNavController().navigate(R.id.toRegisterFragment)
+            val direction = LoginFragmentDirections.toRegisterFragment()
+            findNavController().navigate(direction)
         }
 
     }
