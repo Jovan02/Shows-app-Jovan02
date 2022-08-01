@@ -174,12 +174,12 @@ class LoginFragment : Fragment() {
                         val destination = LoginFragmentDirections.toShowsFragment()
                         findNavController().navigate(destination)
                     } else {
-                        Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
                 }
             })
     }
