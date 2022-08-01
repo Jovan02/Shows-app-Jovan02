@@ -116,7 +116,6 @@ class ShowDetailsFragment : Fragment() {
             .enqueue(object : Callback<ShowDetailsResponse> {
                 override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(requireContext(), "Call getShowData Successful.", Toast.LENGTH_SHORT).show()
                         val options = RequestOptions()
                             .centerCrop()
                             .placeholder(R.drawable.family_guy)
@@ -131,11 +130,11 @@ class ShowDetailsFragment : Fragment() {
                         viewModel.setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         viewModel.setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
                     } else
-                        Toast.makeText(requireContext(), "Call getShowData Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Call Failed.", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Call getShowData Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Call Failed.", Toast.LENGTH_SHORT).show()
                 }
 
             })
