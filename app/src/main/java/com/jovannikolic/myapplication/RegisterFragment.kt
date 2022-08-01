@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
@@ -97,7 +98,6 @@ class RegisterFragment : Fragment() {
                 binding.passwordtext.editText?.text.toString(),
                 binding.repeatPasswordText.editText?.text.toString()
             )
-            findNavController().popBackStack()
         }
 
     }
@@ -144,9 +144,16 @@ class RegisterFragment : Fragment() {
         ApiModule.retrofit.register(registerRequest)
             .enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                    if(response.isSuccessful){
+                        val direction = RegisterFragmentDirections.toLoginFragment()
+                        findNavController().navigate(direction)
+                    } else {
+                        Toast.makeText(requireContext(), "Registration failed.", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Registration failed.", Toast.LENGTH_SHORT).show()
                 }
             })
     }

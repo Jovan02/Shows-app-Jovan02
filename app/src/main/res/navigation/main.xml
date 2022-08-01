@@ -46,6 +46,17 @@
         android:id="@+id/registerFragment"
         android:name="com.jovannikolic.myapplication.RegisterFragment"
         tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/toLoginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
     <fragment
