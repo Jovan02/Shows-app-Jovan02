@@ -167,13 +167,13 @@ class LoginFragment : Fragment() {
 
                     val headers = response.headers()
                     sharedPreferences.edit {
-                        putString("token-type", headers["token-type"]).apply()
-                        putString("access-token", headers["access-token"]).apply()
-                        putString("client", headers["client"]).apply()
-                        putString("uid", headers["uid"]).apply()
-                        putString("expiry", headers["expiry"]).apply()
-                        putBoolean("logged", isSuccessfulLogin).apply()
-                    }
+                        putString("token-type", headers["token-type"])
+                        putString("access-token", headers["access-token"])
+                        putString("client", headers["client"])
+                        putString("uid", headers["uid"])
+                        putString("expiry", headers["expiry"])
+                        putBoolean("logged", isSuccessfulLogin)
+                    }.apply{}
 
                     if (isSuccessfulLogin) {
                         val destination = LoginFragmentDirections.toShowsFragment()
