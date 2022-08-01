@@ -90,9 +90,6 @@ class RegisterFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            sharedPreferences.edit {
-                putBoolean("registered", true)
-            }
             sendDataToApi(
                 binding.emailtext.editText?.text.toString(),
                 binding.passwordtext.editText?.text.toString(),
@@ -145,7 +142,7 @@ class RegisterFragment : Fragment() {
             .enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                     if(response.isSuccessful){
-                        val direction = RegisterFragmentDirections.toLoginFragment()
+                        val direction = RegisterFragmentDirections.toLoginFragment(true)
                         findNavController().navigate(direction)
                     } else {
                         Toast.makeText(requireContext(), "Registration failed.", Toast.LENGTH_SHORT).show()

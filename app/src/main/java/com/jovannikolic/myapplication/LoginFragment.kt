@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 import models.LoginRequest
 import models.LoginResponse
@@ -31,6 +32,8 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var sharedPreferences: SharedPreferences
+
+    private val args by navArgs<LoginFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +57,9 @@ class LoginFragment : Fragment() {
             Navigation.findNavController(binding.root).navigate(R.id.toShowsFragment, null, navOptions)
         }
 
-        if (sharedPreferences.getBoolean("registered", false)) {
+        if (args.registered) {
             binding.logintext.text = getString(R.string.registration_successful)
             binding.registerButton.visibility = View.GONE
-            sharedPreferences.edit {
-                putBoolean("registered", false)
-            }
         } else {
             binding.logintext.text = "Login"
             binding.registerButton.visibility = View.VISIBLE

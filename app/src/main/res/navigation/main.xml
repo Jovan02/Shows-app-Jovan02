@@ -40,6 +40,11 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="false"/>
 
+        <argument
+            android:name="registered"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+
     </fragment>
 
     <fragment
