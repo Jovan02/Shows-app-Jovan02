@@ -177,7 +177,6 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun initReviewsRecycler() {
-
         viewModel.reviewListLiveData.observe(viewLifecycleOwner) { reviewsList ->
             adapter = ReviewsAdapter(requireContext(), reviewsList) {}
             if (reviewsList.isEmpty()) {
