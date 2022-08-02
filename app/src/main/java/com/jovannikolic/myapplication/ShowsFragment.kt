@@ -69,8 +69,8 @@ class ShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
 
-        getUserData()
-        getShowsList(1, 20)
+        viewModel.getUserData(requireContext())
+        viewModel.getShowsList(requireContext(), 1, 20)
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
             if (!list.isEmpty()) {
@@ -125,7 +125,7 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             checkIfPermissionNeeded()
-            updateProfilePhoto(sharedPreferences.getString("email", "")!!)
+            viewModel.updateProfilePhoto(requireContext(),sharedPreferences)
             dialog.dismiss()
         }
 
@@ -206,72 +206,6 @@ class ShowsFragment : Fragment() {
         builder.setNegativeButton("No", null)
         val alert = builder.create()
         alert.show()
-    }
-
-    private fun updateProfilePhoto(email: String) {
-        val path = sharedPreferences.getString("image", "test")!!
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart(
-                "image_url", "avatar.jpg",
-                File(path).asRequestBody("image_url".toMediaType())
-            )
-            .build()
-
-        val request = Request.Builder()
-            .post(requestBody)
-            .build()
-
-        ApiModule.retrofit.updatePhoto(request)
-            .enqueue(object : Callback<UpdatePhotoResponse> {
-                override fun onResponse(call: Call<UpdatePhotoResponse>, response: Response<UpdatePhotoResponse>) {
-                    if (response.isSuccessful)
-                        Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
-                    else
-                        Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onFailure(call: Call<UpdatePhotoResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
-                }
-
-            })
-
-    }
-
-    private fun getUserData() {
-        ApiModule.retrofit.userData()
-            .enqueue(object : retrofit2.Callback<UserDataResponse> {
-                override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
-                    if (response.isSuccessful)
-                        Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
-                    else
-                        Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onFailure(call: Call<UserDataResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
-                }
-
-            })
-    }
-
-    private fun getShowsList(page: Int, items: Int) {
-        ApiModule.retrofit.showsList(page.toString(), items.toString())
-            .enqueue(object : retrofit2.Callback<ShowsListResponse> {
-                override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
-                    if (response.isSuccessful && response.body() != null) {
-                        Toast.makeText(requireContext(), "Call Successful.", Toast.LENGTH_SHORT).show()
-                        viewModel.setShowsList(response.body()!!.shows)
-                    } else
-                        Toast.makeText(requireContext(), "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onFailure(call: Call<ShowsListResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Call Failed OnFailure.", Toast.LENGTH_SHORT).show()
-                }
-
-            })
     }
 
 }
