@@ -1,27 +1,15 @@
 package com.jovannikolic.myapplication
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.edit
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentRegisterBinding
-import models.RegisterRequest
-import models.RegisterResponse
 import networking.ApiModule
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RegisterFragment : Fragment() {
 
