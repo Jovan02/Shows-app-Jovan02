@@ -88,7 +88,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginbutton.setOnClickListener {
-            viewModel.sendDataToApi(requireContext(), this, binding, binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
+            viewModel.sendDataToApi(requireContext(), this, binding, sharedPreferences, binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
 
         }
 

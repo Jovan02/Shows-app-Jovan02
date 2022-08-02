@@ -1,6 +1,7 @@
 package com.jovannikolic.myapplication
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
@@ -16,7 +17,8 @@ import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
 
-    fun sendDataToApi(context: Context, fragment: Fragment, binding: FragmentLoginBinding, emailData: String, passwordData: String) {
+
+    fun sendDataToApi(context: Context, fragment: Fragment, binding: FragmentLoginBinding, sharedPreferences: SharedPreferences , emailData: String, passwordData: String) {
         val loginRequest = LoginRequest(
             email = emailData,
             password = passwordData
