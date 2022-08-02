@@ -13,12 +13,15 @@ import models.ShowsListResponse
 import models.UpdatePhotoRequest
 import models.UpdatePhotoResponse
 import models.UserDataResponse
+import okhttp3.MultipartBody
 import okhttp3.Request
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -30,8 +33,9 @@ interface ShowsApiService {
     @POST("/users/sign_in")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
 
+    @Multipart
     @PUT("/users")
-    fun updatePhoto(@Body request: Request): Call<UpdatePhotoResponse>
+    fun updatePhoto(@Part multipartBody: MultipartBody): Call<UpdatePhotoResponse>
 
     @GET("/users/me")
     fun userData(): Call<UserDataResponse>

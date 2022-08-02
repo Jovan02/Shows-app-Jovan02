@@ -37,6 +37,7 @@ class ShowsViewModel : ViewModel() {
         val path = sharedPreferences.getString("image", "test")!!
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
+            .addFormDataPart("email", sharedPreferences.getString("email", "")!!)
             .addFormDataPart(
                 "image_url", "avatar.jpg",
                 File(path).asRequestBody("image_url".toMediaType())
@@ -47,7 +48,7 @@ class ShowsViewModel : ViewModel() {
             .post(requestBody)
             .build()
 
-        ApiModule.retrofit.updatePhoto(request)
+        ApiModule.retrofit.updatePhoto(requestBody)
             .enqueue(object : Callback<UpdatePhotoResponse> {
                 override fun onResponse(call: Call<UpdatePhotoResponse>, response: Response<UpdatePhotoResponse>) {
                     if (response.isSuccessful)
