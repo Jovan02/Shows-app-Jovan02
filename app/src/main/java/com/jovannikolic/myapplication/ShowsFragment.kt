@@ -196,15 +196,12 @@ class ShowsFragment : Fragment() {
         builder.setMessage(R.string.confirm_logout_message)
         builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
             dialog.dismiss()
-            if (!sharedPreferences.getBoolean("remember", false)) {
-                findNavController().popBackStack()
-            } else {
-                sharedPreferences.edit {
-                    putBoolean("remember", false)
-                }
-                val direction = ShowsFragmentDirections.actionLogout()
-                findNavController().navigate(direction)
+            sharedPreferences.edit {
+                putBoolean("remember", false)
             }
+            val direction = ShowsFragmentDirections.actionLogout()
+            findNavController().navigate(direction)
+
         })
         builder.setNegativeButton("No", null)
         val alert = builder.create()
