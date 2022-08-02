@@ -52,6 +52,9 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor "androidx.room:room-compiler:2.4.3"
+    testImplementation "androidx.room:room-testing:2.4.3"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     testImplementation 'junit:junit:4.13.2'
