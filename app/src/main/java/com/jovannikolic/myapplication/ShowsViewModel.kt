@@ -3,10 +3,13 @@ package com.jovannikolic.myapplication
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import database.ShowsDatabase
 import java.io.File
+import java.util.concurrent.Executors
 import models.Show
 import models.ShowsListResponse
 import models.UpdatePhotoResponse
@@ -19,13 +22,22 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ShowsViewModel : ViewModel() {
+class ShowsViewModel(
+    private val database: ShowsDatabase
+) : ViewModel() {
 
     private val _showsLiveData = MutableLiveData<List<Show>>()
     val showsLiveData: LiveData<List<Show>> = _showsLiveData
 
     fun setShowsList(shows: List<Show>) {
         _showsLiveData.value = shows
+        Executors.newSingleThreadExecutor().execute{
+            database.showDao().insertAllShows(shows)
+        }
+    }
+
+    fun setShowsListFromDatabase() : LiveData<List<Show>>{
+        return database.showDao().getAllShows()
     }
 
     init {
@@ -73,19 +85,29 @@ class ShowsViewModel : ViewModel() {
             })
     }
 
-    fun getShowsList(context: Context, page: Int, items: Int) {
+    fun getShowsList(context: Context, viewLifecycleOwner: LifecycleOwner,page: Int, items: Int) {
         ApiModule.retrofit.showsList(page.toString(), items.toString())
             .enqueue(object : retrofit2.Callback<ShowsListResponse> {
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         Toast.makeText(context, "Call Successful.", Toast.LENGTH_SHORT).show()
                         setShowsList(response.body()!!.shows)
-                    } else
+                    } else {
                         Toast.makeText(context, "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
+                        setShowsListFromDatabase().observe(viewLifecycleOwner) { showList ->
+                            setShowsList(showList.map { show ->
+                                Show(show.id, show.average_rating, show.description, show.image_url, show.no_of_reviews, show.title)
+                            })
+                        }
+                    }
                 }
 
                 override fun onFailure(call: Call<ShowsListResponse>, t: Throwable) {
-                    Toast.makeText(context, "Call Failed OnFailure.", Toast.LENGTH_SHORT).show()
+                    setShowsListFromDatabase().observe(viewLifecycleOwner) { showList ->
+                        setShowsList(showList.map { show ->
+                            Show(show.id, show.average_rating, show.description, show.image_url, show.no_of_reviews, show.title)
+                        })
+                    }
                 }
 
             })

@@ -52,7 +52,9 @@ class ShowsFragment : Fragment() {
 
     private lateinit var bottomSheetBinding: DialogProfileBinding
 
-    private val viewModel by viewModels<ShowsViewModel>()
+    private val viewModel: ShowsViewModel by viewModels{
+        ShowsViewModelFactory((activity?.application as MainApplication).database)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +72,7 @@ class ShowsFragment : Fragment() {
         initListeners()
 
         viewModel.getUserData(requireContext())
-        viewModel.getShowsList(requireContext(), 1, 20)
+        viewModel.getShowsList(requireContext(), viewLifecycleOwner,1, 20)
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
             if (!list.isEmpty()) {
@@ -97,7 +99,6 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler(user: String) {
-
         viewModel.showsLiveData.observe(viewLifecycleOwner) { showList ->
             adapter = ShowsAdapter(requireContext(), showList) { show ->
                 val direction = ShowsFragmentDirections.toShowDetailsFragment(user, show)
