@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.databinding.FragmentRegisterBinding
 import models.RegisterRequest
@@ -29,6 +30,8 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var sharedPreferences: SharedPreferences
+
+    private val viewModel by viewModels<RegisterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +93,9 @@ class RegisterFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            sendDataToApi(
+            viewModel.sendDataToApi(
+                requireContext(),
+                this,
                 binding.emailtext.editText?.text.toString(),
                 binding.passwordtext.editText?.text.toString(),
                 binding.repeatPasswordText.editText?.text.toString()
@@ -130,29 +135,6 @@ class RegisterFragment : Fragment() {
         if (email && password && repeatPassword) {
             binding.registerButton.setTextColor(Color.parseColor("#52369C"))
         }
-    }
-
-    private fun sendDataToApi(emailData: String, passwordData: String, repeatPasswordData: String) {
-        val registerRequest = RegisterRequest(
-            email = emailData,
-            password = passwordData,
-            passwordConfirmation = repeatPasswordData
-        )
-        ApiModule.retrofit.register(registerRequest)
-            .enqueue(object : Callback<RegisterResponse> {
-                override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                    if(response.isSuccessful){
-                        val direction = RegisterFragmentDirections.toLoginFragment(true)
-                        findNavController().navigate(direction)
-                    } else {
-                        Toast.makeText(requireContext(), "Registration failed.", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), "Registration failed.", Toast.LENGTH_SHORT).show()
-                }
-            })
     }
 
 }
