@@ -26,5 +26,9 @@
     <string name="confirm_logout">Confirm logout</string>
     <string name="confirm_logout_message">Are you sure you want to logout?</string>
     <string name="registration_successful">Registration Successful!</string>
+    <string name="registration_failed">Registration Failed</string>
     <string name="problems_try_again">There are some problems, please try again</string>
+    <string name="invalid_email">Invalid Email Address</string>
+    <string name="short_password">Password must be at least 6 characters long</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
 </resources>
