@@ -14,7 +14,6 @@ import models.UserDataResponse
 import networking.ApiModule
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,20 +34,12 @@ class ShowsViewModel : ViewModel() {
 
     fun updateProfilePhoto(context: Context, sharedPreferences: SharedPreferences) {
         val path = sharedPreferences.getString("image", "test")!!
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("email", sharedPreferences.getString("email", "")!!)
-            .addFormDataPart(
-                "image_url", "avatar.jpg",
-                File(path).asRequestBody("image_url".toMediaType())
-            )
-            .build()
 
-        val request = Request.Builder()
-            .post(requestBody)
-            .build()
+        val requestBody = MultipartBody.Part
+            .createFormData("image", "avatar.jpg",
+                File(path).asRequestBody("multipart/form-data".toMediaType()))
 
-        ApiModule.retrofit.updatePhoto(requestBody)
+        ApiModule.retrofit.updatePhoto(sharedPreferences.getString("email", "")!!, requestBody)
             .enqueue(object : Callback<UpdatePhotoResponse> {
                 override fun onResponse(call: Call<UpdatePhotoResponse>, response: Response<UpdatePhotoResponse>) {
                     if (response.isSuccessful)

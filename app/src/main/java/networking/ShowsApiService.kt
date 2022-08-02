@@ -35,7 +35,7 @@ interface ShowsApiService {
 
     @Multipart
     @PUT("/users")
-    fun updatePhoto(@Part multipartBody: MultipartBody): Call<UpdatePhotoResponse>
+    fun updatePhoto(@Part("email") email: String, @Part requestImage: MultipartBody.Part): Call<UpdatePhotoResponse>
 
     @GET("/users/me")
     fun userData(): Call<UserDataResponse>
