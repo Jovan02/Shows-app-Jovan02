@@ -70,7 +70,7 @@ class ShowsFragment : Fragment() {
         initListeners()
 
         getUserData()
-        getShowsList(4, 20)
+        getShowsList(1, 20)
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
             if (!list.isEmpty()) {
