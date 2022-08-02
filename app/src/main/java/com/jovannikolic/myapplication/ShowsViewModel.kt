@@ -31,9 +31,6 @@ class ShowsViewModel(
 
     fun setShowsList(shows: List<Show>) {
         _showsLiveData.value = shows
-        Executors.newSingleThreadExecutor().execute{
-            database.showDao().insertAllShows(shows)
-        }
     }
 
     fun setShowsListFromDatabase() : LiveData<List<Show>>{
