@@ -11,8 +11,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.jovannikolic.myapplication.databinding.ViewShowItemBinding
 import models.Show
 
-private lateinit var sharedPreferences: SharedPreferences
-
 class ShowsAdapter(
     private val context: Context,
     private var items: List<Show>,
@@ -21,7 +19,6 @@ class ShowsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
         val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context))
-        sharedPreferences = context.getSharedPreferences("LoginData", Context.MODE_PRIVATE)
         return ShowViewHolder(binding)
     }
 
@@ -42,9 +39,6 @@ class ShowsAdapter(
                 .error(R.drawable.family_guy)
             Glide.with(context).load(item.image_url).apply(options).into(binding.showImage)
             binding.cardcontainer.setOnClickListener {
-                sharedPreferences.edit {
-                    putString("show-id", item.id).apply()
-                }
                 onItemClickCallback(item)
             }
         }
