@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -34,6 +35,8 @@ class LoginFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
 
     private val args by navArgs<LoginFragmentArgs>()
+
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +96,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginbutton.setOnClickListener {
-            sendDataToApi(binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
+            viewModel.sendDataToApi(requireContext(), this, binding, binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
 
         }
 
@@ -145,42 +148,4 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun sendDataToApi(emailData: String, passwordData: String) {
-        val loginRequest = LoginRequest(
-            email = emailData,
-            password = passwordData
-        )
-        ApiModule.retrofit.login(loginRequest)
-            .enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    val isSuccessfulLogin = response.isSuccessful
-
-                    val email = binding.emailtext.editText?.text.toString()
-                    sharedPreferences.edit {
-                        putString("email", email)
-                    }
-
-                    val headers = response.headers()
-                    sharedPreferences.edit {
-                        putString("token-type", headers["token-type"])
-                        putString("access-token", headers["access-token"])
-                        putString("client", headers["client"])
-                        putString("uid", headers["uid"])
-                        putString("expiry", headers["expiry"])
-                        putBoolean("logged", isSuccessfulLogin)
-                    }.apply{}
-
-                    if (isSuccessfulLogin) {
-                        val destination = LoginFragmentDirections.toShowsFragment()
-                        findNavController().navigate(destination)
-                    } else {
-                        Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), getString(R.string.problems_try_again), Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
 }
