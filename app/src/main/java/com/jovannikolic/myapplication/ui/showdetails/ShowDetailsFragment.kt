@@ -61,6 +61,7 @@ class ShowDetailsFragment : Fragment() {
         binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.toolbarTitle)
 
         viewModel.getShowData(args.show.id)
+        viewModel.getReviews(args.show.id)
     }
 
     private fun initObservers() {

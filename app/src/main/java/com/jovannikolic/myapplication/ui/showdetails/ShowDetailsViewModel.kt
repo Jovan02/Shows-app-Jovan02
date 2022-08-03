@@ -107,14 +107,15 @@ class ShowDetailsViewModel : ViewModel() {
                         _showDescription.value = response.body()!!.show.description
                         _showTitle.value = response.body()!!.show.title
 
-                        getReviews(response.body()!!.show.id)
-                        _showId.value = response.body()!!.show.id
+                        getReviews(show_id)
+                        _showId.value = show_id
                         setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
                     }
                 }
 
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
+                    _isGetShowDataSuccessful.value = false
                 }
 
             })
@@ -144,6 +145,7 @@ class ShowDetailsViewModel : ViewModel() {
                 override fun onResponse(call: Call<AddReviewResponse>, response: Response<AddReviewResponse>) {
                     _isAddReviewSuccessful.value = response.isSuccessful
                     if (response.isSuccessful) {
+                        getShowData(show_id.toString())
                         getReviews(show_id.toString())
                     }
                 }
