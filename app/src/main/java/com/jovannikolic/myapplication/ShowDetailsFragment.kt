@@ -39,7 +39,9 @@ class ShowDetailsFragment : Fragment() {
 
     private val args by navArgs<ShowDetailsFragmentArgs>()
 
-    private val viewModel by viewModels<ShowDetailsViewModel>()
+    private val viewModel: ShowDetailsViewModel by viewModels{
+        ShowDetailsViewModelFactory((activity?.application as MainApplication).database)
+    }
 
     private lateinit var sharedPreferences: SharedPreferences
 
