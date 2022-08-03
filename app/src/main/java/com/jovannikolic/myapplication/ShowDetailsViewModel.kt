@@ -19,18 +19,25 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
+import database.ShowsDatabase
 import java.text.DecimalFormat
+import java.util.concurrent.Executors
 import models.AddReviewRequest
 import models.AddReviewResponse
 import models.GetReviewsResponse
 import models.Review
+import models.ReviewEntity
+import models.Show
 import models.ShowDetailsResponse
+import models.User
 import networking.ApiModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ShowDetailsViewModel : ViewModel() {
+class ShowDetailsViewModel(
+    private val database : ShowsDatabase
+) : ViewModel() {
 
     private val _sumOfReviewsLiveData = MutableLiveData<Float>()
     val sumOfReviewsLiveData: LiveData<Float> = _sumOfReviewsLiveData
@@ -70,8 +77,16 @@ class ShowDetailsViewModel : ViewModel() {
         _reviewListLiveData.value?.plus(review)
     }
 
+    fun setShow(): LiveData<Show>{
+        return database.showDao().getShow(showId)   //  uzima show sa datim ID-jem i postavlja atribute na stranicu
+    }
+
     fun setReviewList(list: List<Review>) {
         _reviewListLiveData.value = list
+    }
+
+    fun setReviewListFromDatabase() : LiveData<List<ReviewEntity>>{
+        return database.reviewDao().getAllShowReviews(showId)
     }
 
     fun setAverageReviewsLiveData(avg: Float) {
@@ -95,13 +110,15 @@ class ShowDetailsViewModel : ViewModel() {
                         binding.collapsingToolbar.title = response.body()!!.show.title
                         binding.showtext.text = response.body()!!.show.description
 
-                        getReviews(context, viewLifecycleOwner, binding, response.body()!!.show.id)
                         showId = response.body()!!.show.id
+                        getReviews(context, viewLifecycleOwner, binding, showId)
 
                         setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
-                    } else
+                    } else{
                         Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                        database.showDao().getShow(showId)
+                    }
                 }
 
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
@@ -116,14 +133,30 @@ class ShowDetailsViewModel : ViewModel() {
             .enqueue(object : Callback<GetReviewsResponse> {
                 override fun onResponse(call: Call<GetReviewsResponse>, response: Response<GetReviewsResponse>) {
                     if (response.isSuccessful) {
+                        Executors.newSingleThreadExecutor().execute{
+                            database.reviewDao().insertAllReviews(response.body()!!.reviews.map { review ->
+                                ReviewEntity(review.id, review.comment, review.rating, review.show_id, review.user.id, review.user.email, review.user.imageUrl)
+                            })
+                        }
                         setReviewList(response.body()!!.reviews)
                         initReviewsRecycler(context, binding, viewLifecycleOwner)
-                    } else
+                    } else {
                         Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                        setReviewListFromDatabase().observe(viewLifecycleOwner){ reviewList ->
+                            setReviewList(reviewList.map { review ->
+                                Review(review.id, review.comment, review.rating, review.show_id, User(review.user_id, review.user_email, review.user_image_url))
+                            })
+                        }
+                    }
                 }
 
                 override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
                     Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                    setReviewListFromDatabase().observe(viewLifecycleOwner){ reviewList ->
+                        setReviewList(reviewList.map { review ->
+                            Review(review.id, review.comment, review.rating, review.show_id, User(review.user_id, review.user_email, review.user_image_url))
+                        })
+                    }
                 }
 
             })
