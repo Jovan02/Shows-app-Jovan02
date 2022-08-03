@@ -88,6 +88,9 @@ class ShowsViewModel(
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         Toast.makeText(context, "Call Successful.", Toast.LENGTH_SHORT).show()
+                        Executors.newSingleThreadExecutor().execute{
+                            database.showDao().insertAllShows(response.body()!!.shows)
+                        }
                         setShowsList(response.body()!!.shows)
                     } else {
                         Toast.makeText(context, "Call Failed OnResponse.", Toast.LENGTH_SHORT).show()
