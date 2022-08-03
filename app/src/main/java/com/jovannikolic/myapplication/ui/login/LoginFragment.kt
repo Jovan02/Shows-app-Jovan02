@@ -59,33 +59,32 @@ class LoginFragment : Fragment() {
             binding.registerButton.visibility = View.VISIBLE
         }
         initListeners()
+        initObservers()
+    }
+
+    private fun initObservers(){
+        viewModel.emailHasErrorLiveData.observe(viewLifecycleOwner){ hasError ->
+            binding.emailerror.text = if(hasError) "Invalid Email Address" else null
+        }
+
+        viewModel.passwordHasErrorLiveData.observe(viewLifecycleOwner) { hasError ->
+            binding.passworderror.text = if (hasError) "Password must be at least 6 characters long." else null
+        }
+
+        viewModel.buttonIsEnabledLiveData.observe(viewLifecycleOwner){ isEnabled ->
+            binding.loginbutton.isEnabled = isEnabled
+            binding.loginbutton.setTextColor(if (isEnabled) requireContext().getColor(R.color.purple_600) else requireContext().getColor(R.color.white))
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun initListeners() {
-        var isEmailValid = false
-        var isPasswordValid = false
-
         binding.emailtext.editText?.addTextChangedListener {
-            if (binding.emailtext.editText?.text.toString().isNotEmpty() && validEmail()) {
-                isEmailValid = true
-                binding.emailerror.text = null
-            } else {
-                isEmailValid = false
-                binding.emailerror.text = "Invalid Email Address"
-            }
-            checkLoginButtonState(isEmailValid, isPasswordValid)
+            viewModel.emailChanged(binding.emailtext.editText?.text.toString())
         }
 
         binding.passwordtext.editText?.addTextChangedListener {
-            if (validPassword()) {
-                isPasswordValid = true
-                binding.passworderror.text = null
-            } else {
-                isPasswordValid = false
-                binding.passworderror.text = "Password must be at least 6 characters long."
-            }
-            checkLoginButtonState(isEmailValid, isPasswordValid)
+            viewModel.passwordChanged(binding.passwordtext.editText?.text.toString())
         }
 
         binding.loginbutton.setOnClickListener {
@@ -109,36 +108,6 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun validEmail(): Boolean {
-
-        val emailText = binding.emailtext.editText?.text.toString()
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
-            return false
-        }
-        return true
-    }
-
-    private fun validPassword(): Boolean {
-
-        val passText = binding.passwordtext.editText?.text.toString()
-
-        if (passText.length < 6) {
-            return false
-        }
-
-        return true
-    }
-
-    private fun checkLoginButtonState(email: Boolean, password: Boolean) {
-        binding.loginbutton.isEnabled = email && password
-        if (email && password) {
-            binding.loginbutton.setTextColor(Color.parseColor("#52368C"))
-        } else {
-            binding.loginbutton.setTextColor(Color.parseColor("#FFFFFF"))
-        }
     }
 
 }
