@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.jovannikolic.myapplication.LoginFragment"
+        android:name="com.jovannikolic.myapplication.ui.login.LoginFragment"
         tools:layout="@layout/fragment_login">
 
         <action
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.jovannikolic.myapplication.RegisterFragment"
+        android:name="com.jovannikolic.myapplication.ui.register.RegisterFragment"
         tools:layout="@layout/fragment_register">
 
         <action
@@ -66,7 +66,7 @@
 
     <fragment
         android:id="@+id/showsFragment"
-        android:name="com.jovannikolic.myapplication.ShowsFragment"
+        android:name="com.jovannikolic.myapplication.ui.shows.ShowsFragment"
         tools:layout="@layout/fragment_shows">
 
         <action
@@ -93,7 +93,7 @@
 
     <fragment
         android:id="@+id/showDetailsFragment"
-        android:name="com.jovannikolic.myapplication.ShowDetailsFragment"
+        android:name="com.jovannikolic.myapplication.ui.showdetails.ShowDetailsFragment"
         tools:layout="@layout/fragment_show_details">
 
         <argument
