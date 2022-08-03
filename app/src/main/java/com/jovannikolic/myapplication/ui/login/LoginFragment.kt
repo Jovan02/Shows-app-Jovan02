@@ -3,17 +3,15 @@ package com.jovannikolic.myapplication.ui.login
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jovannikolic.myapplication.R
@@ -47,17 +45,11 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (sharedPreferences.getBoolean("remember", false)) {
-            val direction = LoginFragmentDirections.toShowsFragment()
-            Navigation.findNavController(binding.root).navigate(direction)
+            findNavController().navigate(LoginFragmentDirections.toShowsFragment())
         }
 
-        if (args.registered) {
-            binding.logintext.text = getString(R.string.registration_successful)
-            binding.registerButton.visibility = View.GONE
-        } else {
-            binding.logintext.text = getString(R.string.login)
-            binding.registerButton.visibility = View.VISIBLE
-        }
+        viewModel.isRegistered(args.registered)
+
         initListeners()
         initObservers()
     }
@@ -75,6 +67,24 @@ class LoginFragment : Fragment() {
             binding.loginbutton.isEnabled = isEnabled
             binding.loginbutton.setTextColor(if (isEnabled) requireContext().getColor(R.color.purple_600) else requireContext().getColor(R.color.white))
         }
+
+        viewModel.isRegisteredChecked.observe(viewLifecycleOwner){ registered ->
+            if (registered) {
+                binding.logintext.text = getString(R.string.registration_successful)
+                binding.registerButton.visibility = View.GONE
+            } else {
+                binding.logintext.text = getString(R.string.login)
+                binding.registerButton.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.isSuccessfulLogin.observe(viewLifecycleOwner){ isSuccessful ->
+            if (isSuccessful == true) {
+                findNavController().navigate(LoginFragmentDirections.toShowsFragment())
+            } else {
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -88,14 +98,17 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginbutton.setOnClickListener {
-            viewModel.sendDataToApi(requireContext(), this, binding, sharedPreferences, binding.emailtext.editText?.text.toString(), binding.passwordtext.editText?.text.toString())
-
+            viewModel.login(sharedPreferences)
+            viewModel.isRememberMeChecked.observe(viewLifecycleOwner){ checked ->
+                sharedPreferences.edit{
+                    putBoolean("remember", checked)
+                    apply()
+                }
+            }
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
-            sharedPreferences.edit {
-                putBoolean("remember", isChecked)
-            }
+            viewModel.isRememberMeChecked(isChecked)
         }
 
         binding.registerButton.setOnClickListener {
