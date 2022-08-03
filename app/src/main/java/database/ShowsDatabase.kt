@@ -5,14 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import models.Review
+import models.ReviewEntity
 import models.Show
 
 @Database(
     entities = [
         Show::class,
-        Review::class
+        ReviewEntity::class
     ],
-    version = 1
+    version = 2
 )
 
 abstract class ShowsDatabase : RoomDatabase(){
