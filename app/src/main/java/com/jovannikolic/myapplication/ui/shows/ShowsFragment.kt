@@ -92,7 +92,7 @@ class ShowsFragment : Fragment() {
 
         viewModel.isGetShowsSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
             if (!isSuccessful) {
-                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
             }
         }
     }
