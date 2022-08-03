@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.ViewReviewItemBinding
-import com.jovannikolic.myapplication.ui.models.Review
+import models.Review
 
 class ReviewsAdapter(
     private var context: Context,

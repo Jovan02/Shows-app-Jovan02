@@ -19,11 +19,11 @@ import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.ui.adapter.ReviewsAdapter
 import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
-import com.jovannikolic.myapplication.ui.models.AddReviewRequest
-import com.jovannikolic.myapplication.ui.models.AddReviewResponse
-import com.jovannikolic.myapplication.ui.models.GetReviewsResponse
-import com.jovannikolic.myapplication.ui.models.Review
-import com.jovannikolic.myapplication.ui.models.ShowDetailsResponse
+import models.AddReviewRequest
+import models.AddReviewResponse
+import models.GetReviewsResponse
+import models.Review
+import models.ShowDetailsResponse
 import networking.ApiModule
 import retrofit2.Call
 import retrofit2.Callback

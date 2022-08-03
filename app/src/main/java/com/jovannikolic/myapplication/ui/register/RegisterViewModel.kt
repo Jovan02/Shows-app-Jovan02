@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.FragmentRegisterBinding
-import com.jovannikolic.myapplication.ui.models.RegisterRequest
-import com.jovannikolic.myapplication.ui.models.RegisterResponse
+import models.RegisterRequest
+import models.RegisterResponse
 import networking.ApiModule
 import retrofit2.Call
 import retrofit2.Callback

@@ -1,10 +1,11 @@
-package com.jovannikolic.myapplication.ui.models
+package models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LoginRequest(
+data class User(
+    @SerialName("id") val id: String,
     @SerialName("email") val email: String,
-    @SerialName("password") val password: String,
+    @SerialName("image_url") val imageUrl: String?
 )

@@ -1,4 +1,4 @@
-package com.jovannikolic.myapplication.ui.models
+package models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

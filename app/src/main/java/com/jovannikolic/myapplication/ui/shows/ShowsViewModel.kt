@@ -8,10 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jovannikolic.myapplication.R
 import java.io.File
-import com.jovannikolic.myapplication.ui.models.Show
-import com.jovannikolic.myapplication.ui.models.ShowsListResponse
-import com.jovannikolic.myapplication.ui.models.UpdatePhotoResponse
-import com.jovannikolic.myapplication.ui.models.UserDataResponse
+import models.Show
+import models.ShowsListResponse
+import models.UpdatePhotoResponse
+import models.UserDataResponse
 import networking.ApiModule
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
