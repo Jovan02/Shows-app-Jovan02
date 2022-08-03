@@ -43,13 +43,30 @@ class ShowDetailsViewModel : ViewModel() {
     private val _reviewListLiveData = MutableLiveData<List<Review>>()
     val reviewListLiveData: LiveData<List<Review>> = _reviewListLiveData
 
-    private val _adapterLiveData = MutableLiveData<ReviewsAdapter>()
-    val adapterLiveData: LiveData<ReviewsAdapter> = _adapterLiveData
-
     private val _numberOfReviewsLiveData = MutableLiveData<Int>()
     val numberOfReviewsLiveData: LiveData<Int> = _numberOfReviewsLiveData
 
-    private lateinit var showId: String
+    private val _isGetShowDataSuccessful = MutableLiveData<Boolean>()
+    val isGetShowDataSuccessful: LiveData<Boolean> = _isGetShowDataSuccessful
+
+    private val _showImageUrl = MutableLiveData<String>()
+    val showImageUrl: LiveData<String> = _showImageUrl
+
+    private val _showTitle = MutableLiveData<String>()
+    val showTitle: LiveData<String> = _showTitle
+
+    private val _showDescription = MutableLiveData<String>()
+    val showDescription: LiveData<String> = _showDescription
+
+    private val _isGetReviewsSuccessful = MutableLiveData<Boolean>()
+    val isGetReviewsSuccessful: LiveData<Boolean> = _isGetReviewsSuccessful
+
+    private val _isAddReviewSuccessful = MutableLiveData<Boolean>()
+    val isAddReviewSuccessful: LiveData<Boolean> = _isAddReviewSuccessful
+
+    private val _showId = MutableLiveData<String>()
+    val showId: LiveData<String> = _showId
+
 
     init {
         _sumOfReviewsLiveData.value = 0.0f
@@ -65,7 +82,6 @@ class ShowDetailsViewModel : ViewModel() {
     }
 
     fun addReviewToList(review: Review) {
-        _adapterLiveData.value?.addReview(review)
         _reviewListLiveData.value?.plus(review)
     }
 
@@ -81,126 +97,60 @@ class ShowDetailsViewModel : ViewModel() {
         _numberOfReviewsLiveData.value = num
     }
 
-    fun getShowData(context: Context, viewLifecycleOwner: LifecycleOwner, fragment: Fragment, binding: FragmentShowDetailsBinding, show_id: String) {
+    fun getShowData(show_id: String) {
         ApiModule.retrofit.getShowDetails(show_id)
             .enqueue(object : Callback<ShowDetailsResponse> {
                 override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
+                    _isGetShowDataSuccessful.value = response.isSuccessful
                     if (response.isSuccessful) {
-                        val options = RequestOptions()
-                            .centerCrop()
-                            .placeholder(R.drawable.family_guy)
-                            .error(R.drawable.family_guy)
-                        Glide.with(context).load(response.body()!!.show.image_url).apply(options).into(binding.showimg)
-                        binding.collapsingToolbar.title = response.body()!!.show.title
-                        binding.showtext.text = response.body()!!.show.description
+                        _showImageUrl.value = response.body()!!.show.image_url
+                        _showDescription.value = response.body()!!.show.description
+                        _showTitle.value = response.body()!!.show.title
 
-                        getReviews(context, viewLifecycleOwner, binding, response.body()!!.show.id)
-                        showId = response.body()!!.show.id
-
+                        getReviews(response.body()!!.show.id)
+                        _showId.value = response.body()!!.show.id
                         setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
-                    } else
-                        Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                    }
                 }
 
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
-                    Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
                 }
 
             })
     }
 
-    fun getReviews(context: Context, viewLifecycleOwner: LifecycleOwner, binding: FragmentShowDetailsBinding, show_id: String) {
+    fun getReviews(show_id: String) {
         ApiModule.retrofit.getReviews(show_id)
             .enqueue(object : Callback<GetReviewsResponse> {
                 override fun onResponse(call: Call<GetReviewsResponse>, response: Response<GetReviewsResponse>) {
+                    _isGetReviewsSuccessful.value = response.isSuccessful
                     if (response.isSuccessful) {
                         setReviewList(response.body()!!.reviews)
-                        initReviewsRecycler(context, binding, viewLifecycleOwner)
-                    } else
-                        Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                    }
                 }
 
                 override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
-                    Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                    _isGetReviewsSuccessful.value = false
                 }
 
             })
     }
 
-    fun addReview(context: Context, viewLifecycleOwner: LifecycleOwner, binding: FragmentShowDetailsBinding, rating: Int, comment: String, show_id: Int) {
+    fun addReview(rating: Int, comment: String, show_id: Int) {
         val addReviewRequest = AddReviewRequest(rating, comment, show_id)
         ApiModule.retrofit.addReview(addReviewRequest)
             .enqueue(object : Callback<AddReviewResponse> {
                 override fun onResponse(call: Call<AddReviewResponse>, response: Response<AddReviewResponse>) {
+                    _isAddReviewSuccessful.value = response.isSuccessful
                     if (response.isSuccessful) {
-                        getReviews(context, viewLifecycleOwner, binding, show_id.toString())
-                    } else
-                        Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                        getReviews(show_id.toString())
+                    }
                 }
 
                 override fun onFailure(call: Call<AddReviewResponse>, t: Throwable) {
-                    Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                    _isAddReviewSuccessful.value = false
                 }
             })
-    }
-
-    fun initReviewsRecycler(context: Context, binding: FragmentShowDetailsBinding, viewLifecycleOwner: LifecycleOwner) {
-        reviewListLiveData.observe(viewLifecycleOwner) { reviewsList ->
-            _adapterLiveData.value = ReviewsAdapter(context, reviewsList) {}
-            if (reviewsList.isEmpty()) {
-                binding.averageratingtext.isVisible = false
-                binding.averageratingbar.isVisible = false
-                binding.reviewsrecycler.isVisible = false
-                binding.noReviews.isVisible = true
-            } else {
-                binding.averageratingtext.isVisible = true
-                binding.averageratingbar.isVisible = true
-                binding.reviewsrecycler.isVisible = true
-                binding.noReviews.isVisible = false
-            }
-        }
-
-        binding.reviewsrecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-        binding.reviewsrecycler.adapter = _adapterLiveData.value
-
-        binding.reviewsrecycler.addItemDecoration(
-            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        )
-    }
-
-    private fun showBottomSheet(context: Context, viewLifecycleOwner: LifecycleOwner, binding: FragmentShowDetailsBinding, layoutInflater: LayoutInflater) {
-        val dialog = context.let { BottomSheetDialog(it) }
-
-        val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
-        dialog.setContentView(bottomSheetBinding.root)
-
-        bottomSheetBinding.xbutton.setOnClickListener {
-            dialog.hide()
-        }
-
-        bottomSheetBinding.submitButton.setOnClickListener {
-            val rating: Float = bottomSheetBinding.ratingbar.rating
-            val comment: String = bottomSheetBinding.comment.editText?.text.toString()
-
-            if (rating > 0) {
-                addReview(context, viewLifecycleOwner, binding, rating.toInt(), comment, showId.toInt())
-                dialog.hide()
-            } else {
-                dialog.hide()
-            }
-        }
-        dialog.show()
-    }
-
-    fun initListeners(context: Context, viewLifecycleOwner: LifecycleOwner, binding: FragmentShowDetailsBinding, fragment: Fragment, layoutInflater: LayoutInflater) {
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController(fragment).popBackStack()
-        }
-
-        binding.reviewbutton.setOnClickListener {
-            showBottomSheet(context, viewLifecycleOwner, binding, layoutInflater)
-        }
     }
 }

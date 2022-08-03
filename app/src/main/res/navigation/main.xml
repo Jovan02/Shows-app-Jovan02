@@ -96,6 +96,16 @@
         android:name="com.jovannikolic.myapplication.ui.showdetails.ShowDetailsFragment"
         tools:layout="@layout/fragment_show_details">
 
+        <action
+            android:id="@+id/toShowsFragment"
+            app:destination="@id/showsFragment"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right"
+            app:popUpTo="@id/showDetailsFragment"
+            app:popUpToInclusive="true"/>
+
         <argument
             android:name="username"
             app:argType="string"/>
