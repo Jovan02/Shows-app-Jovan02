@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -57,9 +58,10 @@ class ShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+        initObservers()
 
-        viewModel.getUserData(requireContext())
-        viewModel.getShowsList(requireContext(), 1, 20)
+        viewModel.getUserData()
+        viewModel.getShowsList()
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
             if (!list.isEmpty()) {
@@ -67,9 +69,7 @@ class ShowsFragment : Fragment() {
                 binding.emptystatetext.setVisibility(View.INVISIBLE)
 
                 val email = sharedPreferences.getString("email", "non_existing@email.com")
-
                 val tokens = email?.split("@")
-
                 val username = tokens?.getOrNull(0).toString()
 
                 initShowsRecycler(username)
@@ -79,6 +79,24 @@ class ShowsFragment : Fragment() {
         binding.profileButton.setImageResource(R.drawable.profile_placeholder)
     }
 
+    private fun initObservers() {
+        viewModel.isUpdatedPhoto.observe(viewLifecycleOwner) { isUpdated ->
+            if (!isUpdated)
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.isGetDataSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
+            if (!isSuccessful)
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.isGetShowsSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
+            if (!isSuccessful) {
+                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun initListeners() {
         binding.profileButton.setOnClickListener {
             showBottomSheet()
@@ -86,7 +104,6 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler(user: String) {
-
         viewModel.showsLiveData.observe(viewLifecycleOwner) { showList ->
             adapter = ShowsAdapter(requireContext(), showList) { show ->
                 val direction = ShowsFragmentDirections.toShowDetailsFragment(user, show)
@@ -114,7 +131,7 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             checkIfPermissionNeeded()
-            viewModel.updateProfilePhoto(requireContext(),sharedPreferences)
+            viewModel.updateProfilePhoto(sharedPreferences)
             dialog.dismiss()
         }
 
