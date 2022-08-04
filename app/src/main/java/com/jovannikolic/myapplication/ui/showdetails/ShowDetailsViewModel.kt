@@ -133,7 +133,7 @@ class ShowDetailsViewModel(
             .enqueue(object : Callback<GetReviewsResponse> {
                 override fun onResponse(call: Call<GetReviewsResponse>, response: Response<GetReviewsResponse>) {
                     _isGetReviewsSuccessful.value = response.isSuccessful
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         setReviewList(response.body()!!.reviews)
                         Executors.newSingleThreadExecutor().execute{
                             database.reviewDao().insertAllReviews(response.body()!!.reviews.map { review ->
