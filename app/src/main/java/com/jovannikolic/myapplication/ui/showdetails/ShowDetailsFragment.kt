@@ -23,6 +23,7 @@ import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
 import com.jovannikolic.myapplication.ui.adapter.ReviewsAdapter
 import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
+import models.Constants.APP
 
 class ShowDetailsFragment : Fragment() {
 
@@ -38,13 +39,9 @@ class ShowDetailsFragment : Fragment() {
 
     private lateinit var adapter: ReviewsAdapter
 
-    private lateinit var show_id: String
-
-    var firstInit = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(APP, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

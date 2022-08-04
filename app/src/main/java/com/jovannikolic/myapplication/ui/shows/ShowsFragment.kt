@@ -27,6 +27,7 @@ import com.jovannikolic.myapplication.ui.adapter.ShowsAdapter
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
 import com.jovannikolic.myapplication.ui.files.FileUtil
+import models.Constants.APP
 import models.Constants.EMAIL
 import models.Constants.IMAGE
 import models.Constants.REMEMBER_ME
@@ -50,7 +51,7 @@ class ShowsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(APP, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

@@ -10,4 +10,5 @@ object Constants {
     val UID = "uid"
     val EXPIRY = "expiry"
     val LOGGED = "logged"
+    val APP = "app"
 }

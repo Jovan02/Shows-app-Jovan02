@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
+import models.Constants.APP
 
 class LoginFragment : Fragment() {
 
@@ -33,7 +34,7 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(APP, Context.MODE_PRIVATE)
 
     }
 

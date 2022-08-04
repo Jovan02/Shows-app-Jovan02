@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.FragmentRegisterBinding
+import models.Constants.APP
 import networking.ApiModule
 
 class RegisterFragment : Fragment() {
@@ -27,7 +28,7 @@ class RegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(APP, Context.MODE_PRIVATE)
 
         ApiModule.initRetrofit(requireContext())
     }
