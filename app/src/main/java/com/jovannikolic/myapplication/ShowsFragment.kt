@@ -134,14 +134,13 @@ class ShowsFragment : Fragment() {
     }
 
     private val requestPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
-        var permissionGiven = false
+        var permissionGiven = true
         results.forEach{
-            if(it.value){
-                permissionGiven = true
-            }else{
+            if(!it.value){
                 permissionGiven = false
                 return@forEach
             }
+
         }
         if(permissionGiven){
             activateCamera()
