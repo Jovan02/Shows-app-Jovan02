@@ -1,24 +1,8 @@
 package com.jovannikolic.myapplication.ui.showdetails
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.widget.Toast
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.jovannikolic.myapplication.R
-import com.jovannikolic.myapplication.ui.adapter.ReviewsAdapter
-import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
-import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
 import models.AddReviewRequest
 import models.AddReviewResponse
 import models.GetReviewsResponse
