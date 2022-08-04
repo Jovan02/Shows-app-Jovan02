@@ -118,10 +118,10 @@ class ShowDetailsViewModel(
 
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
                     _isGetShowDataSuccessful.value = false
-                    val db = database.showDao().getShow(show_id).value
-                    _showImageUrl.value = db?.image_url
-                    _showDescription.value = db?.description
-                    _showTitle.value = db?.title
+                    val show = database.showDao().getShow(show_id).value
+                    _showImageUrl.value = show?.image_url
+                    _showDescription.value = show?.description
+                    _showTitle.value = show?.title
                     _showId.value = show_id
                 }
 
