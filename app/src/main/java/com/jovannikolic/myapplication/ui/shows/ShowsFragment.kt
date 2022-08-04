@@ -117,6 +117,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler(user: String) {
+
         viewModel.showsLiveData.observe(viewLifecycleOwner) { showList ->
             adapter = ShowsAdapter(requireContext(), showList) { show ->
                 val direction = ShowsFragmentDirections.toShowDetailsFragment(user, show)
@@ -157,11 +158,7 @@ class ShowsFragment : Fragment() {
 
     private fun checkIfPermissionNeeded() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+            && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             activateCamera()
         } else {
             requestPermission()
@@ -173,11 +170,9 @@ class ShowsFragment : Fragment() {
     }
 
     private val requestPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
-        var permissionGiven = false
-        results.forEach {
-            if (it.value) {
-                permissionGiven = true
-            } else {
+        var permissionGiven = true
+        results.forEach{
+            if(!it.value){
                 permissionGiven = false
                 return@forEach
             }
@@ -226,5 +221,4 @@ class ShowsFragment : Fragment() {
         val alert = builder.create()
         alert.show()
     }
-
 }
