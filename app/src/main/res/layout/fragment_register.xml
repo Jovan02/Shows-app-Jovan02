@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".RegisterFragment">
+            tools:context=".ui.register.RegisterFragment">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailtext"
@@ -202,6 +202,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/repeatPasswordText"
+                />
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/progressCircular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="?android:attr/progressBarStyleLarge"
+                android:visibility="gone"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

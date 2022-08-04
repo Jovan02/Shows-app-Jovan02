@@ -10,11 +10,9 @@ import models.RegisterRequest
 import models.RegisterResponse
 import models.ShowDetailsResponse
 import models.ShowsListResponse
-import models.UpdatePhotoRequest
 import models.UpdatePhotoResponse
 import models.UserDataResponse
 import okhttp3.MultipartBody
-import okhttp3.Request
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

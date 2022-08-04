@@ -1,4 +1,4 @@
-package com.jovannikolic.myapplication
+package com.jovannikolic.myapplication.ui.activity
 
 import android.app.Application
 import database.ShowsDatabase

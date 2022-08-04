@@ -1,4 +1,4 @@
-package com.jovannikolic.myapplication
+package com.jovannikolic.myapplication.ui.shows
 
 import android.Manifest
 import android.app.AlertDialog
@@ -22,21 +22,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.jovannikolic.myapplication.R
+import com.jovannikolic.myapplication.ui.adapter.ShowsAdapter
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
-import files.FileUtil
-import java.io.File
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.asRequestBody
-import models.ShowsListResponse
-import models.UpdatePhotoResponse
-import models.UserDataResponse
-import networking.ApiModule
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.jovannikolic.myapplication.ui.activity.MainApplication
+import com.jovannikolic.myapplication.ui.files.FileUtil
+import models.Constants.APP
+import models.Constants.EMAIL
+import models.Constants.IMAGE
+import models.Constants.REMEMBER_ME
+import models.Show
 
 class ShowsFragment : Fragment() {
 
@@ -59,7 +55,7 @@ class ShowsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(APP, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -70,19 +66,19 @@ class ShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+        initObservers()
 
-        viewModel.getUserData(requireContext())
-        viewModel.getShowsList(requireContext(), viewLifecycleOwner,1, 20)
+        binding.progressCircular.visibility = View.VISIBLE
+        viewModel.getUserData()
+        viewModel.getShowsList()
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
             if (!list.isEmpty()) {
                 binding.emptystateimage.setVisibility(View.INVISIBLE)
                 binding.emptystatetext.setVisibility(View.INVISIBLE)
 
-                val email = sharedPreferences.getString("email", "non_existing@email.com")
-
+                val email = sharedPreferences.getString(EMAIL, "non_existing@email.com")
                 val tokens = email?.split("@")
-
                 val username = tokens?.getOrNull(0).toString()
 
                 initShowsRecycler(username)
@@ -90,6 +86,37 @@ class ShowsFragment : Fragment() {
         }
 
         binding.profileButton.setImageResource(R.drawable.profile_placeholder)
+    }
+
+    private fun initObservers() {
+        viewModel.isUpdatedPhoto.observe(viewLifecycleOwner) { isUpdated ->
+            if (!isUpdated)
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.isGetDataSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
+            if (!isSuccessful)
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.isGetShowsSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
+            if (!isSuccessful) {
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                viewModel.setShowsListFromDatabase().observe(viewLifecycleOwner) { showList ->
+                    viewModel.setShowsList(showList.map { show ->
+                        Show(show.id, show.average_rating, show.description, show.image_url, show.no_of_reviews, show.title)
+                    })
+                }
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner){ isLoading ->
+            if(isLoading) {
+                binding.progressCircular.visibility = View.VISIBLE
+            } else {
+                binding.progressCircular.visibility = View.GONE
+            }
+        }
     }
 
     private fun initListeners() {
@@ -122,11 +149,11 @@ class ShowsFragment : Fragment() {
         bottomSheetBinding = DialogProfileBinding.inflate(layoutInflater)
         dialog.setContentView(bottomSheetBinding.root)
 
-        bottomSheetBinding.profileEmail.text = sharedPreferences.getString("email", "non_existing@email.com")
+        bottomSheetBinding.profileEmail.text = sharedPreferences.getString(EMAIL, "non_existing@email.com")
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             checkIfPermissionNeeded()
-            viewModel.updateProfilePhoto(requireContext(),sharedPreferences)
+            viewModel.updateProfilePhoto(sharedPreferences)
             dialog.dismiss()
         }
 
@@ -139,11 +166,7 @@ class ShowsFragment : Fragment() {
 
     private fun checkIfPermissionNeeded() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+            && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             activateCamera()
         } else {
             requestPermission()
@@ -155,11 +178,9 @@ class ShowsFragment : Fragment() {
     }
 
     private val requestPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
-        var permissionGiven = false
-        results.forEach {
-            if (it.value) {
-                permissionGiven = true
-            } else {
+        var permissionGiven = true
+        results.forEach{
+            if(!it.value){
                 permissionGiven = false
                 return@forEach
             }
@@ -173,7 +194,7 @@ class ShowsFragment : Fragment() {
         val file = FileUtil.createImageFile(requireContext())
         val uri = FileProvider.getUriForFile(requireContext(), "com.jovannikolic.myapplication.fileProvider", file!!)
         sharedPreferences.edit {
-            putString("image", file.absolutePath)
+            putString(IMAGE, file.absolutePath)
         }
         getCameraImage.launch(uri)
     }
@@ -181,7 +202,7 @@ class ShowsFragment : Fragment() {
     private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { }
 
     private fun changePicture(bottomSheetBinding: DialogProfileBinding) {
-        val path = sharedPreferences.getString("image", "test")
+        val path = sharedPreferences.getString(IMAGE, "test")
         val options = RequestOptions()
             .centerCrop()
             .placeholder(R.drawable.profile_placeholder)
@@ -198,7 +219,7 @@ class ShowsFragment : Fragment() {
         builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
             dialog.dismiss()
             sharedPreferences.edit {
-                putBoolean("remember", false)
+                putBoolean(REMEMBER_ME, false)
             }
             val direction = ShowsFragmentDirections.actionLogout()
             findNavController().navigate(direction)
@@ -208,5 +229,4 @@ class ShowsFragment : Fragment() {
         val alert = builder.create()
         alert.show()
     }
-
 }
