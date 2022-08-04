@@ -30,4 +30,10 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="splashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/purple_600</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_triangle</item>
+        <item name="postSplashScreenTheme">@style/Theme.MyApplication</item>
+    </style>
+
 </resources>
