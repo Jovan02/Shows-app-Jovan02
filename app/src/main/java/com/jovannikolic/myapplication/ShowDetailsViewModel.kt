@@ -57,6 +57,9 @@ class ShowDetailsViewModel(
     private val _numberOfReviewsLiveData = MutableLiveData<Int>()
     val numberOfReviewsLiveData: LiveData<Int> = _numberOfReviewsLiveData
 
+    private var _currentShow = MutableLiveData<Show>()
+    val currentShow: LiveData<Show> = _currentShow
+
     private lateinit var showId: String
 
     init {
@@ -77,7 +80,7 @@ class ShowDetailsViewModel(
         _reviewListLiveData.value?.plus(review)
     }
 
-    fun setShow(): LiveData<Show>{
+    fun setShow(): LiveData<Show> {
         return database.showDao().getShow(showId)   //  uzima show sa datim ID-jem i postavlja atribute na stranicu
     }
 
@@ -117,7 +120,7 @@ class ShowDetailsViewModel(
                         setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
                     } else{
                         Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
-                        database.showDao().getShow(showId)
+                        _currentShow.value = database.showDao().getShow(showId).value
                     }
                 }
 

@@ -75,6 +75,16 @@ class ShowDetailsFragment : Fragment() {
             binding.averageratingbar.rating = average
         }
 
+        viewModel.currentShow.observe(viewLifecycleOwner){ show ->
+            binding.collapsingToolbar.title = show.title
+            binding.showtext.text = show.description
+            val options = RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.family_guy)
+                .error(R.drawable.family_guy)
+            Glide.with(this).load(show.image_url).apply(options).into(binding.showimg)
+        }
+
         viewModel.getShowData(requireContext(), viewLifecycleOwner, this, binding, args.show.id)
     }
 
