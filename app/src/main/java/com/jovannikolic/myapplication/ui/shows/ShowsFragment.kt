@@ -73,7 +73,7 @@ class ShowsFragment : Fragment() {
                 binding.emptystateimage.setVisibility(View.INVISIBLE)
                 binding.emptystatetext.setVisibility(View.INVISIBLE)
 
-                val email = sharedPreferences.getString(EMAIL, "non_existing@email.com")
+                val email = sharedPreferences.getString(EMAIL, null)
                 val tokens = email?.split("@")
                 val username = tokens?.getOrNull(0).toString()
 
