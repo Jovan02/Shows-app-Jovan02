@@ -120,7 +120,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.isRememberMeChecked(isChecked)
+            viewModel.changeRememberMe(isChecked)
         }
 
         binding.registerButton.setOnClickListener {
