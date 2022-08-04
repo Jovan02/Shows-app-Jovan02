@@ -1,4 +1,4 @@
-package com.jovannikolic.myapplication
+package com.jovannikolic.myapplication.ui.shows
 
 import android.Manifest
 import android.app.AlertDialog
@@ -6,11 +6,11 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -22,11 +22,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.jovannikolic.myapplication.R
+import com.jovannikolic.myapplication.ui.adapter.ShowsAdapter
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
-import files.FileUtil
-import javax.security.auth.callback.Callback
-import models.Show
+import com.jovannikolic.myapplication.ui.files.FileUtil
+import models.Constants.APP
+import models.Constants.EMAIL
+import models.Constants.IMAGE
+import models.Constants.REMEMBER_ME
 
 class ShowsFragment : Fragment() {
 
@@ -47,10 +51,10 @@ class ShowsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(APP, Context.MODE_PRIVATE)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,24 +62,55 @@ class ShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+        initObservers()
 
+        binding.progressCircular.visibility = View.VISIBLE
+        viewModel.getUserData()
+        viewModel.getShowsList()
+
+        viewModel.showsLiveData.observe(viewLifecycleOwner) { list ->
+            if (!list.isEmpty()) {
+                binding.emptystateimage.setVisibility(View.INVISIBLE)
+                binding.emptystatetext.setVisibility(View.INVISIBLE)
+
+                val email = sharedPreferences.getString(EMAIL, null)
+                val tokens = email?.split("@")
+                val username = tokens?.getOrNull(0).toString()
+
+                initShowsRecycler(username)
+            }
+        }
+
+        binding.profileButton.setImageResource(R.drawable.profile_placeholder)
+    }
+
+    private fun initObservers() {
+        viewModel.isUpdatedPhoto.observe(viewLifecycleOwner) { isUpdated ->
+            if (!isUpdated)
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.isGetDataSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
+            if (!isSuccessful)
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.isGetShowsSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
+            if (!isSuccessful) {
+                Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner){ isLoading ->
+            if(isLoading) {
+                binding.progressCircular.visibility = View.VISIBLE
+            } else {
+                binding.progressCircular.visibility = View.GONE
+            }
+        }
     }
 
     private fun initListeners() {
-        binding.showbutton.setOnClickListener {
-            binding.emptystateimage.setVisibility(View.INVISIBLE)
-            binding.emptystatetext.setVisibility(View.INVISIBLE)
-            binding.showbutton.setVisibility(View.GONE)
-
-            val email = sharedPreferences.getString("email", "non_existing@email.com")
-
-            val tokens = email?.split("@")
-
-            val username = tokens?.getOrNull(0).toString()
-
-            initShowsRecycler(username)
-        }
-
         binding.profileButton.setOnClickListener {
             showBottomSheet()
         }
@@ -84,7 +119,7 @@ class ShowsFragment : Fragment() {
     private fun initShowsRecycler(user: String) {
 
         viewModel.showsLiveData.observe(viewLifecycleOwner) { showList ->
-            adapter = ShowsAdapter(showList) { show ->
+            adapter = ShowsAdapter(requireContext(), showList) { show ->
                 val direction = ShowsFragmentDirections.toShowDetailsFragment(user, show)
                 findNavController().navigate(direction)
             }
@@ -106,10 +141,11 @@ class ShowsFragment : Fragment() {
         bottomSheetBinding = DialogProfileBinding.inflate(layoutInflater)
         dialog.setContentView(bottomSheetBinding.root)
 
-        bottomSheetBinding.profileEmail.text = sharedPreferences.getString("email", "non_existing@email.com")
+        bottomSheetBinding.profileEmail.text = sharedPreferences.getString(EMAIL, "non_existing@email.com")
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             checkIfPermissionNeeded()
+            viewModel.updateProfilePhoto(sharedPreferences)
             dialog.dismiss()
         }
 
@@ -140,26 +176,25 @@ class ShowsFragment : Fragment() {
                 permissionGiven = false
                 return@forEach
             }
-
         }
-        if(permissionGiven){
+        if (permissionGiven) {
             activateCamera()
         }
     }
 
-    private fun activateCamera(){
+    private fun activateCamera() {
         val file = FileUtil.createImageFile(requireContext())
         val uri = FileProvider.getUriForFile(requireContext(), "com.jovannikolic.myapplication.fileProvider", file!!)
-        sharedPreferences.edit{
-            putString("image", file.absolutePath)
+        sharedPreferences.edit {
+            putString(IMAGE, file.absolutePath)
         }
         getCameraImage.launch(uri)
     }
 
-    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()){ }
+    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { }
 
     private fun changePicture(bottomSheetBinding: DialogProfileBinding) {
-        val path = sharedPreferences.getString("image", "test")
+        val path = sharedPreferences.getString(IMAGE, "test")
         val options = RequestOptions()
             .centerCrop()
             .placeholder(R.drawable.profile_placeholder)
@@ -169,21 +204,18 @@ class ShowsFragment : Fragment() {
 
     }
 
-    private fun onLogoutButtonPressed(dialog: BottomSheetDialog){
+    private fun onLogoutButtonPressed(dialog: BottomSheetDialog) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.confirm_logout)
         builder.setMessage(R.string.confirm_logout_message)
         builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
             dialog.dismiss()
-            if (!sharedPreferences.getBoolean("remember", false)) {
-                findNavController().popBackStack()
-            } else {
-                sharedPreferences.edit {
-                    putBoolean("remember", false)
-                }
-                val direction = ShowsFragmentDirections.actionLogout()
-                findNavController().navigate(direction)
+            sharedPreferences.edit {
+                putBoolean(REMEMBER_ME, false)
             }
+            val direction = ShowsFragmentDirections.actionLogout()
+            findNavController().navigate(direction)
+
         })
         builder.setNegativeButton("No", null)
         val alert = builder.create()
