@@ -11,4 +11,7 @@ object Constants {
     val EXPIRY = "expiry"
     val LOGGED = "logged"
     val APP = "app"
+    val ACCEPT = "Accept"
+    val CONTENT_TYPE = "Content-Type"
+    val APP_JSON = "application/json"
 }
