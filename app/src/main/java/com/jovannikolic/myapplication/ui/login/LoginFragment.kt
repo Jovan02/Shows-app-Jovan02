@@ -69,7 +69,6 @@ class LoginFragment : Fragment() {
 
         viewModel.buttonIsEnabledLiveData.observe(viewLifecycleOwner){ isEnabled ->
             binding.loginbutton.isEnabled = isEnabled
-            binding.loginbutton.setTextColor(if (isEnabled) requireContext().getColor(R.color.purple_600) else requireContext().getColor(R.color.white))
         }
 
         viewModel.isRegisteredChecked.observe(viewLifecycleOwner){ registered ->
