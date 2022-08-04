@@ -69,6 +69,14 @@ class RegisterFragment : Fragment() {
             }
         }
 
+        viewModel.isLoading.observe(viewLifecycleOwner){ isLoading ->
+            if(isLoading) {
+                binding.progressCircular.visibility = View.VISIBLE
+            } else {
+                binding.progressCircular.visibility = View.GONE
+            }
+        }
+
     }
 
     private fun initListeners() {
@@ -86,6 +94,7 @@ class RegisterFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
+            binding.progressCircular.visibility = View.VISIBLE
             viewModel.register()
         }
     }

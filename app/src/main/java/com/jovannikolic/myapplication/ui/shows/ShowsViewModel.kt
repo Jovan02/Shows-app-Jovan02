@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jovannikolic.myapplication.R
 import java.io.File
+import models.Constants.EMAIL
 import models.Show
 import models.ShowsListResponse
 import models.UpdatePhotoResponse
@@ -34,6 +35,9 @@ class ShowsViewModel : ViewModel() {
     private val _isGetShowsSuccessful = MutableLiveData<Boolean>()
     val isGetShowsSuccessful: LiveData<Boolean> = _isGetShowsSuccessful
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun setShowsList(shows: List<Show>) {
         _showsLiveData.value = shows
     }
@@ -51,14 +55,17 @@ class ShowsViewModel : ViewModel() {
                 File(path).asRequestBody("multipart/form-data".toMediaType())
             )
 
-        ApiModule.retrofit.updatePhoto(sharedPreferences.getString("email", "")!!, requestBody)
+        ApiModule.retrofit.updatePhoto(sharedPreferences.getString(EMAIL, "")!!, requestBody)
             .enqueue(object : Callback<UpdatePhotoResponse> {
                 override fun onResponse(call: Call<UpdatePhotoResponse>, response: Response<UpdatePhotoResponse>) {
+                    _isLoading.value = true
                     _isUpdatedPhoto.value = response.isSuccessful
+                    _isLoading.value = false
                 }
 
                 override fun onFailure(call: Call<UpdatePhotoResponse>, t: Throwable) {
                     _isUpdatedPhoto.value = false
+                    _isLoading.value = false
                 }
             })
     }
@@ -67,11 +74,14 @@ class ShowsViewModel : ViewModel() {
         ApiModule.retrofit.userData()
             .enqueue(object : retrofit2.Callback<UserDataResponse> {
                 override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
+                    _isLoading.value = true
                     _isGetDataSuccessful.value = response.isSuccessful
+                    _isLoading.value = false
                 }
 
                 override fun onFailure(call: Call<UserDataResponse>, t: Throwable) {
                     _isGetDataSuccessful.value = false
+                    _isLoading.value = false
                 }
 
             })
@@ -85,12 +95,15 @@ class ShowsViewModel : ViewModel() {
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
                     _isGetShowsSuccessful.value = response.isSuccessful
                     if (response.isSuccessful) {
+                        _isLoading.value = true
                         setShowsList(response.body()!!.shows)
+                        _isLoading.value = false
                     }
                 }
 
                 override fun onFailure(call: Call<ShowsListResponse>, t: Throwable) {
                     _isGetShowsSuccessful.value = false
+                    _isLoading.value = false
                 }
 
             })

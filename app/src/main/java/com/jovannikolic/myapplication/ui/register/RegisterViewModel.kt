@@ -28,6 +28,9 @@ class RegisterViewModel : ViewModel() {
     private val _isRegistered = MutableLiveData<Boolean>()
     val isRegistered: LiveData<Boolean> = _isRegistered
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private var email: String = ""
     private var password: String = ""
     private var passwordRepeat: String = ""
@@ -63,11 +66,14 @@ class RegisterViewModel : ViewModel() {
         ApiModule.retrofit.register(registerRequest)
             .enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                    _isLoading.value = true
                     _isRegistered.value = response.isSuccessful
+                    _isLoading.value = false
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                     _isRegistered.value = false
+                    _isLoading.value = false
                 }
             })
     }

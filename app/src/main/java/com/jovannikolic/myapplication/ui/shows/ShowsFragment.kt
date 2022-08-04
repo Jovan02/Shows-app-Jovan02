@@ -27,6 +27,9 @@ import com.jovannikolic.myapplication.ui.adapter.ShowsAdapter
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
 import com.jovannikolic.myapplication.ui.files.FileUtil
+import models.Constants.EMAIL
+import models.Constants.IMAGE
+import models.Constants.REMEMBER_ME
 
 class ShowsFragment : Fragment() {
 
@@ -60,6 +63,7 @@ class ShowsFragment : Fragment() {
         initListeners()
         initObservers()
 
+        binding.progressCircular.visibility = View.VISIBLE
         viewModel.getUserData()
         viewModel.getShowsList()
 
@@ -68,7 +72,7 @@ class ShowsFragment : Fragment() {
                 binding.emptystateimage.setVisibility(View.INVISIBLE)
                 binding.emptystatetext.setVisibility(View.INVISIBLE)
 
-                val email = sharedPreferences.getString("email", "non_existing@email.com")
+                val email = sharedPreferences.getString(EMAIL, "non_existing@email.com")
                 val tokens = email?.split("@")
                 val username = tokens?.getOrNull(0).toString()
 
@@ -93,6 +97,14 @@ class ShowsFragment : Fragment() {
         viewModel.isGetShowsSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
             if (!isSuccessful) {
                 Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner){ isLoading ->
+            if(isLoading) {
+                binding.progressCircular.visibility = View.VISIBLE
+            } else {
+                binding.progressCircular.visibility = View.GONE
             }
         }
     }
@@ -127,7 +139,7 @@ class ShowsFragment : Fragment() {
         bottomSheetBinding = DialogProfileBinding.inflate(layoutInflater)
         dialog.setContentView(bottomSheetBinding.root)
 
-        bottomSheetBinding.profileEmail.text = sharedPreferences.getString("email", "non_existing@email.com")
+        bottomSheetBinding.profileEmail.text = sharedPreferences.getString(EMAIL, "non_existing@email.com")
 
         bottomSheetBinding.changePictureButton.setOnClickListener {
             checkIfPermissionNeeded()
@@ -178,7 +190,7 @@ class ShowsFragment : Fragment() {
         val file = FileUtil.createImageFile(requireContext())
         val uri = FileProvider.getUriForFile(requireContext(), "com.jovannikolic.myapplication.fileProvider", file!!)
         sharedPreferences.edit {
-            putString("image", file.absolutePath)
+            putString(IMAGE, file.absolutePath)
         }
         getCameraImage.launch(uri)
     }
@@ -186,7 +198,7 @@ class ShowsFragment : Fragment() {
     private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { }
 
     private fun changePicture(bottomSheetBinding: DialogProfileBinding) {
-        val path = sharedPreferences.getString("image", "test")
+        val path = sharedPreferences.getString(IMAGE, "test")
         val options = RequestOptions()
             .centerCrop()
             .placeholder(R.drawable.profile_placeholder)
@@ -203,7 +215,7 @@ class ShowsFragment : Fragment() {
         builder.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _ ->
             dialog.dismiss()
             sharedPreferences.edit {
-                putBoolean("remember", false)
+                putBoolean(REMEMBER_ME, false)
             }
             val direction = ShowsFragmentDirections.actionLogout()
             findNavController().navigate(direction)

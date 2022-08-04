@@ -6,6 +6,13 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import models.Constants.ACCESS_TOKEN
+import models.Constants.CLIENT
+import models.Constants.EMAIL
+import models.Constants.EXPIRY
+import models.Constants.LOGGED
+import models.Constants.TOKEN_TYPE
+import models.Constants.UID
 import models.LoginRequest
 import models.LoginResponse
 import networking.ApiModule
@@ -33,6 +40,9 @@ class LoginViewModel() : ViewModel() {
     private val _isRememberMeChecked = MutableLiveData<Boolean>()
     val isRememberMeChecked: LiveData<Boolean> = _isRememberMeChecked
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private var email: String = ""
     private var password: String = ""
 
@@ -44,26 +54,29 @@ class LoginViewModel() : ViewModel() {
         ApiModule.retrofit.login(loginRequest)
             .enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    _isLoading.value = true
                     if(response.isSuccessful){
                         val headers = response.headers()
                         sharedPreferences.edit {
-                            putString("token-type", headers["token-type"])
-                            putString("access-token", headers["access-token"])
-                            putString("client", headers["client"])
-                            putString("uid", headers["uid"])
-                            putString("expiry", headers["expiry"])
-                            putBoolean("logged", response.isSuccessful)
-                            putString("email", email)
+                            putString(TOKEN_TYPE, headers[TOKEN_TYPE])
+                            putString(ACCESS_TOKEN, headers[ACCESS_TOKEN])
+                            putString(CLIENT, headers[CLIENT])
+                            putString(UID, headers[UID])
+                            putString(EXPIRY, headers[EXPIRY])
+                            putBoolean(LOGGED, response.isSuccessful)
+                            putString(EMAIL, email)
                             apply()
                         }
                         _isSuccessfulLogin.value = true
                     } else {
                         _isSuccessfulLogin.value = false
                     }
+                    _isLoading.value = false
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     _isSuccessfulLogin.value = false
+                    _isLoading.value = true
                 }
             })
     }

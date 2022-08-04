@@ -1,6 +1,7 @@
 package com.jovannikolic.myapplication.ui.login
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.edit
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -85,6 +87,14 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
             }
         }
+
+        viewModel.isLoading.observe(viewLifecycleOwner){ isLoading ->
+            if(isLoading) {
+                binding.progressCircular.visibility = View.VISIBLE
+            } else {
+                binding.progressCircular.visibility = View.GONE
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -98,6 +108,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginbutton.setOnClickListener {
+            binding.progressCircular.visibility = View.VISIBLE
             viewModel.login(sharedPreferences)
             viewModel.isRememberMeChecked.observe(viewLifecycleOwner){ checked ->
                 sharedPreferences.edit{
