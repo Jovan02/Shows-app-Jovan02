@@ -105,9 +105,8 @@ class ShowDetailsViewModel(
                 override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
                     _isGetShowDataSuccessful.value = response.isSuccessful
                     if (response.isSuccessful) {
-                        _showImageUrl.value = response.body()!!.show.image_url
-                        _showDescription.value = response.body()!!.show.description
-                        _showTitle.value = response.body()!!.show.title
+                        val show = Show(response.body()!!.show.id, response.body()!!.show.average_rating, response.body()!!.show.description, response.body()!!.show.image_url, response.body()!!.show.no_of_reviews, response.body()!!.show.title)
+                        _currentShow.value = show
                         getReviews(show_id)
                         setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)

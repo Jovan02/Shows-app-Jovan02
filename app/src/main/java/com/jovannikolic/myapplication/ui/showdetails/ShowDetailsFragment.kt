@@ -83,14 +83,10 @@ class ShowDetailsFragment : Fragment() {
                 .placeholder(R.drawable.family_guy)
                 .error(R.drawable.family_guy)
 
-            viewModel.showImageUrl.observe(viewLifecycleOwner){ imageUrl ->
-                Glide.with(requireContext()).load(imageUrl).apply(options).into(binding.showimg)
-            }
-            viewModel.showTitle.observe(viewLifecycleOwner){ title ->
-                binding.collapsingToolbar.title = title.toString()
-            }
-            viewModel.showDescription.observe(viewLifecycleOwner){ description ->
-                binding.showtext.text = description.toString()
+            viewModel.currentShow.observe(viewLifecycleOwner){ show ->
+                Glide.with(requireContext()).load(show.image_url).apply(options).into(binding.showimg)
+                binding.collapsingToolbar.title = show.title
+                binding.showtext.text = show.description
             }
         }
 
