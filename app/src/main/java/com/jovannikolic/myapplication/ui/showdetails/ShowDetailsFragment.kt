@@ -116,7 +116,7 @@ class ShowDetailsFragment : Fragment() {
         dialog.setContentView(bottomSheetBinding.root)
 
         bottomSheetBinding.xbutton.setOnClickListener {
-            dialog.hide()
+            dialog.dismiss()
         }
 
         bottomSheetBinding.submitButton.setOnClickListener {
@@ -125,9 +125,9 @@ class ShowDetailsFragment : Fragment() {
 
             if (rating > 0) {
                 viewModel.addReview(rating.toInt(), comment, args.show.id.toInt())
-                dialog.hide()
+                dialog.dismiss()
             } else {
-                dialog.hide()
+                dialog.dismiss()
             }
         }
         dialog.show()
