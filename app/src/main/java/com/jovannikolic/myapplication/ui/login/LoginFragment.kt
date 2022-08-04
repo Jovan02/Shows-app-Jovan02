@@ -98,7 +98,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun initListeners() {
         binding.emailtext.editText?.addTextChangedListener {
             viewModel.emailChanged(binding.emailtext.editText?.text.toString())
