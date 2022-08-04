@@ -1,12 +1,17 @@
-package com.jovannikolic.myapplication
+package com.jovannikolic.myapplication.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.ViewReviewItemBinding
 import models.Review
 
 class ReviewsAdapter(
+    private var context: Context,
     private var items: List<Review>,
     private val onItemClickCallback: (Review) -> Unit
 ) : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
@@ -31,9 +36,16 @@ class ReviewsAdapter(
 
         fun bind(item: Review) {
             binding.apply {
-                authorcomment.text = item.author
+                val tokens = item.user.email.split("@")
+                val username = tokens.getOrNull(0).toString()
+                authorcomment.text = username
                 ratingcomment.text = item.comment
-                ratingnumber.text = item.ratingNum.toString()
+                ratingnumber.text = item.rating.toString()
+                val options = RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.profile_placeholder)
+                    .error(R.drawable.profile_placeholder)
+                Glide.with(context).load(item.user.imageUrl).apply(options).into(profileImage)
                 ratingcard.setOnClickListener {
                     onItemClickCallback(item)
                 }

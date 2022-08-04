@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.login.LoginFragment">
+            tools:context=".ui.register.RegisterFragment">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailtext"
@@ -33,7 +33,7 @@
                 app:hintTextColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pleaselogin"
+                app:layout_constraintTop_toBottomOf="@id/registertext"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -79,22 +79,37 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/rememberMeCheck"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/repeatPasswordText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="25dp"
-                android:text="@string/remember_me"
-                android:textSize="17sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/roboto_regular"
-                android:textFontWeight="400"
-                android:buttonTint="@color/white"
-                android:checked="false"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="25dp"
+                android:hint="@string/password"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white_outline_text_input"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:hintTextColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/passwordtext"
-                />
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/white"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/roboto_regular"
+                    android:inputType="textPassword"
+                    android:textFontWeight="400"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/topleft"
@@ -126,38 +141,23 @@
                 />
 
             <TextView
-                android:id="@+id/logintext"
-                android:layout_width="230dp"
+                android:id="@+id/registertext"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="373dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginStart="24sp"
-                android:text="@string/login"
+                android:text="Register"
                 android:textSize="34sp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/roboto_bold"
                 android:textFontWeight="900"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/pleaselogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/in_order_to_continue_please_log_in"
-                android:textSize="17sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/roboto_regular"
-                android:textFontWeight="400"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/logintext"
+                app:layout_constraintTop_toTopOf="@id/logohorisontal"
                 />
 
             <TextView
                 android:id="@+id/emailerror"
-                android:layout_width="wrap_content"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="1dp"
@@ -179,7 +179,7 @@
                 />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginbutton"
+                android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="156dp"
@@ -190,8 +190,8 @@
                 android:background="@drawable/custom_button"
                 android:textSize="17sp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="@string/loginbtn"
-                android:textColor="@drawable/button_text_color"
+                android:textColor="#FFFFFF"
+                android:text="@string/register"
                 android:textAllCaps="false"
                 android:enabled="false"
                 android:clickable="false"
@@ -201,32 +201,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordtext"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/registerButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="36dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
-                android:background="@drawable/custom_button_purple"
-                android:textSize="17sp"
-                android:fontFamily="@font/roboto_bold"
-                android:textColor="#FFFFFF"
-                android:text="@string/register"
-                android:textAllCaps="false"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:textFontWeight="400"
-                app:backgroundTint="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginbutton"
+                app:layout_constraintTop_toBottomOf="@+id/repeatPasswordText"
                 />
 
             <androidx.core.widget.ContentLoadingProgressBar

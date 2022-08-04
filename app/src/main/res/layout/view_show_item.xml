@@ -27,7 +27,7 @@
                 android:id="@+id/showImage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 tools:src="@drawable/family_guy"/>
 
             <TextView

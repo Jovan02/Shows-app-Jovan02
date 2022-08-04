@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ratingcard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,12 +21,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/profile_placeholder"/>
-            <!--android:layout_marginStart="25dp"-->
+                android:padding="1dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_placeholder"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                app:strokeColor="#52368C"
+                app:strokeWidth="2dp"/>
 
             <TextView
                 android:id="@+id/authorcomment"
@@ -44,7 +50,7 @@
                 android:id="@+id/ratingnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="#52368C"

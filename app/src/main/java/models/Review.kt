@@ -1,7 +1,12 @@
 package models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Review(
-    var author: String,
+    var id: String,
     var comment: String,
-    var ratingNum: Float,
+    var rating: Int,
+    var show_id: Int,
+    var user: User
 )

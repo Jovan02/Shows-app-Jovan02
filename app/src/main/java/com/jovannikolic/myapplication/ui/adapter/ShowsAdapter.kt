@@ -1,12 +1,17 @@
-package com.jovannikolic.myapplication
+package com.jovannikolic.myapplication.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.ViewShowItemBinding
 import models.Show
 
 class ShowsAdapter(
+    private val context: Context,
     private var items: List<Show>,
     private val onItemClickCallback: (Show) -> Unit
 ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
@@ -25,9 +30,13 @@ class ShowsAdapter(
     inner class ShowViewHolder(private val binding: ViewShowItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Show) {
-            binding.showname.text = item.name
+            binding.showname.text = item.title
             binding.showdescription.text = item.description
-            binding.showImage.setImageResource(item.imageResourceId)
+            val options = RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.family_guy)
+                .error(R.drawable.family_guy)
+            Glide.with(context).load(item.image_url).apply(options).into(binding.showImage)
             binding.cardcontainer.setOnClickListener {
                 onItemClickCallback(item)
             }

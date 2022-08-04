@@ -1,4 +1,4 @@
-package files
+package com.jovannikolic.myapplication.ui.files
 
 import android.content.Context
 import android.graphics.Bitmap
