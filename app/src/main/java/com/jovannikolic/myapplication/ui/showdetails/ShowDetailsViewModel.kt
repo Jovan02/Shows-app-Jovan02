@@ -86,7 +86,7 @@ class ShowDetailsViewModel : ViewModel() {
             .enqueue(object : Callback<ShowDetailsResponse> {
                 override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
                     _isGetShowDataSuccessful.value = response.isSuccessful
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         _showImageUrl.value = response.body()!!.show.image_url
                         _showDescription.value = response.body()!!.show.description
                         _showTitle.value = response.body()!!.show.title
