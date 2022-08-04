@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,16 +24,13 @@ class ShowDetailsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    lateinit var adapter: ReviewsAdapter
-
     private val args by navArgs<ShowDetailsFragmentArgs>()
 
-    private val reviews = emptyList<Review>()
+    private val viewModel by viewModels<ShowDetailsViewModel>()
 
-    var sumOfReviews = 0.0
     var firstInit = true
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,8 +38,6 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
-
-        adapter = ReviewsAdapter(reviews) { review -> }
 
         getData()
 
@@ -84,23 +80,27 @@ class ShowDetailsFragment : Fragment() {
                     binding.noReviews.isVisible = false
                     firstInit = false
                 }
-                addReviewToList(author, comment, rating)
+
+                viewModel.addReviewToList(Review(author, comment, rating))
+
                 dialog?.hide()
             } else {
                 dialog?.hide()
             }
 
-            val numOfReviews = adapter.itemCount
-            sumOfReviews += rating
+            var numOfReviews = 0
+            viewModel.adapterLiveData.observe(viewLifecycleOwner){ adapter ->
+                numOfReviews = adapter.itemCount
+            }
 
-            val df = DecimalFormat("#.##")
+            viewModel.calculateRating(numOfReviews, rating)
 
-            val averageReviews = df.format((sumOfReviews / numOfReviews).toFloat())
-
-            binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageReviews.toString())
-
-            binding.averageratingbar.rating = averageReviews.toFloat()
-
+            viewModel.averageReviewsLiveData.observe(viewLifecycleOwner) { averageRating ->
+                val df = DecimalFormat("#.##")
+                val averageRatingRounded = df.format(averageRating)
+                binding.averageratingtext.text = getString(R.string.reviews_average, numOfReviews.toString(), averageRatingRounded.toString())
+                binding.averageratingbar.rating = averageRatingRounded.toFloat()
+            }
         }
         dialog?.show()
     }
@@ -122,16 +122,14 @@ class ShowDetailsFragment : Fragment() {
 
         binding.reviewsrecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        binding.reviewsrecycler.adapter = adapter
+        viewModel.adapterLiveData.observe(viewLifecycleOwner){ adapter ->
+            binding.reviewsrecycler.adapter = adapter
+        }
 
         binding.reviewsrecycler.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
 
-    }
-
-    private fun addReviewToList(author: String, comment: String, ratingNum: Float) {
-        adapter.addReview(Review(author, comment, ratingNum))
     }
 
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     app:startDestination="@id/loginFragment">
 
@@ -15,7 +16,9 @@
             app:enterAnim="@anim/enter_right_to_left"
             app:exitAnim="@anim/exit_right_to_left"
             app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right"/>
+            app:popExitAnim="@anim/exit_left_to_right"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 

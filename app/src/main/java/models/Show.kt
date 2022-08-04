@@ -4,13 +4,12 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 
-
-data class Show (
+data class Show(
     val ID: Int,
     val name: String,
     val description: String,
     @DrawableRes val imageResourceId: Int
-): Parcelable {
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString().toString(),

@@ -79,6 +79,23 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/rememberMeCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                android:text="@string/remember_me"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_regular"
+                android:textFontWeight="400"
+                android:buttonTint="@color/white"
+                android:checked="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/passwordtext"
+                />
+
             <ImageView
                 android:id="@+id/topleft"
                 android:layout_width="wrap_content"
@@ -152,7 +169,7 @@
 
             <TextView
                 android:id="@+id/passworderror"
-                android:layout_width="300dp"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="1dp"
@@ -163,16 +180,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginbutton"
-                app:layout_constraintTop_toBottomOf="@+id/passwordtext"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="156dp"
                 android:layout_marginBottom="36dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
+                android:layout_gravity="bottom"
                 android:background="@drawable/custom_button"
                 android:textSize="17sp"
                 android:fontFamily="@font/roboto_bold"
@@ -182,9 +196,12 @@
                 android:enabled="false"
                 android:clickable="false"
                 android:focusable="true"
-                android:layout_gravity="bottom"
                 android:textFontWeight="400"
                 app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordtext"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
