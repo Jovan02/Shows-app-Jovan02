@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import models.Constants.SHOW_DB
 import models.Review
 import models.ReviewEntity
 import models.Show
@@ -28,7 +29,7 @@ abstract class ShowsDatabase : RoomDatabase(){
                 val database = Room.databaseBuilder(
                     context,
                     ShowsDatabase::class.java,
-                    "show_db"
+                    SHOW_DB
                 )
                     .fallbackToDestructiveMigration()
                     .build()
