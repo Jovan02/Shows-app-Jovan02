@@ -104,7 +104,7 @@ class ShowDetailsViewModel(
             .enqueue(object : Callback<ShowDetailsResponse> {
                 override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
                     _isGetShowDataSuccessful.value = response.isSuccessful
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         val show = Show(response.body()!!.show.id, response.body()!!.show.average_rating, response.body()!!.show.description, response.body()!!.show.image_url, response.body()!!.show.no_of_reviews, response.body()!!.show.title)
                         _currentShow.value = show
                         getReviews(show_id)
@@ -118,10 +118,9 @@ class ShowDetailsViewModel(
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
                     _isGetShowDataSuccessful.value = false
                     val show = database.showDao().getShow(show_id).value
-                    _showImageUrl.value = show?.image_url
-                    _showDescription.value = show?.description
-                    _showTitle.value = show?.title
-                    _showId.value = show_id
+                    if(show != null){
+                        _currentShow.value = show!!
+                    }
                 }
 
             })
