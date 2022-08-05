@@ -59,7 +59,7 @@ class ShowsViewModel(
     }
 
     fun updateProfilePhoto(sharedPreferences: SharedPreferences) {
-        val path = sharedPreferences.getString(IMAGE, "test")!!
+        val path = sharedPreferences.getString(IMAGE, "test") ?: return
 
         val requestBody = MultipartBody.Part
             .createFormData(
