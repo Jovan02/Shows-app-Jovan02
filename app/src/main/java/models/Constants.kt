@@ -12,4 +12,6 @@ object Constants {
     val LOGGED = "logged"
     val APP = "app"
     val SHOW_DB = "show_db"
+    val AVATAR = "avatar.jpg"
+    val MULTIPART_FORM_DATA = "multipart/form-data"
 }

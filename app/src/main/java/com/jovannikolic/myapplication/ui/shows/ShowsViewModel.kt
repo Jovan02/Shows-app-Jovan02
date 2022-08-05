@@ -11,8 +11,10 @@ import com.jovannikolic.myapplication.R
 import database.ShowsDatabase
 import java.io.File
 import java.util.concurrent.Executors
+import models.Constants.AVATAR
 import models.Constants.EMAIL
 import models.Constants.IMAGE
+import models.Constants.MULTIPART_FORM_DATA
 import models.Show
 import models.ShowsListResponse
 import models.UpdatePhotoResponse
@@ -61,8 +63,8 @@ class ShowsViewModel(
 
         val requestBody = MultipartBody.Part
             .createFormData(
-                IMAGE, "avatar.jpg",
-                File(path).asRequestBody("multipart/form-data".toMediaType())
+                IMAGE, AVATAR,
+                File(path).asRequestBody(MULTIPART_FORM_DATA.toMediaType())
             )
 
         ApiModule.retrofit.updatePhoto(sharedPreferences.getString(EMAIL, "")!!, requestBody)
