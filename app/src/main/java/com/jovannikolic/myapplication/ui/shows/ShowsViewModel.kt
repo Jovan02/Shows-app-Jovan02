@@ -106,7 +106,7 @@ class ShowsViewModel(
             .enqueue(object : retrofit2.Callback<ShowsListResponse> {
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
                     _isGetShowsSuccessful.value = response.isSuccessful
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         _isLoading.value = true
                         Executors.newSingleThreadExecutor().execute{
                             database.showDao().insertAllShows(response.body()!!.shows)
