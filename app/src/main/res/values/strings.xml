@@ -32,4 +32,5 @@
     <string name="short_password">Password must be at least 6 characters long</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="loading">Loading...</string>
+    <string name="showsLogo">Shows</string>
 </resources>

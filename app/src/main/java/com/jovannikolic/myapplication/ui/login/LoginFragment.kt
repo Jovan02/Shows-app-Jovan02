@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.BounceInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.view.isVisible
@@ -19,6 +21,7 @@ import androidx.navigation.fragment.navArgs
 import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.FragmentLoginBinding
 import models.Constants.APP
+import models.Constants.REMEMBER_ME
 
 class LoginFragment : Fragment() {
 
@@ -46,8 +49,15 @@ class LoginFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.triangleLogo.animate()
+            .translationY(440f)
+            .setDuration(1000).interpolator = BounceInterpolator()
 
-        if (sharedPreferences.getBoolean("remember", false)) {
+        binding.logohorisontal.animate()
+            .translationX(-400f)
+            .setDuration(1500).interpolator = BounceInterpolator()
+
+        if (sharedPreferences.getBoolean(REMEMBER_ME, false)) {
             findNavController().navigate(LoginFragmentDirections.toShowsFragment())
         }
 
@@ -59,11 +69,11 @@ class LoginFragment : Fragment() {
 
     private fun initObservers(){
         viewModel.emailHasErrorLiveData.observe(viewLifecycleOwner){ hasError ->
-            binding.emailerror.text = if(hasError) "Invalid Email Address" else null
+            binding.emailerror.text = if(hasError) getString(R.string.invalid_email) else null
         }
 
         viewModel.passwordHasErrorLiveData.observe(viewLifecycleOwner) { hasError ->
-            binding.passworderror.text = if (hasError) "Password must be at least 6 characters long." else null
+            binding.passworderror.text = if (hasError) getString(R.string.short_password) else null
         }
 
         viewModel.buttonIsEnabledLiveData.observe(viewLifecycleOwner){ isEnabled ->
@@ -113,7 +123,7 @@ class LoginFragment : Fragment() {
             viewModel.login(sharedPreferences)
             viewModel.isRememberMeChecked.observe(viewLifecycleOwner){ checked ->
                 sharedPreferences.edit{
-                    putBoolean("remember", checked)
+                    putBoolean(REMEMBER_ME, checked)
                     apply()
                 }
             }
