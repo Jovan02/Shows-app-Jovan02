@@ -110,7 +110,6 @@ class ShowDetailsViewModel(
                         getReviews(show_id)
                         setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
-
                     }
                     _showId.value = show_id
                 }

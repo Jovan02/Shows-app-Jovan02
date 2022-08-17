@@ -14,4 +14,7 @@ object Constants {
     val SHOW_DB = "show_db"
     val AVATAR = "avatar.jpg"
     val MULTIPART_FORM_DATA = "multipart/form-data"
+    val ACCEPT = "Accept"
+    val CONTENT_TYPE = "Content-Type"
+    val APP_JSON = "application/json"
 }

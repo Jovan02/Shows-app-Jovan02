@@ -63,10 +63,10 @@ class RegisterViewModel : ViewModel() {
             password = this.password,
             passwordConfirmation = this.passwordRepeat
         )
+        _isLoading.value = true
         ApiModule.retrofit.register(registerRequest)
             .enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                    _isLoading.value = true
                     _isRegistered.value = response.isSuccessful
                     _isLoading.value = false
                 }

@@ -101,7 +101,7 @@ class LoginViewModel() : ViewModel() {
         _isRegisteredChecked.value = registered
     }
 
-    fun isRememberMeChecked(checked: Boolean) {
+    fun changeRememberMe(checked: Boolean) {
         _isRememberMeChecked.value = checked
     }
 

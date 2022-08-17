@@ -29,8 +29,6 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(APP, Context.MODE_PRIVATE)
-
-        ApiModule.initRetrofit(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,15 +44,15 @@ class RegisterFragment : Fragment() {
 
     private fun initObservers(){
         viewModel.emailHasErrorLiveData.observe(viewLifecycleOwner){ hasError ->
-            binding.emailerror.text = if(hasError) "Invalid Email Address" else null
+            binding.emailerror.text = if(hasError) getString(R.string.invalid_email) else null
         }
 
         viewModel.passwordHasErrorLiveData.observe(viewLifecycleOwner){ hasError ->
-            binding.passworderror.text = if (hasError) "Password must be at least 6 characters long." else null
+            binding.passworderror.text = if (hasError) getString(R.string.short_password) else null
         }
 
         viewModel.passwordRepeatHasErrorLiveData.observe(viewLifecycleOwner){ hasError ->
-            binding.passworderror.text = if (hasError) "Passwords don't match." else null
+            binding.passworderror.text = if (hasError) getString(R.string.passwords_do_not_match) else null
         }
 
         viewModel.buttonIsEnabledLiveData.observe(viewLifecycleOwner){ isEnabled ->

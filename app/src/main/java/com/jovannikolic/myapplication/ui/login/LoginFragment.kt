@@ -78,7 +78,6 @@ class LoginFragment : Fragment() {
 
         viewModel.buttonIsEnabledLiveData.observe(viewLifecycleOwner){ isEnabled ->
             binding.loginbutton.isEnabled = isEnabled
-            binding.loginbutton.setTextColor(if (isEnabled) requireContext().getColor(R.color.purple_600) else requireContext().getColor(R.color.white))
         }
 
         viewModel.isRegisteredChecked.observe(viewLifecycleOwner){ registered ->
@@ -108,7 +107,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun initListeners() {
         binding.emailtext.editText?.addTextChangedListener {
             viewModel.emailChanged(binding.emailtext.editText?.text.toString())
@@ -130,7 +128,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.rememberMeCheck.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.isRememberMeChecked(isChecked)
+            viewModel.changeRememberMe(isChecked)
         }
 
         binding.registerButton.setOnClickListener {

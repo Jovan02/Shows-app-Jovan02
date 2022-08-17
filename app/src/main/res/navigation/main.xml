@@ -21,24 +21,12 @@
             app:popUpToInclusive="true"/>
 
         <action
-            android:id="@+id/toShowsFragmentOnStartApp"
-            app:destination="@id/showsFragment"
-            app:enterAnim="@anim/enter_right_to_left"
-            app:exitAnim="@anim/exit_right_to_left"
-            app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
-
-        <action
             android:id="@+id/toRegisterFragment"
             app:destination="@id/registerFragment"
             app:enterAnim="@anim/enter_right_to_left"
             app:exitAnim="@anim/exit_right_to_left"
             app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="false"/>
+            app:popExitAnim="@anim/exit_left_to_right"/>
 
         <argument
             android:name="registered"
@@ -76,8 +64,7 @@
             app:exitAnim="@anim/exit_right_to_left"
             app:popEnterAnim="@anim/enter_left_to_right"
             app:popExitAnim="@anim/exit_left_to_right"
-            app:popUpTo="@id/showsFragment"
-            app:popUpToInclusive="false"/>
+            />
 
         <action
             android:id="@+id/actionLogout"

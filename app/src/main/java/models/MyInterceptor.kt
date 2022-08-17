@@ -2,9 +2,12 @@ package models
 
 import android.content.Context
 import android.content.SharedPreferences
+import models.Constants.ACCEPT
 import models.Constants.ACCESS_TOKEN
 import models.Constants.APP
+import models.Constants.APP_JSON
 import models.Constants.CLIENT
+import models.Constants.CONTENT_TYPE
 import models.Constants.EXPIRY
 import models.Constants.TOKEN_TYPE
 import models.Constants.UID
@@ -23,8 +26,8 @@ class MyInterceptor(context: Context) : Interceptor {
             .addHeader(CLIENT, sharedPreferences.getString(CLIENT, "")!!)
             .addHeader(UID, sharedPreferences.getString(UID, "")!!)
             .addHeader(EXPIRY, sharedPreferences.getString(EXPIRY, "")!!)
-            .addHeader("Accept", "application/json")
-            .addHeader("Content-Type", "application/json")
+            .addHeader(ACCEPT, APP_JSON)
+            .addHeader(CONTENT_TYPE, APP_JSON)
             .build()
         return chain.proceed(request)
     }
