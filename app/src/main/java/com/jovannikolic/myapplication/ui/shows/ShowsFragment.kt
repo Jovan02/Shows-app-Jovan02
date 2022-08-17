@@ -26,11 +26,13 @@ import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.ui.adapter.ShowsAdapter
 import com.jovannikolic.myapplication.databinding.DialogProfileBinding
 import com.jovannikolic.myapplication.databinding.FragmentShowsBinding
+import com.jovannikolic.myapplication.ui.activity.MainApplication
 import com.jovannikolic.myapplication.ui.files.FileUtil
 import models.Constants.APP
 import models.Constants.EMAIL
 import models.Constants.IMAGE
 import models.Constants.REMEMBER_ME
+import models.Show
 
 class ShowsFragment : Fragment() {
 
@@ -46,7 +48,9 @@ class ShowsFragment : Fragment() {
 
     private lateinit var bottomSheetBinding: DialogProfileBinding
 
-    private val viewModel by viewModels<ShowsViewModel>()
+    private val viewModel: ShowsViewModel by viewModels{
+        ShowsViewModelFactory((activity?.application as MainApplication).database)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +102,11 @@ class ShowsFragment : Fragment() {
         viewModel.isGetShowsSuccessful.observe(viewLifecycleOwner) { isSuccessful ->
             if (!isSuccessful) {
                 Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                viewModel.setShowsListFromDatabase().observe(viewLifecycleOwner) { showList ->
+                    viewModel.setShowsList(showList.map { show ->
+                        Show(show.id, show.average_rating, show.description, show.image_url, show.no_of_reviews, show.title)
+                    })
+                }
             }
         }
 
@@ -117,7 +126,6 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler(user: String) {
-
         viewModel.showsLiveData.observe(viewLifecycleOwner) { showList ->
             adapter = ShowsAdapter(requireContext(), showList) { show ->
                 val direction = ShowsFragmentDirections.toShowDetailsFragment(user, show)

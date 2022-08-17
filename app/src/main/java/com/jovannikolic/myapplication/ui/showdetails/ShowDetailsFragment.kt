@@ -23,7 +23,10 @@ import com.jovannikolic.myapplication.R
 import com.jovannikolic.myapplication.databinding.DialogAddReviewBinding
 import com.jovannikolic.myapplication.ui.adapter.ReviewsAdapter
 import com.jovannikolic.myapplication.databinding.FragmentShowDetailsBinding
+import com.jovannikolic.myapplication.ui.activity.MainApplication
 import models.Constants.APP
+import models.Review
+import models.User
 
 class ShowDetailsFragment : Fragment() {
 
@@ -33,7 +36,9 @@ class ShowDetailsFragment : Fragment() {
 
     private val args by navArgs<ShowDetailsFragmentArgs>()
 
-    private val viewModel by viewModels<ShowDetailsViewModel>()
+    private val viewModel:ShowDetailsViewModel by viewModels{
+        ShowDetailsViewModelFactory((requireActivity().application as MainApplication).database)
+    }
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -70,23 +75,18 @@ class ShowDetailsFragment : Fragment() {
         }
 
         viewModel.isGetShowDataSuccessful.observe(viewLifecycleOwner){ isSuccessful ->
-            if(isSuccessful){
-                val options = RequestOptions()
-                    .centerCrop()
-                    .placeholder(R.drawable.family_guy)
-                    .error(R.drawable.family_guy)
-
-                viewModel.showImageUrl.observe(viewLifecycleOwner){ imageUrl ->
-                    Glide.with(requireContext()).load(imageUrl).apply(options).into(binding.showimg)
-                }
-                viewModel.showTitle.observe(viewLifecycleOwner){ title ->
-                    binding.collapsingToolbar.title = title.toString()
-                }
-                viewModel.showDescription.observe(viewLifecycleOwner){ description ->
-                    binding.showtext.text = description.toString()
-                }
-            } else {
+            if(!isSuccessful){
                 Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+            }
+            val options = RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.family_guy)
+                .error(R.drawable.family_guy)
+
+            viewModel.currentShow.observe(viewLifecycleOwner){ show ->
+                Glide.with(requireContext()).load(show.image_url).apply(options).into(binding.showimg)
+                binding.collapsingToolbar.title = show.title
+                binding.showtext.text = show.description
             }
         }
 
@@ -95,6 +95,11 @@ class ShowDetailsFragment : Fragment() {
                 initReviewsRecycler()
             } else {
                 Toast.makeText(context, R.string.problems_try_again, Toast.LENGTH_SHORT).show()
+                viewModel.setReviewListFromDatabase().observe(viewLifecycleOwner){ reviewList ->
+                    viewModel.setReviewList(reviewList.map { review ->
+                        Review(review.id, review.comment, review.rating, review.show_id, User(review.user_id, review.user_email, review.user_image_url))
+                    })
+                }
             }
         }
     }

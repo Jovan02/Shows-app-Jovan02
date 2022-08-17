@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.BounceInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.view.isVisible
@@ -47,6 +49,13 @@ class LoginFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.triangleLogo.animate()
+            .translationY(440f)
+            .setDuration(1000).interpolator = BounceInterpolator()
+
+        binding.logohorisontal.animate()
+            .translationX(-400f)
+            .setDuration(1500).interpolator = BounceInterpolator()
 
         if (sharedPreferences.getBoolean(REMEMBER_ME, false)) {
             findNavController().navigate(LoginFragmentDirections.toShowsFragment())

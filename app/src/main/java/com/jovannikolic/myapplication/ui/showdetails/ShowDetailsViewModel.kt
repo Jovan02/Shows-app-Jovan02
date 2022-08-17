@@ -3,17 +3,24 @@ package com.jovannikolic.myapplication.ui.showdetails
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import database.ShowsDatabase
+import java.util.concurrent.Executors
 import models.AddReviewRequest
 import models.AddReviewResponse
 import models.GetReviewsResponse
 import models.Review
+import models.ReviewEntity
+import models.Show
 import models.ShowDetailsResponse
+import models.User
 import networking.ApiModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ShowDetailsViewModel : ViewModel() {
+class ShowDetailsViewModel(
+    private val database : ShowsDatabase
+) : ViewModel() {
 
     private val _sumOfReviewsLiveData = MutableLiveData<Float>()
     val sumOfReviewsLiveData: LiveData<Float> = _sumOfReviewsLiveData
@@ -48,6 +55,9 @@ class ShowDetailsViewModel : ViewModel() {
     private val _isAddReviewSuccessful = MutableLiveData<Boolean>()
     val isAddReviewSuccessful: LiveData<Boolean> = _isAddReviewSuccessful
 
+    private var _currentShow = MutableLiveData<Show>()
+    val currentShow: LiveData<Show> = _currentShow
+
     private val _showId = MutableLiveData<String>()
     val showId: LiveData<String> = _showId
 
@@ -69,8 +79,16 @@ class ShowDetailsViewModel : ViewModel() {
         _reviewListLiveData.value?.plus(review)
     }
 
+    fun setShow(): LiveData<Show> {
+        return database.showDao().getShow(_showId.value!!)
+    }
+
     fun setReviewList(list: List<Review>) {
         _reviewListLiveData.value = list
+    }
+
+    fun setReviewListFromDatabase() : LiveData<List<ReviewEntity>>{
+        return database.reviewDao().getAllShowReviews(_showId.value!!)
     }
 
     fun setAverageReviewsLiveData(avg: Float) {
@@ -87,19 +105,21 @@ class ShowDetailsViewModel : ViewModel() {
                 override fun onResponse(call: Call<ShowDetailsResponse>, response: Response<ShowDetailsResponse>) {
                     _isGetShowDataSuccessful.value = response.isSuccessful
                     if (response.isSuccessful && response.body() != null) {
-                        _showImageUrl.value = response.body()!!.show.image_url
-                        _showDescription.value = response.body()!!.show.description
-                        _showTitle.value = response.body()!!.show.title
-
+                        val show = Show(response.body()!!.show.id, response.body()!!.show.average_rating, response.body()!!.show.description, response.body()!!.show.image_url, response.body()!!.show.no_of_reviews, response.body()!!.show.title)
+                        _currentShow.value = show
                         getReviews(show_id)
-                        _showId.value = show_id
                         setAverageReviewsLiveData(response.body()!!.show.average_rating)
                         setNumberOfReviewsLiveData(response.body()!!.show.no_of_reviews)
                     }
+                    _showId.value = show_id
                 }
 
                 override fun onFailure(call: Call<ShowDetailsResponse>, t: Throwable) {
                     _isGetShowDataSuccessful.value = false
+                    val show = database.showDao().getShow(show_id).value
+                    if(show != null){
+                        _currentShow.value = show!!
+                    }
                 }
 
             })
@@ -110,11 +130,15 @@ class ShowDetailsViewModel : ViewModel() {
             .enqueue(object : Callback<GetReviewsResponse> {
                 override fun onResponse(call: Call<GetReviewsResponse>, response: Response<GetReviewsResponse>) {
                     _isGetReviewsSuccessful.value = response.isSuccessful
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         setReviewList(response.body()!!.reviews)
+                        Executors.newSingleThreadExecutor().execute{
+                            database.reviewDao().insertAllReviews(response.body()!!.reviews.map { review ->
+                                ReviewEntity(review.id, review.comment, review.rating, review.show_id, review.user.id, review.user.email, review.user.imageUrl)
+                            })
+                        }
                     }
                 }
-
                 override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
                     _isGetReviewsSuccessful.value = false
                 }

@@ -3,12 +3,18 @@ package com.jovannikolic.myapplication.ui.shows
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jovannikolic.myapplication.R
+import database.ShowsDatabase
 import java.io.File
+import java.util.concurrent.Executors
+import models.Constants.AVATAR
 import models.Constants.EMAIL
+import models.Constants.IMAGE
+import models.Constants.MULTIPART_FORM_DATA
 import models.Show
 import models.ShowsListResponse
 import models.UpdatePhotoResponse
@@ -21,7 +27,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ShowsViewModel : ViewModel() {
+class ShowsViewModel(
+    private val database: ShowsDatabase
+) : ViewModel() {
 
     private val _showsLiveData = MutableLiveData<List<Show>>()
     val showsLiveData: LiveData<List<Show>> = _showsLiveData
@@ -42,17 +50,21 @@ class ShowsViewModel : ViewModel() {
         _showsLiveData.value = shows
     }
 
+    fun setShowsListFromDatabase() : LiveData<List<Show>>{
+        return database.showDao().getAllShows()
+    }
+
     init {
         _showsLiveData.value = emptyList()
     }
 
     fun updateProfilePhoto(sharedPreferences: SharedPreferences) {
-        val path = sharedPreferences.getString("image", "test")!!
+        val path = sharedPreferences.getString(IMAGE, "test") ?: return
 
         val requestBody = MultipartBody.Part
             .createFormData(
-                "image", "avatar.jpg",
-                File(path).asRequestBody("multipart/form-data".toMediaType())
+                IMAGE, AVATAR,
+                File(path).asRequestBody(MULTIPART_FORM_DATA.toMediaType())
             )
 
         ApiModule.retrofit.updatePhoto(sharedPreferences.getString(EMAIL, "")!!, requestBody)
@@ -94,11 +106,14 @@ class ShowsViewModel : ViewModel() {
             .enqueue(object : retrofit2.Callback<ShowsListResponse> {
                 override fun onResponse(call: Call<ShowsListResponse>, response: Response<ShowsListResponse>) {
                     _isGetShowsSuccessful.value = response.isSuccessful
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         _isLoading.value = true
+                        Executors.newSingleThreadExecutor().execute{
+                            database.showDao().insertAllShows(response.body()!!.shows)
+                        }
                         setShowsList(response.body()!!.shows)
-                        _isLoading.value = false
                     }
+                    _isLoading.value = false
                 }
 
                 override fun onFailure(call: Call<ShowsListResponse>, t: Throwable) {
